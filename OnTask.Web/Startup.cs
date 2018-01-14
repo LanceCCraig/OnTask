@@ -1,8 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnTask.Data.Contexts;
+using OnTask.Data.Contexts.Interfaces;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace OnTask.Web
 {
@@ -53,7 +60,14 @@ namespace OnTask.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app
+                .UseAuthentication()
+                .UseStaticFiles()
+                .UseSwagger()
+                .UseSwaggerUI(x =>
+                {
+                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "OnTask API v1");
+                });
 
             app.UseMvc(routes =>
             {
@@ -73,8 +87,44 @@ namespace OnTask.Web
         /// <param name="services">The collection of service descriptors.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-        } 
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddOptions()
+                .AddSwaggerGen(x =>
+                {
+                    x.SwaggerDoc("V1", new Info
+                    {
+                        Title = "OnTask API",
+                        Version = "V1"
+                    });
+                });
+
+            services.AddMvc(x => x.OutputFormatters.RemoveType<StringOutputFormatter>());
+
+            ConfigureBusinessServices(services);
+            ConfigureCommonServices(services);
+            ConfigureDataServices(services);
+            ConfigureWebServices(services);
+        }
+        #endregion
+
+        #region Private Helpers
+        private static void ConfigureBusinessServices(IServiceCollection services)
+        {
+        }
+
+        private static void ConfigureCommonServices(IServiceCollection services)
+        {
+        }
+
+        private void ConfigureDataServices(IServiceCollection services) => services
+            .AddDbContext<OnTaskContext>(x => x.UseSqlServer(Configuration.GetConnectionString("OnTask")))
+            .AddTransient<IOnTaskContext, OnTaskContext>();
+
+        private static void ConfigureWebServices(IServiceCollection services) => services
+            .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         #endregion
     }
 }
