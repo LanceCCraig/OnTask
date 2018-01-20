@@ -14,7 +14,7 @@ namespace OnTask.Data.Entities
         /// Gets or sets the identifier for the <see cref="Event"/> class.
         /// </summary>
         [Key]
-        public int EventId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="Entities.EventParent"/> class.
         /// </summary>

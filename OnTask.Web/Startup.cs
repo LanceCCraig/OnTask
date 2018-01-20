@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnTask.Data.Contexts;
 using OnTask.Data.Contexts.Interfaces;
+using OnTask.Data.Entities;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace OnTask.Web
 {
@@ -87,10 +89,7 @@ namespace OnTask.Web
         /// <param name="services">The collection of service descriptors.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
-
             services
-                .AddEntityFrameworkSqlServer()
                 .AddOptions()
                 .AddSwaggerGen(x =>
                 {
@@ -100,9 +99,9 @@ namespace OnTask.Web
                         Version = "V1"
                     });
                 });
-
             services.AddMvc(x => x.OutputFormatters.RemoveType<StringOutputFormatter>());
 
+            ConfigureIdentity(services);
             ConfigureBusinessServices(services);
             ConfigureCommonServices(services);
             ConfigureDataServices(services);
@@ -111,6 +110,39 @@ namespace OnTask.Web
         #endregion
 
         #region Private Helpers
+        private static void ConfigureIdentity(IServiceCollection services)
+        {
+            services
+                .AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<OnTaskDbContext>()
+                .AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Lockout
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                // Password
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireUppercase = true;
+                // User
+                options.User.RequireUniqueEmail = true;
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                //options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.Expiration = TimeSpan.FromDays(7);
+                options.Cookie.HttpOnly = true;
+                //options.LoginPath = "/Account/Login";
+                //options.LogoutPath = "/Account/Logout";
+                options.SlidingExpiration = true;
+            });
+        }
+
         private static void ConfigureBusinessServices(IServiceCollection services)
         {
         }
@@ -120,8 +152,8 @@ namespace OnTask.Web
         }
 
         private void ConfigureDataServices(IServiceCollection services) => services
-            .AddDbContext<OnTaskContext>(x => x.UseSqlServer(Configuration.GetConnectionString("OnTask")))
-            .AddTransient<IOnTaskContext, OnTaskContext>();
+            .AddDbContext<OnTaskDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("OnTask")))
+            .AddTransient<IOnTaskDbContext, OnTaskDbContext>();
 
         private static void ConfigureWebServices(IServiceCollection services) => services
             .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

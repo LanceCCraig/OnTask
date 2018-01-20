@@ -3,9 +3,9 @@
 namespace OnTask.Data.Entities
 {
     /// <summary>
-    /// Represents a user of the application.
+    /// Represents a role in the application.
     /// </summary>
-    public class User : IdentityUser
+    public class Role : IdentityRole
     {
     }
 }

@@ -58,12 +58,21 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Tables\Event" />
+    <Folder Include="Tables\Identity" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Event.sql" />
-    <Build Include="Tables\EventParent.sql" />
-    <Build Include="Tables\EventType.sql" />
-    <Build Include="Tables\User.sql" />
-    <Build Include="Tables\UserPassword.sql" />
+    <Build Include="Tables\Event\Event.sql" />
+    <Build Include="Tables\Identity\RoleClaim.sql" />
+    <Build Include="Tables\Identity\Role.sql" />
+    <Build Include="Tables\Identity\UserClaim.sql" />
+    <Build Include="Tables\Identity\UserLogin.sql" />
+    <Build Include="Tables\Identity\UserRole.sql" />
+    <Build Include="Tables\Identity\User.sql" />
+    <Build Include="Tables\Identity\UserToken.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Event\EventParent.sql" />
+    <Build Include="Tables\Event\EventType.sql" />
   </ItemGroup>
 </Project>

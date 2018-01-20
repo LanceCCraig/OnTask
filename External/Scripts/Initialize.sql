@@ -62,10 +62,65 @@ IF EXISTS
     SELECT *
     FROM SYS.OBJECTS
     WHERE
-        [Object_Id] = OBJECT_ID(N'[dbo].[UserPassword]') AND
+        [Object_Id] = OBJECT_ID(N'[dbo].[RoleClaim]') AND
         [Type] = N'U'
 )
-    DROP TABLE [dbo].[UserPassword]
+    DROP TABLE [dbo].[RoleClaim]
+GO
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[UserClaim]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[UserClaim]
+GO  
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[UserLogin]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[UserLogin]
+GO
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[UserRole]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[UserRole]
+GO
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[UserToken]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[UserToken]
+GO
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[Role]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[Role]
 GO
 
 IF EXISTS
@@ -83,71 +138,196 @@ GO
 USE [OnTask]
 GO
 
+CREATE TABLE [dbo].[Role]
+(
+	[Id]				NVARCHAR(450)	NOT NULL,
+	[ConcurrencyStamp]	NVARCHAR(MAX)	NULL,
+	[Name]				NVARCHAR(256)	NULL,
+	[NormalizedName]	NVARCHAR(256)	NULL,
+	CONSTRAINT [PK_Role] PRIMARY KEY ([Id] ASC)
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Role_NormalizedName]
+	ON [dbo].[Role] ([NormalizedName] ASC)
+GO
+
 CREATE TABLE [dbo].[User]
 (
-    [UserId]    INT             IDENTITY(1, 1)  NOT NULL,
-    [Email]     NVARCHAR(500)   NOT NULL,
-    [FirstName] NVARCHAR(100)   NOT NULL,
-    [LastName]  NVARCHAR(100)   NOT NULL,
-    [CreatedOn] DATETIME        NOT NULL,
-    [UpdatedOn] DATETIME        NULL,
-    CONSTRAINT [PK_User] PRIMARY KEY ([UserId] ASC)
+	[Id]					NVARCHAR(450)		NOT NULL,
+	[AccessFailedCount]		INT					NOT NULL,
+	[ConcurrencyStamp]		NVARCHAR(MAX)		NULL,
+	[Email]					NVARCHAR(256)		NULL,
+	[EmailConfirmed]		BIT					NOT NULL,
+	[LockoutEnabled]		BIT					NOT NULL,
+	[LockoutEnd]			DATETIMEOFFSET(7)	NULL,
+	[NormalizedEmail]		NVARCHAR(256)		NULL,
+	[NormalizedUserName]	NVARCHAR(256)		NULL,
+	[PasswordHash]			NVARCHAR(MAX)		NULL,
+	[PhoneNumber]			NVARCHAR(MAX)		NULL,
+	[PhoneNumberConfirmed]	BIT					NOT NULL,
+	[SecurityStamp]			NVARCHAR(MAX)		NULL,
+	[TwoFactorEnabled]		BIT					NOT NULL,
+	[UserName]				NVARCHAR(256)		NULL,
+	CONSTRAINT [PK_User] PRIMARY KEY ([Id] ASC)
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_User_NormalizedEmail]
+	ON [dbo].[User] ([NormalizedEmail] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_User_NormalizedUserName]
+	ON [dbo].[User] ([NormalizedUserName] ASC)
+GO
+
+CREATE TABLE [dbo].[RoleClaim]
+(
+	[Id]			INT				IDENTITY(1, 1) NOT NULL,
+	[ClaimType]		NVARCHAR(MAX)	NULL,
+	[ClaimValue]	NVARCHAR(MAX)	NULL,
+	[RoleId]		NVARCHAR(450)	NOT NULL,
+	CONSTRAINT [PK_RoleClaim] PRIMARY KEY ([Id] ASC),
+	CONSTRAINT [FK_RoleClaim_Role_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_RoleClaim_RoleId]
+	ON [dbo].[RoleClaim] ([RoleId] ASC)
+GO
+
+CREATE TABLE [dbo].[UserClaim]
+(
+	[Id]			INT				IDENTITY(1, 1) NOT NULL,
+	[ClaimType]		NVARCHAR(MAX)	NULL,
+	[ClaimValue]	NVARCHAR(MAX)	NULL,
+	[UserId]		NVARCHAR(450)	NOT NULL,
+	CONSTRAINT [PK_UserClaim] PRIMARY KEY ([Id] ASC),
+	CONSTRAINT [FK_UserClaim_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_UserClaim_UserId]
+	ON [dbo].[UserClaim] ([UserId] ASC)
+GO
+
+CREATE TABLE [dbo].[UserLogin]
+(
+	[LoginProvider]			NVARCHAR(450)	NOT NULL,
+	[ProviderKey]			NVARCHAR(450)	NOT NULL,
+	[ProviderDisplayName]	NVARCHAR(MAX)	NULL,
+	[UserId]				NVARCHAR(450)	NOT NULL,
+	CONSTRAINT [PK_UserLogin] PRIMARY KEY
+	(
+		[LoginProvider] ASC,
+		[ProviderKey] ASC
+	),
+	CONSTRAINT [FK_UserLogin_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_UserLogin_UserId]
+	ON [dbo].[UserLogin] ([UserId] ASC)
+GO
+
+CREATE TABLE [dbo].[UserRole]
+(
+	[UserId]	NVARCHAR(450)	NOT NULL,
+	[RoleId]	NVARCHAR(450)	NOT NULL,
+	CONSTRAINT [PK_UserRole] PRIMARY KEY
+	(
+		[UserId] ASC,
+		[RoleId] ASC
+	),
+	CONSTRAINT [FK_UserRole_Role_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id]),
+	CONSTRAINT [FK_UserRole_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_UserRole_RoleId]
+	ON [dbo].[UserRole] ([RoleId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_UserRole_UserId]
+	ON [dbo].[UserRole] ([UserId] ASC)
+GO
+
+CREATE TABLE [dbo].[UserToken]
+(
+	[UserId]		NVARCHAR(450)	NOT NULL,
+	[LoginProvider]	NVARCHAR(450)	NOT NULL,
+	[Name]			NVARCHAR(450)	NOT NULL,
+	[Value]			NVARCHAR(MAX)	NULL,
+	CONSTRAINT [PK_UserToken] PRIMARY KEY
+	(
+		[UserId] ASC,
+		[LoginProvider] ASC,
+		[Name] ASC
+	)
 )
 GO
 
 CREATE TABLE [dbo].[EventParent]
 (
-    [EventParentId] INT             IDENTITY(1, 1)  NOT NULL,
-    [UserId]        INT             NOT NULL,
+    [Id]			INT             IDENTITY(1, 1)  NOT NULL,
+    [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
-    [DisplayName]   NVARCHAR(500)   NOT NULL,
+    [DisplayName]	NVARCHAR(500)   NOT NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_EventParent] PRIMARY KEY ([EventParentId] ASC),
-    CONSTRAINT [FK_EventParent_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]
+    CONSTRAINT [PK_EventParent] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [FK_EventParent_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
+GO
+
+CREATE NONCLUSTERED INDEX [IX_EventParent_UserId]
+    ON [dbo].[EventParent] ([UserId] ASC)
 GO
 
 CREATE TABLE [dbo].[EventType]
 (
-    [EventTypeId]   INT             IDENTITY(1, 1)  NOT NULL,
-    [UserId]        INT             NOT NULL,
+    [Id]			INT             IDENTITY(1, 1)  NOT NULL,
+    [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [DisplayName]   NVARCHAR(500)   NOT NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_EventType] PRIMARY KEY ([EventTypeId] ASC),
-    CONSTRAINT [FK_EventType_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]
+    CONSTRAINT [PK_EventType] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [FK_EventType_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
 GO
 
-CREATE TABLE [dbo].[UserPassword]
-(
-    [UserPasswordId]    INT             IDENTITY(1, 1)  NOT NULL,
-    [UserId]            INT             NOT NULL,
-    [PasswordHash]      NVARCHAR(60)    NOT NULL,
-    [CreatedOn]         DATETIME        NOT NULL,
-    [UpdatedOn]         DATETIME        NULL,
-    CONSTRAINT [PK_UserPassword] PRIMARY KEY ([UserPasswordId] ASC),
-    CONSTRAINT [FK_UserPassword_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]
-)
+CREATE NONCLUSTERED INDEX [IX_EventType_UserId]
+    ON [dbo].[EventType] ([UserId] ASC)
 GO
 
 CREATE TABLE [dbo].[Event]
 (
-    [EventId]       INT             IDENTITY(1, 1)  NOT NULL,
+    [Id]			INT             IDENTITY(1, 1)  NOT NULL,
     [EventParentId] INT             NOT NULL,
     [EventTypeId]   INT             NOT NULL,
-    [UserId]        INT             NOT NULL,
+    [UserId]        NVARCHAR(450)   NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
     [StartDate]     DATETIME        NOT NULL,
     [EndDate]       DATETIME        NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_Event] PRIMARY KEY ([EventId] ASC),
-    CONSTRAINT [FK_Event_EventParent] FOREIGN KEY ([EventParentId]) REFERENCES [dbo].[EventParent],
-    CONSTRAINT [FK_Event_EventType] FOREIGN KEY ([EventTypeId]) REFERENCES [dbo].[EventType],
-    CONSTRAINT [FK_Event_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]
+    CONSTRAINT [PK_Event] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [FK_Event_EventParent_EventParentId] FOREIGN KEY ([EventParentId]) REFERENCES [dbo].[EventParent] ([Id]),
+    CONSTRAINT [FK_Event_EventType_EventTypeId] FOREIGN KEY ([EventTypeId]) REFERENCES [dbo].[EventType] ([Id]),
+    CONSTRAINT [FK_Event_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Event_EventParentId]
+    ON [dbo].[Event] ([EventParentId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Event_EventTypeId]
+    ON [dbo].[Event] ([EventTypeId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Event_UserId]
+    ON [dbo].[Event] ([UserId] ASC)
 GO
