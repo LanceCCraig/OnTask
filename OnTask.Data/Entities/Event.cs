@@ -29,7 +29,7 @@ namespace OnTask.Data.Entities
         /// Gets or sets the identifier for the associated <see cref="Entities.User"/> class.
         /// </summary>
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         /// <summary>
         /// Gets or sets the name for the <see cref="Event"/> class.
         /// </summary>

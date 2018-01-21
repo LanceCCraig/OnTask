@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace OnTask.Web.Controllers
 {
     // TODO: Remove SampleDataController after sample application is replaced.
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
@@ -14,6 +17,11 @@ namespace OnTask.Web.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDateIndex"></param>
+        /// <returns></returns>
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts(int startDateIndex)
         {
@@ -26,12 +34,26 @@ namespace OnTask.Web.Controllers
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public class WeatherForecast
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public string DateFormatted { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
             public int TemperatureC { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
             public string Summary { get; set; }
-
+            /// <summary>
+            /// 
+            /// </summary>
             public int TemperatureF
             {
                 get

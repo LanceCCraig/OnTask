@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnTask.Common;
 using OnTask.Data.Contexts;
 using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
@@ -93,10 +94,10 @@ namespace OnTask.Web
                 .AddOptions()
                 .AddSwaggerGen(x =>
                 {
-                    x.SwaggerDoc("V1", new Info
+                    x.SwaggerDoc("v1", new Info
                     {
                         Title = "OnTask API",
-                        Version = "V1"
+                        Version = "v1"
                     });
                 });
             services.AddMvc(x => x.OutputFormatters.RemoveType<StringOutputFormatter>());
@@ -123,7 +124,7 @@ namespace OnTask.Web
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 // Password
-                options.Password.RequiredLength = 8;
+                options.Password.RequiredLength = Constants.MinimumPasswordLength;
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -152,6 +153,8 @@ namespace OnTask.Web
         }
 
         private void ConfigureDataServices(IServiceCollection services) => services
+            .AddDbContext<AccountDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("OnTask")))
+            .AddTransient<IAccountDbContext, AccountDbContext>()
             .AddDbContext<OnTaskDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("OnTask")))
             .AddTransient<IOnTaskDbContext, OnTaskDbContext>();
 

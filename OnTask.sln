@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTask.Web", "OnTask.Web\OnTask.Web.csproj", "{CE1D7B81-38E5-491D-87D0-B1FBD6FF9730}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OnTask.Database", "OnTask.Database\OnTask.Database.sqlproj", "{DCC18F4C-5698-4831-8BCA-FDE1EC091D55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTask.Test", "OnTask.Test\OnTask.Test.csproj", "{200B81AA-65B7-4FEB-A12C-8461547DC261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTask.Test", "OnTask.Test\OnTask.Test.csproj", "{200B81AA-65B7-4FEB-A12C-8461547DC261}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTask.Business", "OnTask.Business\OnTask.Business.csproj", "{1A020CB5-5307-4AF9-96FA-7601DE0E290C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTask.Business", "OnTask.Business\OnTask.Business.csproj", "{1A020CB5-5307-4AF9-96FA-7601DE0E290C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTask.Common", "OnTask.Common\OnTask.Common.csproj", "{9513B9D1-6F2C-45B7-8AFF-A6BEA29A4069}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTask.Common", "OnTask.Common\OnTask.Common.csproj", "{9513B9D1-6F2C-45B7-8AFF-A6BEA29A4069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTask.Data", "OnTask.Data\OnTask.Data.csproj", "{E6937F16-E3B9-4B3C-9739-7A94AD8E66AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTask.Data", "OnTask.Data\OnTask.Data.csproj", "{E6937F16-E3B9-4B3C-9739-7A94AD8E66AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

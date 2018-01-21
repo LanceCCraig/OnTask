@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
 
@@ -43,28 +42,9 @@ namespace OnTask.Data.Contexts
         /// <param name="modelBuilder">The builder class used for configuration.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            CreateEventModel(modelBuilder);
-            CreateIdentityModel(modelBuilder);
-        }
-        #endregion
-
-        #region Private Helpers
-        private static void CreateEventModel(ModelBuilder modelBuilder)
-        {
             modelBuilder.Entity<Event>().ToTable(nameof(Event));
             modelBuilder.Entity<EventType>().ToTable(nameof(EventType));
             modelBuilder.Entity<EventParent>().ToTable(nameof(EventParent));
-        }
-
-        private static void CreateIdentityModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Role>().ToTable(nameof(Role));
-            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaim");
-            modelBuilder.Entity<User>().ToTable(nameof(User));
-            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaim");
-            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
-            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken");
         }
         #endregion
     }
