@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -51,12 +52,13 @@ namespace OnTask.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                    ReactHotModuleReplacement = true
-                });
+                app
+                    .UseDeveloperExceptionPage()
+                    .UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                    {
+                        HotModuleReplacement = true,
+                        ReactHotModuleReplacement = true
+                    });
             }
             else
             {
@@ -65,6 +67,8 @@ namespace OnTask.Web
 
             app
                 .UseAuthentication()
+                .UseRewriter(new RewriteOptions()
+                    .AddRedirectToHttps())
                 .UseStaticFiles()
                 .UseSwagger()
                 .UseSwaggerUI(x =>
@@ -92,15 +96,19 @@ namespace OnTask.Web
         {
             services
                 .AddOptions()
-                .AddSwaggerGen(x =>
+                .AddSwaggerGen(options =>
                 {
-                    x.SwaggerDoc("v1", new Info
+                    options.SwaggerDoc("v1", new Info
                     {
                         Title = "OnTask API",
                         Version = "v1"
                     });
+                })
+                .Configure<MvcOptions>(options =>
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
                 });
-            services.AddMvc(x => x.OutputFormatters.RemoveType<StringOutputFormatter>());
+            services.AddMvc();
 
             ConfigureIdentity(services);
             ConfigureBusinessServices(services);
@@ -111,13 +119,8 @@ namespace OnTask.Web
         #endregion
 
         #region Private Helpers
-        private static void ConfigureIdentity(IServiceCollection services)
-        {
-            services
-                .AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<OnTaskDbContext>()
-                .AddDefaultTokenProviders();
-            services.Configure<IdentityOptions>(options =>
+        private static void ConfigureIdentity(IServiceCollection services) => services
+            .Configure<IdentityOptions>(options =>
             {
                 // Lockout
                 options.Lockout.AllowedForNewUsers = true;
@@ -132,17 +135,20 @@ namespace OnTask.Web
                 options.Password.RequireUppercase = true;
                 // User
                 options.User.RequireUniqueEmail = true;
-            });
-            services.ConfigureApplicationCookie(options =>
+            })
+            .ConfigureApplicationCookie(options =>
             {
+                // TODO: Configure application cookie paths.
                 //options.AccessDeniedPath = "/Account/AccessDenied";
                 options.Cookie.Expiration = TimeSpan.FromDays(7);
                 options.Cookie.HttpOnly = true;
                 //options.LoginPath = "/Account/Login";
                 //options.LogoutPath = "/Account/Logout";
                 options.SlidingExpiration = true;
-            });
-        }
+            })
+            .AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<OnTaskDbContext>()
+            .AddDefaultTokenProviders();
 
         private static void ConfigureBusinessServices(IServiceCollection services)
         {

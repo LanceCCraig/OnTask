@@ -40,6 +40,17 @@ IF EXISTS
     SELECT *
     FROM SYS.OBJECTS
     WHERE
+        [Object_Id] = OBJECT_ID(N'[dbo].[EventGroup]') AND
+        [Type] = N'U'
+)
+    DROP TABLE [dbo].[EventGroup]
+GO
+
+IF EXISTS
+(
+    SELECT *
+    FROM SYS.OBJECTS
+    WHERE
         [Object_Id] = OBJECT_ID(N'[dbo].[EventParent]') AND
         [Type] = N'U'
 )
@@ -144,7 +155,7 @@ CREATE TABLE [dbo].[Role]
 	[ConcurrencyStamp]	NVARCHAR(MAX)	NULL,
 	[Name]				NVARCHAR(256)	NULL,
 	[NormalizedName]	NVARCHAR(256)	NULL,
-	CONSTRAINT [PK_Role] PRIMARY KEY ([Id] ASC)
+	CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
 
@@ -169,7 +180,7 @@ CREATE TABLE [dbo].[User]
 	[SecurityStamp]			NVARCHAR(MAX)		NULL,
 	[TwoFactorEnabled]		BIT					NOT NULL,
 	[UserName]				NVARCHAR(256)		NULL,
-	CONSTRAINT [PK_User] PRIMARY KEY ([Id] ASC)
+	CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
 
@@ -187,7 +198,7 @@ CREATE TABLE [dbo].[RoleClaim]
 	[ClaimType]		NVARCHAR(MAX)	NULL,
 	[ClaimValue]	NVARCHAR(MAX)	NULL,
 	[RoleId]		NVARCHAR(450)	NOT NULL,
-	CONSTRAINT [PK_RoleClaim] PRIMARY KEY ([Id] ASC),
+	CONSTRAINT [PK_RoleClaim] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_RoleClaim_Role_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id])
 )
 GO
@@ -202,7 +213,7 @@ CREATE TABLE [dbo].[UserClaim]
 	[ClaimType]		NVARCHAR(MAX)	NULL,
 	[ClaimValue]	NVARCHAR(MAX)	NULL,
 	[UserId]		NVARCHAR(450)	NOT NULL,
-	CONSTRAINT [PK_UserClaim] PRIMARY KEY ([Id] ASC),
+	CONSTRAINT [PK_UserClaim] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_UserClaim_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
 GO
@@ -217,7 +228,7 @@ CREATE TABLE [dbo].[UserLogin]
 	[ProviderKey]			NVARCHAR(450)	NOT NULL,
 	[ProviderDisplayName]	NVARCHAR(MAX)	NULL,
 	[UserId]				NVARCHAR(450)	NOT NULL,
-	CONSTRAINT [PK_UserLogin] PRIMARY KEY
+	CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED
 	(
 		[LoginProvider] ASC,
 		[ProviderKey] ASC
@@ -234,7 +245,7 @@ CREATE TABLE [dbo].[UserRole]
 (
 	[UserId]	NVARCHAR(450)	NOT NULL,
 	[RoleId]	NVARCHAR(450)	NOT NULL,
-	CONSTRAINT [PK_UserRole] PRIMARY KEY
+	CONSTRAINT [PK_UserRole] PRIMARY KEY CLUSTERED
 	(
 		[UserId] ASC,
 		[RoleId] ASC
@@ -258,13 +269,30 @@ CREATE TABLE [dbo].[UserToken]
 	[LoginProvider]	NVARCHAR(450)	NOT NULL,
 	[Name]			NVARCHAR(450)	NOT NULL,
 	[Value]			NVARCHAR(MAX)	NULL,
-	CONSTRAINT [PK_UserToken] PRIMARY KEY
+	CONSTRAINT [PK_UserToken] PRIMARY KEY CLUSTERED
 	(
 		[UserId] ASC,
 		[LoginProvider] ASC,
 		[Name] ASC
 	)
 )
+GO
+
+CREATE TABLE [dbo].[EventGroup]
+(
+    [Id]            INT             IDENTITY(1, 1)  NOT NULL,
+    [UserId]        NVARCHAR(450)   NOT NULL,
+    [Name]          NVARCHAR(500)   NOT NULL,
+    [DisplayName]   NVARCHAR(500)   NOT NULL,
+    [CreatedOn]     DATETIME        NOT NULL,
+    [UpdatedOn]     DATETIME        NULL,
+    CONSTRAINT [PK_EventGroup] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_EventGroup_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_EventGroup_UserId]
+    ON [dbo].[EventGroup] ([UserId] ASC)
 GO
 
 CREATE TABLE [dbo].[EventParent]
@@ -275,7 +303,7 @@ CREATE TABLE [dbo].[EventParent]
     [DisplayName]	NVARCHAR(500)   NOT NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_EventParent] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [PK_EventParent] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_EventParent_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
 GO
@@ -292,7 +320,7 @@ CREATE TABLE [dbo].[EventType]
     [DisplayName]   NVARCHAR(500)   NOT NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_EventType] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [PK_EventType] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_EventType_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
 GO
@@ -304,6 +332,7 @@ GO
 CREATE TABLE [dbo].[Event]
 (
     [Id]			INT             IDENTITY(1, 1)  NOT NULL,
+    [EventGroupId]  INT             NOT NULL,
     [EventParentId] INT             NOT NULL,
     [EventTypeId]   INT             NOT NULL,
     [UserId]        NVARCHAR(450)   NOT NULL,
@@ -313,11 +342,16 @@ CREATE TABLE [dbo].[Event]
     [EndDate]       DATETIME        NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
-    CONSTRAINT [PK_Event] PRIMARY KEY ([Id] ASC),
+    CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Event_EventGroup_EventGroupId] FOREIGN KEY ([EventGroupId]) REFERENCES [dbo].[EventGroup] ([Id]),
     CONSTRAINT [FK_Event_EventParent_EventParentId] FOREIGN KEY ([EventParentId]) REFERENCES [dbo].[EventParent] ([Id]),
     CONSTRAINT [FK_Event_EventType_EventTypeId] FOREIGN KEY ([EventTypeId]) REFERENCES [dbo].[EventType] ([Id]),
     CONSTRAINT [FK_Event_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 )
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Event_EventGroupId]
+    ON [dbo].[Event] ([EventGroupId] ASC)
 GO
 
 CREATE NONCLUSTERED INDEX [IX_Event_EventParentId]
