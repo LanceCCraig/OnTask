@@ -70,6 +70,7 @@
     <Build Include="Tables\Identity\UserRole.sql" />
     <Build Include="Tables\Identity\User.sql" />
     <Build Include="Tables\Identity\UserToken.sql" />
+    <Build Include="Tables\Event\EventGroup.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Event\EventParent.sql" />
