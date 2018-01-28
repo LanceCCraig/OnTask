@@ -15,6 +15,11 @@ namespace OnTask.Data.Entities
         [Key]
         public int Id { get; set; }
         /// <summary>
+        /// Gets or sets the identifier for the associated <see cref="Entities.EventParent"/> class.
+        /// </summary>
+        [ForeignKey(nameof(EventParent))]
+        public int EventParentId { get; set; }
+        /// <summary>
         /// Gets or sets the identifier for the associated <see cref="Entities.User"/> class.
         /// </summary>
         [ForeignKey(nameof(User))]
@@ -30,6 +35,10 @@ namespace OnTask.Data.Entities
         #endregion
 
         #region External Properties
+        /// <summary>
+        /// Gets or sets the associated <see cref="Entities.EventParent"/> class.
+        /// </summary>
+        public EventParent EventParent { get; set; }
         /// <summary>
         /// Gets or sets the associated <see cref="Entities.User"/> class.
         /// </summary>

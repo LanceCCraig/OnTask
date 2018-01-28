@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "command": "dotnet",
+    "tasks": [
+        {
+            "taskName": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/OnTask.Web/OnTask.Web.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

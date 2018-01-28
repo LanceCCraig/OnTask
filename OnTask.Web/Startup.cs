@@ -67,8 +67,8 @@ namespace OnTask.Web
 
             app
                 .UseAuthentication()
-                .UseRewriter(new RewriteOptions()
-                    .AddRedirectToHttps())
+                //.UseRewriter(new RewriteOptions()
+                //    .AddRedirectToHttps())
                 .UseStaticFiles()
                 .UseSwagger()
                 .UseSwaggerUI(x =>
@@ -104,10 +104,10 @@ namespace OnTask.Web
                         Version = "v1"
                     });
                 })
-                .Configure<MvcOptions>(options =>
-                {
-                    options.Filters.Add(new RequireHttpsAttribute());
-                });
+                ;//.Configure<MvcOptions>(options =>
+                //{
+                //    options.Filters.Add(new RequireHttpsAttribute());
+                //});
             services.AddMvc();
 
             ConfigureIdentity(services);
@@ -147,7 +147,7 @@ namespace OnTask.Web
                 options.SlidingExpiration = true;
             })
             .AddIdentity<User, Role>()
-            .AddEntityFrameworkStores<OnTaskDbContext>()
+            .AddEntityFrameworkStores<AccountDbContext>()
             .AddDefaultTokenProviders();
 
         private static void ConfigureBusinessServices(IServiceCollection services)
