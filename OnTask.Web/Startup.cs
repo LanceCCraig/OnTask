@@ -147,7 +147,7 @@ namespace OnTask.Web
                 options.SlidingExpiration = true;
             })
             .AddIdentity<User, Role>()
-            .AddEntityFrameworkStores<OnTaskDbContext>()
+            .AddEntityFrameworkStores<AccountDbContext>()
             .AddDefaultTokenProviders();
 
         private static void ConfigureBusinessServices(IServiceCollection services)

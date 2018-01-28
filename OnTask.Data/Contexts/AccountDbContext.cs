@@ -9,7 +9,7 @@ namespace OnTask.Data.Contexts
     /// <summary>
     /// Provides the <see cref="DbContext"/> for the ASP.NET identity data.
     /// </summary>
-    public class AccountDbContext : IdentityDbContext, IAccountDbContext
+    public class AccountDbContext : IdentityDbContext<User, Role, string>, IAccountDbContext
     {
         #region Initialization
         /// <summary>
@@ -29,6 +29,7 @@ namespace OnTask.Data.Contexts
         /// <param name="modelBuilder">The builder class used for configuration.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Role>().ToTable(nameof(Role));
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaim");
             modelBuilder.Entity<User>().ToTable(nameof(User));
@@ -36,7 +37,6 @@ namespace OnTask.Data.Contexts
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken");
-            base.OnModelCreating(modelBuilder);
         }
         #endregion
     }

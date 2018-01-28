@@ -11,9 +11,8 @@ namespace OnTask.Web.Controllers
     /// <summary>
     /// Provides API methods related to account data.
     /// </summary>
-    [Authorize]
-    [Route("[controller]/[action]")]
     // TODO: Configure ValidateAntiForgeryToken to work with Swagger.
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         #region Fields
