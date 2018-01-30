@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +10,10 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnTask.Business.Models.Account;
+using OnTask.Business.Services;
+using OnTask.Business.Services.Interfaces;
+using OnTask.Business.Validators.Account;
 using OnTask.Common;
 using OnTask.Data.Contexts;
 using OnTask.Data.Contexts.Interfaces;
@@ -105,10 +111,12 @@ namespace OnTask.Web
                     });
                 })
                 ;//.Configure<MvcOptions>(options =>
-                //{
-                //    options.Filters.Add(new RequireHttpsAttribute());
-                //});
-            services.AddMvc();
+                 //{
+                 //    options.Filters.Add(new RequireHttpsAttribute());
+                 //});
+            services
+                .AddMvc()
+                .AddFluentValidation();
 
             ConfigureIdentity(services);
             ConfigureBusinessServices(services);
@@ -150,9 +158,16 @@ namespace OnTask.Web
             .AddEntityFrameworkStores<AccountDbContext>()
             .AddDefaultTokenProviders();
 
-        private static void ConfigureBusinessServices(IServiceCollection services)
-        {
-        }
+        private static void ConfigureBusinessServices(IServiceCollection services) => services
+            // Services
+            .AddTransient<IBaseService, BaseService>()
+            .AddTransient<IEventService, EventService>()
+            // Validators
+            .AddTransient<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
+            .AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordModelValidator>()
+            .AddTransient<IValidator<LoginModel>, LoginModelValidator>()
+            .AddTransient<IValidator<RegisterModel>, RegisterModelValidator>()
+            .AddTransient<IValidator<ResetPasswordModel>, ResetPasswordModelValidator>();
 
         private static void ConfigureCommonServices(IServiceCollection services)
         {

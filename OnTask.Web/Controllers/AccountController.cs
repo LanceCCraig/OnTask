@@ -65,7 +65,7 @@ namespace OnTask.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
             {
@@ -76,8 +76,9 @@ namespace OnTask.Web.Controllers
                     var resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
                     // TODO: Send email confirmation.
                 }
+                return Ok();
             }
-            return Ok();
+            return BadRequest(ModelState);
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace OnTask.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +131,7 @@ namespace OnTask.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody]RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +166,7 @@ namespace OnTask.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordModel model)
         {
             if (ModelState.IsValid)
             {
