@@ -28,10 +28,6 @@ namespace OnTask.Data.Entities
         /// Gets or sets the name for the <see cref="EventGroup"/> class.
         /// </summary>
         public string Name { get; set; }
-        /// <summary>
-        /// Gets or sets the display name for the <see cref="EventGroup"/> class.
-        /// </summary>
-        public string DisplayName { get; set; }
         #endregion
 
         #region External Properties
