@@ -1,6 +1,4 @@
-﻿using OnTask.Data.Entities;
-
-namespace OnTask.Business.Models.Event
+﻿namespace OnTask.Business.Models.Event
 {
     /// <summary>
     /// Represents an <see cref="Data.Entities.EventParent"/> class.
@@ -12,12 +10,12 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public int? Id { get; set; }
         /// <summary>
-        /// Gets or sets the identifier for the associated <see cref="User"/> class.
-        /// </summary>
-        public string UserId { get; set; }
-        /// <summary>
         /// Gets or sets the name for the <see cref="EventParentModel"/> class.
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the description for the <see cref="EventParentModel"/> class.
+        /// </summary>
+        public string Description { get; set; }
     }
 }

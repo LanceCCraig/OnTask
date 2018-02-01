@@ -13,5 +13,13 @@
         /// Gets the maximum length of a password.
         /// </summary>
         public const int MaximumPasswordLength = 100;
+        /// <summary>
+        /// Gets the RuleSet name for an insert operation.
+        /// </summary>
+        public const string RuleSetNameForInsert = "Insert";
+        /// <summary>
+        /// Gets the RuleSet name for an update operation.
+        /// </summary>
+        public const string RuleSetNameForUpdate = "Update";
     }
 }

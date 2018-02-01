@@ -2,6 +2,7 @@
 using OnTask.Common;
 using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,24 +62,30 @@ namespace OnTask.Data.Contexts
         /// <summary>
         /// Gets the <see cref="Event"/> classes by the provided filters.
         /// </summary>
+        /// <param name="userId">The ID of the associated <see cref="User"/> class.</param>
+        /// <param name="typeName">The optional name of the associated <see cref="EventType"/> class.</param>
         /// <param name="groupName">The optional name of the associated <see cref="EventGroup"/> class.</param>
         /// <param name="parentName">The optional name of the associated <see cref="EventParent"/> class.</param>
-        /// <param name="typeName">The optional name of the associated <see cref="EventType"/> class.</param>
-        /// <param name="userId">The ID of the associated <see cref="User"/> class.</param>
+        /// <param name="dateRangeStart">The optional minimum <see cref="Event.StartDate"/>.</param>
+        /// <param name="dateRangeEnd">The optional maximum <see cref="Event.StartDate"/>.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of all matching <see cref="Event"/> classes.</returns>
         public async Task<IEnumerable<Event>> GetEvents(
+            string userId,
+            string typeName,
             string groupName,
             string parentName,
-            string typeName,
-            string userId) => await Events
+            DateTime? dateRangeStart,
+            DateTime? dateRangeEnd) => await Events
             .Include(x => x.EventGroup)
             .Include(x => x.EventParent)
             .Include(x => x.EventType)
             .Where(x =>
+                x.UserId == userId &&
+                x.EventType.Name.IsParameterNullOrEqual(typeName) &&
                 x.EventGroup.Name.IsParameterNullOrEqual(groupName) &&
                 x.EventParent.Name.IsParameterNullOrEqual(parentName) &&
-                x.EventType.Name.IsParameterNullOrEqual(typeName) &&
-                x.UserId == userId)
+                (!dateRangeStart.HasValue || x.StartDate >= dateRangeStart.Value) &&
+                (!dateRangeEnd.HasValue || x.StartDate <= dateRangeStart.Value))
             .ToListAsync();
         #endregion
     }

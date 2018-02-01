@@ -1,5 +1,4 @@
-﻿using OnTask.Data.Entities;
-using System;
+﻿using System;
 
 namespace OnTask.Business.Models.Event
 {
@@ -13,7 +12,7 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public int? Id { get; set; }
         /// <summary>
-        /// Gets or sets the identifier for the associated <see cref="EventGroupModel"/> class if it exists.
+        /// Gets or sets the identifier for the associated <see cref="EventGroupModel"/> class.
         /// </summary>
         public int? EventGroupId { get; set; }
         /// <summary>
@@ -21,7 +20,7 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public string EventGroupName { get; set; }
         /// <summary>
-        /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class if it exists.
+        /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class.
         /// </summary>
         public int? EventParentId { get; set; }
         /// <summary>
@@ -29,17 +28,13 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public string EventParentName { get; set; }
         /// <summary>
-        /// Gets or sets the identifier for the associated <see cref="EventTypeModel"/> class if it exists.
+        /// Gets or sets the identifier for the associated <see cref="EventTypeModel"/> class.
         /// </summary>
         public int? EventTypeId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventTypeModel"/> class.
         /// </summary>
         public string EventTypeName { get; set; }
-        /// <summary>
-        /// Gets or sets the identifier for the associated <see cref="User"/> class.
-        /// </summary>
-        public string UserId { get; set; }
         /// <summary>
         /// Gets or sets the name for the <see cref="EventModel"/> class.
         /// </summary>

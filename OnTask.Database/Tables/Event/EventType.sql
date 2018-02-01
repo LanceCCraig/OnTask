@@ -4,7 +4,7 @@
     [EventGroupId]  INT             NOT NULL,
     [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
-    [DisplayName]   NVARCHAR(500)   NOT NULL,
+    [Description]   NVARCHAR(MAX)   NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventType] PRIMARY KEY CLUSTERED ([Id] ASC),

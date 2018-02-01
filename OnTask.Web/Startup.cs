@@ -11,9 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnTask.Business.Models.Account;
+using OnTask.Business.Models.Event;
 using OnTask.Business.Services;
 using OnTask.Business.Services.Interfaces;
 using OnTask.Business.Validators.Account;
+using OnTask.Business.Validators.Event;
 using OnTask.Common;
 using OnTask.Data.Contexts;
 using OnTask.Data.Contexts.Interfaces;
@@ -162,12 +164,17 @@ namespace OnTask.Web
             // Services
             .AddTransient<IBaseService, BaseService>()
             .AddTransient<IEventService, EventService>()
-            // Validators
+            // Validators (Account)
             .AddTransient<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
             .AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordModelValidator>()
             .AddTransient<IValidator<LoginModel>, LoginModelValidator>()
             .AddTransient<IValidator<RegisterModel>, RegisterModelValidator>()
-            .AddTransient<IValidator<ResetPasswordModel>, ResetPasswordModelValidator>();
+            .AddTransient<IValidator<ResetPasswordModel>, ResetPasswordModelValidator>()
+            // Validators (Event)
+            .AddTransient<IValidator<EventGroupModel>, EventGroupModelValidator>()
+            .AddTransient<IValidator<EventModel>, EventModelValidator>()
+            .AddTransient<IValidator<EventParentModel>, EventParentModelValidator>()
+            .AddTransient<IValidator<EventTypeModel>, EventTypeModelValidator>();
 
         private static void ConfigureCommonServices(IServiceCollection services)
         {
