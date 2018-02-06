@@ -7,19 +7,18 @@ using OnTask.Data.Entities;
 namespace OnTask.Web.Controllers
 {
     /// <summary>
-    /// Provides the base <see cref="Controller"/> for the application.
+    /// Provides a base <see cref="Controller"/> for the application in which the user must be authenticated.
     /// </summary>
     [Authorize]
-    [Route("[controller]/[action]")]
-    public class BaseController : Controller
+    public class BaseAuthenticatedController : Controller
     {
         #region Initialization
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseController"/> class.
+        /// Initializes a new instance of the <see cref="BaseAuthenticatedController"/> class.
         /// </summary>
         /// <param name="httpContextAccessor">The class that provides <see cref="HttpContext"/> data.</param>
         /// <param name="userManager">The class that provides functionality with application <see cref="User"/> classes.</param>
-        public BaseController(
+        public BaseAuthenticatedController(
             IHttpContextAccessor httpContextAccessor,
             UserManager<User> userManager)
         {

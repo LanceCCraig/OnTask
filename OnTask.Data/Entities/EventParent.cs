@@ -24,9 +24,9 @@ namespace OnTask.Data.Entities
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Gets or sets the display name for the <see cref="EventParent"/> class.
+        /// Gets or sets the description for the <see cref="EventParent"/> class.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string Description { get; set; }
         #endregion
 
         #region External Properties

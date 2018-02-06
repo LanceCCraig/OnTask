@@ -6,136 +6,57 @@ namespace OnTask.Test.Common
     [TestClass]
     public class ExtensionsTest
     {
-        [TestMethod]
-        public void IsParameterNullOrEqual_IntegerParametersAreEqual_ReturnsTrue()
+        [DataRow(1, 1, true)]
+        [DataRow(1, 2, false)]
+        [DataTestMethod]
+        public void IsParameterNullOrEqual_Integer(int x, int y, bool expected)
         {
-            var x = 1;
-            var y = 1;
-
             var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
+            Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void IsParameterNullOrEqual_IntegerParametersAreNotEqual_ReturnsFalse()
+        [DataRow(1, 1, true)]
+        [DataRow(null, null, true)]
+        [DataRow(1, null, true)]
+        [DataRow(1, 2, false)]
+        [DataRow(null, 1, false)]
+        [DataTestMethod]
+        public void IsParameterNullOrEqual_NullableInteger(int? x, int? y, bool expected)
         {
-            var x = 1;
-            var y = 2;
-
             var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsFalse(actual);
+            Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void IsParameterNullOrEqual_NullableIntegerBothParametersAreNull_ReturnsTrue()
+        [DataRow("foo", "foo", true)]
+        [DataRow(null, null, true)]
+        [DataRow("foo", null, true)]
+        [DataRow("foo", "bar", false)]
+        [DataRow(null, "foo", false)]
+        [DataTestMethod]
+        public void IsParameterNullOrEqual_String(string x, string y, bool expected)
         {
-            int? x = null;
-            int? y = null;
-
             var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
+            Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void IsParameterNullOrEqual_NullableIntegerFirstParameterIsNull_ReturnsFalse()
+        [DataRow(1.5, 1.5, true)]
+        [DataRow(1.5, null, true)]
+        [DataRow(1.5, 2.5, false)]
+        [DataTestMethod]
+        public void IsParameterNullOrEqualForNonNullable_Double(double x, double? y, bool expected)
         {
-            int? x = null;
-            int? y = 1;
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsFalse(actual);
+            var actual = x.IsParameterNullOrEqualForNonNullable(y);
+            Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void IsParameterNullOrEqual_NullableIntegerParametersAreEqual_ReturnsTrue()
+        [DataRow(1, 1, true)]
+        [DataRow(1, null, true)]
+        [DataRow(1, 2, false)]
+        [DataTestMethod]
+        public void IsParameterNullOrEqualForNonNullable_Integer(int x, int? y, bool expected)
         {
-            int? x = 1;
-            int? y = 1;
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_NullableIntegerParametersAreNotEqual_ReturnsFalse()
-        {
-            int? x = 1;
-            int? y = 2;
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_NullableIntegerSecondParameterIsNull_ReturnsTrue()
-        {
-            int? x = 1;
-            int? y = null;
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_StringBothParametersAreNull_ReturnsTrue()
-        {
-            var x = default(string);
-            var y = default(string);
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_StringFirstParameterIsNull_ReturnsFalse()
-        {
-            var x = default(string);
-            var y = "foo";
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_StringParametersAreEqual_ReturnsTrue()
-        {
-            var x = "foo";
-            var y = "foo";
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_StringParametersAreNotEqual_ReturnsFalse()
-        {
-            var x = "foo";
-            var y = "bar";
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void IsParameterNullOrEqual_StringSecondParameterIsNull_ReturnsTrue()
-        {
-            var x = "foo";
-            var y = default(string);
-
-            var actual = x.IsParameterNullOrEqual(y);
-
-            Assert.IsTrue(actual);
+            var actual = x.IsParameterNullOrEqualForNonNullable(y);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
