@@ -17,15 +17,15 @@ namespace OnTask.Business.Validators.Account
             RuleFor(x => x.Email)
                 .NotNull().WithMessage("An email is required.")
                 .NotEmpty().WithMessage("An email is required.")
-                .DependentRules(d =>
+                .DependentRules(() =>
                 {
-                    d.RuleFor(y => y.Email).EmailAddress().WithMessage("The email is not valid.");
+                    RuleFor(y => y.Email).EmailAddress().WithMessage("The email is not valid.");
                 });
             RuleFor(x => x.Password)
                 .NotNull().WithMessage("A password is required.")
                 .MinimumLength(Constants.MinimumPasswordLength).WithMessage($"The password must be at least {Constants.MinimumPasswordLength} characters.")
                 .MaximumLength(Constants.MaximumPasswordLength).WithMessage($"The password must be no more than {Constants.MaximumPasswordLength} characters.")
-                .DependentRules(d =>
+                .DependentRules(() =>
                 {
                     RuleFor(x => x.ConfirmPassword)
                         .NotNull().WithMessage("A confirmation password is required.")

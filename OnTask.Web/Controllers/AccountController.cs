@@ -12,7 +12,7 @@ namespace OnTask.Web.Controllers
     /// Provides API methods related to account data.
     /// </summary>
     // TODO: Configure ValidateAntiForgeryToken to work with Swagger.
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         #region Fields
@@ -61,10 +61,14 @@ namespace OnTask.Web.Controllers
         /// Sends a confirmation email to a user that has forgotten their password.
         /// </summary>
         /// <param name="model">The data to send a password reset email.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the status of the request.</returns>
+        /// <returns>An <see cref="IActionResult"/> response.</returns>
+        /// <response code="200">The request has succeeded.</response>
+        /// <response code="400">The provided model is invalid.</response>
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
@@ -85,10 +89,14 @@ namespace OnTask.Web.Controllers
         /// Signs the internal user into the application.
         /// </summary>
         /// <param name="model">The data to authenticate the user.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the status of the request.</returns>
+        /// <returns>An <see cref="IActionResult"/> response.</returns>
+        /// <response code="200">The request has succeeded.</response>
+        /// <response code="400">The provided model is invalid.</response>
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
             if (ModelState.IsValid)
@@ -114,9 +122,11 @@ namespace OnTask.Web.Controllers
         /// <summary>
         /// Signs the user out of the application.
         /// </summary>
-        /// <returns>An <see cref="IActionResult"/> representing the status of the request.</returns>
+        /// <returns>An <see cref="IActionResult"/> response.</returns>
+        /// <response code="200">The request has succeeded.</response>
         [HttpPost]
         //[ValidateAntiForgeryToken]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
@@ -127,10 +137,14 @@ namespace OnTask.Web.Controllers
         /// Registers an internal user.
         /// </summary>
         /// <param name="model">The data to register the user.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the status of the request.</returns>
+        /// <returns>An <see cref="IActionResult"/> response.</returns>
+        /// <response code="200">The request has succeeded.</response>
+        /// <response code="400">The provided model is invalid.</response>
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Register([FromBody]RegisterModel model)
         {
             if (ModelState.IsValid)
@@ -162,10 +176,14 @@ namespace OnTask.Web.Controllers
         /// Resets the a user's password.
         /// </summary>
         /// <param name="model">The data to reset the user's password.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the status of the request.</returns>
+        /// <returns>An <see cref="IActionResult"/> response.</returns>
+        /// <response code="200">The request has succeeded.</response>
+        /// <response code="400">The provided model is invalid.</response>
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordModel model)
         {
             if (ModelState.IsValid)

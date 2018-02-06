@@ -12,9 +12,9 @@ using System.Linq;
 namespace OnTask.Business.Services
 {
     /// <summary>
-    /// Provides the service for interacting with <see cref="EventModel"/> classes.
+    /// Provides the service for interacting with <see cref="EventGroupModel"/> classes.
     /// </summary>
-    public class EventService : BaseService, IEventService
+    public class EventGroupService : BaseService, IEventGroupService
     {
         #region Fields
         private IOnTaskDbContext context;
@@ -22,10 +22,10 @@ namespace OnTask.Business.Services
 
         #region Initialization
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventService"/> class.
+        /// Initializes a new instance of the <see cref="EventGroupService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="DbContext"/> that the service will interact with.</param>
-        public EventService(IOnTaskDbContext context)
+        public EventGroupService(IOnTaskDbContext context)
         {
             this.context = context;
         }
@@ -33,18 +33,18 @@ namespace OnTask.Business.Services
 
         #region Public Interface
         /// <summary>
-        /// Deletes an <see cref="EventModel"/> class.
+        /// Deletes an <see cref="EventGroupModel"/> class.
         /// </summary>
-        /// <param name="id">The identifier for the <see cref="EventModel"/> class to delete.</param>
+        /// <param name="id">The identifier for the <see cref="EventGroupModel"/> class to delete.</param>
         public void Delete(int id)
         {
             try
             {
-                var entity = context.GetEventByIdTracked(id);
+                var entity = context.GetEventGroupByIdTracked(id);
                 if (entity != null &&
                     entity.UserId == ApplicationUser.Id)
                 {
-                    context.DeleteEvent(entity); 
+                    context.DeleteEventGroup(entity);
                 }
             }
             catch (Exception)
@@ -54,14 +54,14 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Deletes multiple <see cref="EventModel"/> classes.
+        /// Deletes multiple <see cref="EventGroupModel"/> classes.
         /// </summary>
-        /// <param name="model">The model which provides data on which <see cref="EventModel"/> classes to delete.</param>
-        public void DeleteMultiple(EventDeleteMultipleModel model)
+        /// <param name="model">The model which provides data on which <see cref="EventGroupModel"/> classes to delete.</param>
+        public void DeleteMultiple(EventGroupDeleteMultipleModel model)
         {
             try
             {
-                context.DeleteEvents(context.GetEventsTracked(ApplicationUser.Id, model.EventTypeId, model.EventGroupId, model.EventParentId));
+                context.DeleteEventGroups(context.GetEventGroupsTracked(ApplicationUser.Id, model.EventParentId));
             }
             catch (Exception)
             {
@@ -70,22 +70,18 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Gets <see cref="EventModel"/> classes.
+        /// Gets <see cref="EventGroupModel"/> classes.
         /// </summary>
-        /// <param name="model">The model which provides data on which <see cref="EventModel"/> classes to get.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventModel"/> classes.</returns>
-        public IEnumerable<EventModel> GetAll(EventGetAllModel model)
+        /// <param name="model">The model which provides data on which <see cref="EventGroupModel"/> classes to get.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventGroupModel"/> classes.</returns>
+        public IEnumerable<EventGroupModel> GetAll(EventGroupGetAllModel model)
         {
             try
             {
                 return context
-                    .GetEvents(
+                    .GetEventGroups(
                         ApplicationUser.Id,
-                        model.EventTypeId,
-                        model.EventGroupId,
-                        model.EventParentId,
-                        model.DateRangeStart,
-                        model.DateRangeEnd)
+                        model.EventParentId)
                     .Select(x => GetModelFromEntity(x))
                     .ToList();
             }
@@ -96,15 +92,15 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Gets the <see cref="EventModel"/> class.
+        /// Gets the <see cref="EventGroupModel"/> class.
         /// </summary>
-        /// <param name="id">The identifier for the <see cref="EventModel"/> class to get.</param>
-        /// <returns>The <see cref="EventModel"/> class.</returns>
-        public EventModel GetById(int id)
+        /// <param name="id">The identifier for the <see cref="EventGroupModel"/> class to get.</param>
+        /// <returns>The <see cref="EventGroupModel"/> class.</returns>
+        public EventGroupModel GetById(int id)
         {
             try
             {
-                return GetModelFromEntity(context.GetEventById(id));
+                return GetModelFromEntity(context.GetEventGroupById(id));
             }
             catch (Exception)
             {
@@ -113,19 +109,19 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Inserts an <see cref="EventModel"/> class.
+        /// Inserts an <see cref="EventGroupModel"/> class.
         /// </summary>
-        /// <param name="model">The <see cref="EventModel"/> class to insert.</param>
-        public void Insert(EventModel model)
+        /// <param name="model">The <see cref="EventGroupModel"/> class to insert.</param>
+        public void Insert(EventGroupModel model)
         {
             try
             {
-                var entity = (Event)new Event
+                var entity = (EventGroup)new EventGroup
                 {
                     UserId = ApplicationUser.Id,
                     CreatedOn = DateTime.Now
                 }.InjectFrom<SmartInjection>(model);
-                context.InsertEvent(entity);
+                context.InsertEventGroup(entity);
                 model.Id = entity.Id;
             }
             catch (Exception)
@@ -135,14 +131,14 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Updates an <see cref="EventModel"/> class.
+        /// Updates an <see cref="EventGroupModel"/> class.
         /// </summary>
-        /// <param name="model">The <see cref="EventModel"/> class to update.</param>
-        public void Update(EventModel model)
+        /// <param name="model">The <see cref="EventGroupModel"/> class to update.</param>
+        public void Update(EventGroupModel model)
         {
             try
             {
-                var entity = context.GetEventByIdTracked(model.Id.Value);
+                var entity = context.GetEventGroupByIdTracked(model.Id.Value);
                 if (entity != null &&
                     entity.UserId == ApplicationUser.Id)
                 {
@@ -159,11 +155,9 @@ namespace OnTask.Business.Services
         #endregion
 
         #region Private Helpers
-        private EventModel GetModelFromEntity(Event entity) => (EventModel)new EventModel
+        private EventGroupModel GetModelFromEntity(EventGroup entity) => (EventGroupModel)new EventGroupModel
         {
-            EventGroupName = entity.EventGroup.Name,
-            EventParentName = entity.EventParent.Name,
-            EventTypeName = entity.EventType.Name
+            EventParentName = entity.EventParent.Name
         }.InjectFrom<SmartInjection>(entity);
         #endregion
     }

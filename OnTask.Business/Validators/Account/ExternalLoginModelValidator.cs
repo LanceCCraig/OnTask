@@ -16,9 +16,9 @@ namespace OnTask.Business.Validators.Account
             RuleFor(x => x.Email)
                 .NotNull().WithMessage("An email is required.")
                 .NotEmpty().WithMessage("An email is required.")
-                .DependentRules(d =>
+                .DependentRules(() =>
                 {
-                    RuleFor(y => y.Email).EmailAddress().WithMessage("The email is not valid");
+                    RuleFor(x => x.Email).EmailAddress().WithMessage("The email is not valid");
                 });
         }
     }

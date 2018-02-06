@@ -22,6 +22,8 @@ using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace OnTask.Web
 {
@@ -102,25 +104,12 @@ namespace OnTask.Web
         /// <param name="services">The collection of service descriptors.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddOptions()
-                .AddSwaggerGen(options =>
-                {
-                    options.SwaggerDoc("v1", new Info
-                    {
-                        Title = "OnTask API",
-                        Version = "v1"
-                    });
-                })
-                ;//.Configure<MvcOptions>(options =>
-                 //{
-                 //    options.Filters.Add(new RequireHttpsAttribute());
-                 //});
-            services
-                .AddMvc()
-                .AddFluentValidation();
-
+            // The identity must be added before the application cookie is configured, otherwise the options will not be used.
             ConfigureIdentity(services);
+            ConfigureGeneral(services);
+            ConfigureMvc(services);
+            ConfigureAuthentication(services);
+
             ConfigureBusinessServices(services);
             ConfigureCommonServices(services);
             ConfigureDataServices(services);
@@ -130,6 +119,22 @@ namespace OnTask.Web
 
         #region Private Helpers
         private static void ConfigureIdentity(IServiceCollection services) => services
+            .AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<AccountDbContext>()
+            .AddDefaultTokenProviders();
+
+        private static void ConfigureGeneral(IServiceCollection services) => services
+            .AddOptions()
+            .AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info
+                {
+                    Description = "The Web API for the OnTask application",
+                    Title = "OnTask API",
+                    Version = "v1"
+                });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "OnTask.Web.xml"));
+            })
             .Configure<IdentityOptions>(options =>
             {
                 // Lockout
@@ -148,22 +153,43 @@ namespace OnTask.Web
             })
             .ConfigureApplicationCookie(options =>
             {
-                // TODO: Configure application cookie paths.
-                //options.AccessDeniedPath = "/Account/AccessDenied";
+                // TODO: Determine if a server redirect is necessary for access denied, login, or logout.
+                //options.AccessDeniedPath = "/";
                 options.Cookie.Expiration = TimeSpan.FromDays(7);
                 options.Cookie.HttpOnly = true;
-                //options.LoginPath = "/Account/Login";
-                //options.LogoutPath = "/Account/Logout";
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+                //options.LoginPath = "/";
+                //options.LogoutPath = "/";
                 options.SlidingExpiration = true;
             })
-            .AddIdentity<User, Role>()
-            .AddEntityFrameworkStores<AccountDbContext>()
-            .AddDefaultTokenProviders();
+            ;//.Configure<MvcOptions>(options =>
+                //{
+                //    options.Filters.Add(new RequireHttpsAttribute());
+                //});
+
+        private static void ConfigureMvc(IServiceCollection services) => services
+            .AddMvc()
+            .AddFluentValidation();
+
+        private static void ConfigureAuthentication(IServiceCollection services) => services
+            .AddAuthentication();
 
         private static void ConfigureBusinessServices(IServiceCollection services) => services
             // Services
             .AddTransient<IBaseService, BaseService>()
             .AddTransient<IEventService, EventService>()
+            .AddTransient<IEventGroupService, EventGroupService>()
+            .AddTransient<IEventParentService, EventParentService>()
+            .AddTransient<IEventTypeService, EventTypeService>()
             // Validators (Account)
             .AddTransient<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
             .AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordModelValidator>()
@@ -171,10 +197,12 @@ namespace OnTask.Web
             .AddTransient<IValidator<RegisterModel>, RegisterModelValidator>()
             .AddTransient<IValidator<ResetPasswordModel>, ResetPasswordModelValidator>()
             // Validators (Event)
+            .AddTransient<IValidator<EventDeleteMultipleModel>, EventDeleteMultipleModelValidator>()
             .AddTransient<IValidator<EventGroupModel>, EventGroupModelValidator>()
             .AddTransient<IValidator<EventModel>, EventModelValidator>()
             .AddTransient<IValidator<EventParentModel>, EventParentModelValidator>()
-            .AddTransient<IValidator<EventTypeModel>, EventTypeModelValidator>();
+            .AddTransient<IValidator<EventTypeModel>, EventTypeModelValidator>()
+            .AddTransient<IValidator<EventTypeDeleteMultipleModel>, EventTypeDeleteMultipleModelValidator>();
 
         private static void ConfigureCommonServices(IServiceCollection services)
         {

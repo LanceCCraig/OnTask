@@ -10,7 +10,6 @@ namespace OnTask.Web.Controllers
     /// Provides a base <see cref="Controller"/> for the application in which the user must be authenticated.
     /// </summary>
     [Authorize]
-    [Route("[controller]/[action]")]
     public class BaseAuthenticatedController : Controller
     {
         #region Initialization

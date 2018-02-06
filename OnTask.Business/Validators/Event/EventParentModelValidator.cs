@@ -16,6 +16,7 @@ namespace OnTask.Business.Validators.Event
         {
             RuleSet(Constants.RuleSetNameForInsert, () =>
             {
+                RuleFor(x => x.Id).Null().WithMessage("The event parent identifier cannot be manually set.");
                 ExecuteCommonRules();
             });
             RuleSet(Constants.RuleSetNameForUpdate, () =>

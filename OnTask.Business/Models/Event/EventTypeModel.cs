@@ -18,6 +18,14 @@
         /// </summary>
         public string EventGroupName { get; set; }
         /// <summary>
+        /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class.
+        /// </summary>
+        public int? EventParentId { get; set; }
+        /// <summary>
+        /// Gets or sets the name for the associated <see cref="EventParentModel"/> class.
+        /// </summary>
+        public string EventParentName { get; set; }
+        /// <summary>
         /// Gets or sets the name for the <see cref="EventTypeModel"/> class.
         /// </summary>
         public string Name { get; set; }
