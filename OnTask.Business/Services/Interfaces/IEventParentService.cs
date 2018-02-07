@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using OnTask.Business.Models.Event;
-using static OnTask.Common.Enumerations;
 
 namespace OnTask.Business.Services.Interfaces
 {
