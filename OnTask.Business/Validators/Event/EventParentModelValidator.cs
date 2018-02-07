@@ -14,6 +14,7 @@ namespace OnTask.Business.Validators.Event
         /// </summary>
         public EventParentModelValidator()
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleSet(Constants.RuleSetNameForInsert, () =>
             {
                 RuleFor(x => x.Id).Null().WithMessage("The event parent identifier cannot be manually set.");

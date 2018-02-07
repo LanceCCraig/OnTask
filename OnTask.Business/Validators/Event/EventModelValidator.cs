@@ -15,6 +15,7 @@ namespace OnTask.Business.Validators.Event
         /// </summary>
         public EventModelValidator()
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleSet(Constants.RuleSetNameForInsert, () =>
             {
                 RuleFor(x => x.Id).Null().WithMessage("The event identifier cannot be manually set.");

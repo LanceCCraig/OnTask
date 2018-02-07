@@ -13,6 +13,7 @@ namespace OnTask.Business.Validators.Account
         /// </summary>
         public LoginModelValidator()
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleFor(x => x.Email)
                 .NotNull().WithMessage("An email is required.")
                 .NotEmpty().WithMessage("An email is required.")
