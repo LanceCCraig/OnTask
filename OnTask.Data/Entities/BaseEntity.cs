@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Data.Entities
 {
     /// <summary>
     /// Provides basic properties for all entities.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class BaseEntity
     {
         /// <summary>

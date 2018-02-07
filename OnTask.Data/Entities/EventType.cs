@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Data.Entities
 {
     /// <summary>
     /// Represents the type of an <see cref="Event"/> class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class EventType : BaseEntity
     {
         #region Table Properties

@@ -1,10 +1,12 @@
 ﻿using OnTask.Data.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Business.Models.Account
 {
     /// <summary>
     /// Represents login data for an external <see cref="User"/> account.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ExternalLoginModel
     {
         /// <summary>

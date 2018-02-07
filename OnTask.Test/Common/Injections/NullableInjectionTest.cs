@@ -2,10 +2,12 @@
 using Omu.ValueInjecter;
 using OnTask.Common.Injections;
 using OnTask.Test.Common.Injections.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Test.Common.Injections
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class NullableInjectionTest
     {
         [TestMethod]

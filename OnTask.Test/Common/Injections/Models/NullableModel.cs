@@ -1,5 +1,8 @@
-﻿namespace OnTask.Test.Common.Injections.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Test.Common.Injections.Models
 {
+    [ExcludeFromCodeCoverage]
     public class NullableModel
     {
         #region Fields

@@ -1,8 +1,11 @@
-﻿namespace OnTask.Business.Models.Event
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Business.Models.Event
 {
     /// <summary>
     /// Represents a query to retrieve all <see cref="EventGroupModel"/> classes.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class EventGroupGetAllModel
     {
         /// <summary>

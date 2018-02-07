@@ -1,8 +1,11 @@
-﻿namespace OnTask.Common
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Common
 {
     /// <summary>
     /// Provides constant values for the application.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class Constants
     {
         /// <summary>

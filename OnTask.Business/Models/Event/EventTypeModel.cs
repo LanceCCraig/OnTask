@@ -1,8 +1,11 @@
-﻿namespace OnTask.Business.Models.Event
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Business.Models.Event
 {
     /// <summary>
     /// Represents an <see cref="Data.Entities.EventType"/> class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class EventTypeModel
     {
         /// <summary>

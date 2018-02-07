@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Data.Entities
 {
     /// <summary>
     /// Represents an event on the calendar.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Event : BaseEntity
     {
         #region Table Properties
