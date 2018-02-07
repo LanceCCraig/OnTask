@@ -9,11 +9,13 @@ namespace OnTask.Business.Validators.Event
     /// </summary>
     public class EventParentModelValidator : AbstractValidator<EventParentModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="EventParentModelValidator"/> class.
         /// </summary>
         public EventParentModelValidator()
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleSet(Constants.RuleSetNameForInsert, () =>
             {
                 RuleFor(x => x.Id).Null().WithMessage("The event parent identifier cannot be manually set.");
@@ -25,12 +27,15 @@ namespace OnTask.Business.Validators.Event
                 ExecuteCommonRules();
             });
         }
+        #endregion
 
+        #region Private Helpers
         private void ExecuteCommonRules()
         {
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("A name is required.")
                 .NotEmpty().WithMessage("A name is required.");
-        }
+        } 
+        #endregion
     }
 }

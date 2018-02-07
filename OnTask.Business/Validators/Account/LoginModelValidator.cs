@@ -8,11 +8,13 @@ namespace OnTask.Business.Validators.Account
     /// </summary>
     public class LoginModelValidator : AbstractValidator<LoginModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginModelValidator"/> class.
         /// </summary>
         public LoginModelValidator()
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleFor(x => x.Email)
                 .NotNull().WithMessage("An email is required.")
                 .NotEmpty().WithMessage("An email is required.")
@@ -23,6 +25,7 @@ namespace OnTask.Business.Validators.Account
             RuleFor(x => x.Password)
                 .NotNull().WithMessage("A password is required.")
                 .NotEmpty().WithMessage("A password is required.");
-        }
+        } 
+        #endregion
     }
 }

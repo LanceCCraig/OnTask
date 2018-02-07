@@ -1,10 +1,12 @@
 ﻿using OnTask.Data.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Business.Models.Account
 {
     /// <summary>
     /// Represents registration data for a local <see cref="User"/> account.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class RegisterModel
     {
         /// <summary>

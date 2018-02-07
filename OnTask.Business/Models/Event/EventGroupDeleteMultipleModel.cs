@@ -1,8 +1,11 @@
-﻿namespace OnTask.Business.Models.Event
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Business.Models.Event
 {
     /// <summary>
     /// Represents the multiple <see cref="EventGroupModel"/> classes to be changed with a delete operation.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class EventGroupDeleteMultipleModel
     {
         /// <summary>

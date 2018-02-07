@@ -1,10 +1,12 @@
 ﻿using OnTask.Data.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Business.Models.Account
 {
     /// <summary>
     /// Represents data for a <see cref="User"/> to reset their password.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ResetPasswordModel
     {
         /// <summary>

@@ -1,8 +1,11 @@
-﻿namespace OnTask.Business.Models.Event
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OnTask.Business.Models.Event
 {
     /// <summary>
     /// Represents an <see cref="Data.Entities.EventType"/> class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class EventTypeModel
     {
         /// <summary>
@@ -12,7 +15,7 @@
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventGroupModel"/> class.
         /// </summary>
-        public int? EventGroupId { get; set; }
+        public int EventGroupId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventGroupModel"/> class.
         /// </summary>
@@ -20,7 +23,7 @@
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class.
         /// </summary>
-        public int? EventParentId { get; set; }
+        public int EventParentId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventParentModel"/> class.
         /// </summary>

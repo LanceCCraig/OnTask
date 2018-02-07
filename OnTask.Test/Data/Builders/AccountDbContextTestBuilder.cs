@@ -6,9 +6,11 @@ using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Test.Data.Builders
 {
+    [ExcludeFromCodeCoverage]
     public class AccountDbContextTestBuilder
     {
         #region Fields

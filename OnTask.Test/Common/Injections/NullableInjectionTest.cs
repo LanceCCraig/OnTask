@@ -2,12 +2,15 @@
 using Omu.ValueInjecter;
 using OnTask.Common.Injections;
 using OnTask.Test.Common.Injections.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Test.Common.Injections
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class NullableInjectionTest
     {
+        #region Tests
         [TestMethod]
         public void InjectFrom_NonNullableToNonNullable()
         {
@@ -62,6 +65,7 @@ namespace OnTask.Test.Common.Injections
             Assert.AreEqual(expected.Double, actual.Double);
             Assert.AreEqual(expected.Integer, actual.Integer);
             Assert.AreEqual(expected.String, actual.String);
-        }
+        } 
+        #endregion
     }
 }
