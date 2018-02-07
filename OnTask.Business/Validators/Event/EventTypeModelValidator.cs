@@ -9,6 +9,7 @@ namespace OnTask.Business.Validators.Event
     /// </summary>
     public class EventTypeModelValidator : AbstractValidator<EventTypeModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="EventTypeModelValidator"/> class.
         /// </summary>
@@ -26,7 +27,9 @@ namespace OnTask.Business.Validators.Event
                 ExecuteCommonRules();
             });
         }
+        #endregion
 
+        #region Private Helpers
         private void ExecuteCommonRules()
         {
             RuleFor(x => x.EventGroupId).NotEmpty().WithMessage("An event group is required.");
@@ -34,6 +37,7 @@ namespace OnTask.Business.Validators.Event
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("A name is required")
                 .NotEmpty().WithMessage("A name is required");
-        }
+        } 
+        #endregion
     }
 }

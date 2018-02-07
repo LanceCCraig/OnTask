@@ -8,6 +8,7 @@ namespace OnTask.Business.Validators.Account
     /// </summary>
     public class ForgotPasswordModelValidator : AbstractValidator<ForgotPasswordModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="ForgotPasswordModelValidator"/> class.
         /// </summary>
@@ -21,6 +22,7 @@ namespace OnTask.Business.Validators.Account
                 {
                     RuleFor(y => y.Email).EmailAddress().WithMessage("The email is not valid.");
                 });
-        }
+        } 
+        #endregion
     }
 }

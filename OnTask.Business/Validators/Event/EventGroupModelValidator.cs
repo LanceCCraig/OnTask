@@ -9,6 +9,7 @@ namespace OnTask.Business.Validators.Event
     /// </summary>
     public class EventGroupModelValidator : AbstractValidator<EventGroupModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="EventGroupModelValidator"/> class.
         /// </summary>
@@ -26,13 +27,16 @@ namespace OnTask.Business.Validators.Event
                 ExecuteCommonRules();
             });
         }
+        #endregion
 
+        #region Private Helpers
         private void ExecuteCommonRules()
         {
             RuleFor(x => x.EventParentId).NotEmpty().WithMessage("An event parent is required.");
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("A name is required.")
                 .NotEmpty().WithMessage("A name is required.");
-        }
+        } 
+        #endregion
     }
 }

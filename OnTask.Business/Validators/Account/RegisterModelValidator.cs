@@ -10,6 +10,7 @@ namespace OnTask.Business.Validators.Account
     /// </summary>
     public class RegisterModelValidator : AbstractValidator<RegisterModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="RegisterModelValidator"/> class.
         /// </summary>
@@ -36,9 +37,12 @@ namespace OnTask.Business.Validators.Account
                         .Equal(x => x.Password).WithMessage("The password and confirmation password do not match.");
                 });
         }
+        #endregion
 
+        #region Private Helpers
         private static bool HaveADigit(string password) => password.Any(char.IsDigit);
 
-        private static bool HaveAnUppercaseLetter(string password) => password.Any(char.IsUpper);
+        private static bool HaveAnUppercaseLetter(string password) => password.Any(char.IsUpper); 
+        #endregion
     }
 }

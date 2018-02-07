@@ -8,6 +8,7 @@ namespace OnTask.Business.Validators.Event
     /// </summary>
     public class EventGroupDeleteMultipleModelValidator : AbstractValidator<EventGroupDeleteMultipleModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="EventGroupDeleteMultipleModelValidator"/> class.
         /// </summary>
@@ -15,6 +16,7 @@ namespace OnTask.Business.Validators.Event
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleFor(x => x.EventParentId).NotEmpty().WithMessage("An event parent must be specified.");
-        }
+        } 
+        #endregion
     }
 }

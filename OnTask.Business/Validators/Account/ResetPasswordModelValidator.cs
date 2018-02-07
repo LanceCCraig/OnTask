@@ -10,6 +10,7 @@ namespace OnTask.Business.Validators.Account
     /// </summary>
     public class ResetPasswordModelValidator : AbstractValidator<ResetPasswordModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="ResetPasswordModelValidator"/> class.
         /// </summary>
@@ -39,9 +40,12 @@ namespace OnTask.Business.Validators.Account
                 .NotNull().WithMessage("A token is required.")
                 .NotEmpty().WithMessage("A token is required.");
         }
+        #endregion
 
+        #region Private Helpers
         private static bool HaveADigit(string password) => password.Any(char.IsDigit);
 
-        private static bool HaveAnUppercaseLetter(string password) => password.Any(char.IsUpper);
+        private static bool HaveAnUppercaseLetter(string password) => password.Any(char.IsUpper); 
+        #endregion
     }
 }

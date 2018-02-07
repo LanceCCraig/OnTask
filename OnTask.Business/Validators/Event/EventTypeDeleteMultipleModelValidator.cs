@@ -9,6 +9,7 @@ namespace OnTask.Business.Validators.Event
     /// </summary>
     public class EventTypeDeleteMultipleModelValidator : AbstractValidator<EventTypeDeleteMultipleModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="EventTypeDeleteMultipleModelValidator"/> class.
         /// </summary>
@@ -30,9 +31,12 @@ namespace OnTask.Business.Validators.Event
                 RuleFor(x => x.EventParentId).NotNull().WithMessage("An event parent must be specified.");
             });
         }
+        #endregion
 
+        #region Private Helpers
         private static bool BeAValidMode(string mode) =>
             mode == Constants.ModeByGroup ||
-            mode == Constants.ModeByParent;
+            mode == Constants.ModeByParent; 
+        #endregion
     }
 }

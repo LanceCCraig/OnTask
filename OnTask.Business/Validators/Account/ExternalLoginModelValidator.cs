@@ -8,6 +8,7 @@ namespace OnTask.Business.Validators.Account
     /// </summary>
     public class ExternalLoginModelValidator : AbstractValidator<ExternalLoginModel>
     {
+        #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="ExternalLoginModelValidator"/> class.
         /// </summary>
@@ -21,6 +22,7 @@ namespace OnTask.Business.Validators.Account
                 {
                     RuleFor(x => x.Email).EmailAddress().WithMessage("The email is not valid");
                 });
-        }
+        } 
+        #endregion
     }
 }
