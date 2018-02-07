@@ -19,10 +19,15 @@ namespace OnTask.Common.Injections
         {
             var underlyingSource = Nullable.GetUnderlyingType(source);
             var underlyingTarget = Nullable.GetUnderlyingType(target);
+
+            var baseMatches = base.MatchTypes(source, target);
+            var underlyingSourceMatches = underlyingSource != null && underlyingSource == target;
+            var underlyingTargetMatches = underlyingTarget != null && underlyingTarget == source;
+
             return
-                base.MatchTypes(source, target) ||
-                (underlyingSource != null && underlyingSource == target) ||
-                (underlyingTarget != null && underlyingTarget == source);
+                baseMatches ||
+                underlyingSourceMatches ||
+                underlyingTargetMatches;
         }
         #endregion
     }
