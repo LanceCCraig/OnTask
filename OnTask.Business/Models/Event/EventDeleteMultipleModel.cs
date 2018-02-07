@@ -9,9 +9,9 @@ namespace OnTask.Business.Models.Event
     public class EventDeleteMultipleModel
     {
         /// <summary>
-        /// Gets or sets the parent class to retrieve <see cref="EventModel"/> classes by.
+        /// Gets or sets the mode to retrieve <see cref="EventModel"/> classes by.
         /// </summary>
-        public string Parent { get; set; }
+        public string Mode { get; set; }
         /// <summary>
         /// Gets or sets the optional identifier for the associated <see cref="EventTypeModel"/> class.
         /// </summary>

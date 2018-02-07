@@ -29,7 +29,7 @@ namespace OnTask.Business.Validators.Event
 
         private void ExecuteCommonRules()
         {
-            RuleFor(x => x.EventParentId).NotNull().WithMessage("An event parent is required.");
+            RuleFor(x => x.EventParentId).NotEmpty().WithMessage("An event parent is required.");
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("A name is required.")
                 .NotEmpty().WithMessage("A name is required.");

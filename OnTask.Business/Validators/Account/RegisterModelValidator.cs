@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using OnTask.Business.Models.Account;
 using OnTask.Common;
+using System.Linq;
 
 namespace OnTask.Business.Validators.Account
 {
@@ -26,6 +27,8 @@ namespace OnTask.Business.Validators.Account
                 .NotNull().WithMessage("A password is required.")
                 .MinimumLength(Constants.MinimumPasswordLength).WithMessage($"The password must be at least {Constants.MinimumPasswordLength} characters.")
                 .MaximumLength(Constants.MaximumPasswordLength).WithMessage($"The password must be no more than {Constants.MaximumPasswordLength} characters.")
+                .Must(HaveADigit).WithMessage("The password must contain at least one numerical digit.")
+                .Must(HaveAnUppercaseLetter).WithMessage("The password must contain at least one uppercase character.")
                 .DependentRules(() =>
                 {
                     RuleFor(x => x.ConfirmPassword)
@@ -33,5 +36,9 @@ namespace OnTask.Business.Validators.Account
                         .Equal(x => x.Password).WithMessage("The password and confirmation password do not match.");
                 });
         }
+
+        private static bool HaveADigit(string password) => password.Any(char.IsDigit);
+
+        private static bool HaveAnUppercaseLetter(string password) => password.Any(char.IsUpper);
     }
 }

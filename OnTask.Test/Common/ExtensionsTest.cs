@@ -9,58 +9,58 @@ namespace OnTask.Test.Common
     public class ExtensionsTest
     {
         #region Tests
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, false)]
-        [DataTestMethod]
         [TestMethod]
+        [DataTestMethod]
+        [DataRow(1, 1, true, DisplayName = "Matching Parameters")]
+        [DataRow(1, 2, false, DisplayName = "Mismatching Parameters")]
         public void IsParameterNullOrEqual_Integer(int x, int y, bool expected)
         {
             var actual = x.IsParameterNullOrEqual(y);
             Assert.AreEqual(expected, actual);
         }
 
-        [DataRow(1, 1, true)]
-        [DataRow(null, null, true)]
-        [DataRow(1, null, true)]
-        [DataRow(1, 2, false)]
-        [DataRow(null, 1, false)]
-        [DataTestMethod]
         [TestMethod]
+        [DataTestMethod]
+        [DataRow(1, 1, true, DisplayName = "Matching Parameters")]
+        [DataRow(null, null, true, DisplayName = "Both Parameters Null")]
+        [DataRow(1, null, true, DisplayName = "Second Parameter Null")]
+        [DataRow(1, 2, false, DisplayName = "Mismatching Parameters")]
+        [DataRow(null, 1, false, DisplayName = "First Parameter Null")]
         public void IsParameterNullOrEqual_NullableInteger(int? x, int? y, bool expected)
         {
             var actual = x.IsParameterNullOrEqual(y);
             Assert.AreEqual(expected, actual);
         }
 
-        [DataRow("foo", "foo", true)]
-        [DataRow(null, null, true)]
-        [DataRow("foo", null, true)]
-        [DataRow("foo", "bar", false)]
-        [DataRow(null, "foo", false)]
-        [DataTestMethod]
         [TestMethod]
+        [DataTestMethod]
+        [DataRow("foo", "foo", true, DisplayName = "Matching Parameters")]
+        [DataRow(null, null, true, DisplayName = "Both Parameters Null")]
+        [DataRow("foo", null, true, DisplayName = "Second Parameter Null")]
+        [DataRow("foo", "bar", false, DisplayName = "Mismatching Parameters")]
+        [DataRow(null, "foo", false, DisplayName = "First Parameter Null")]
         public void IsParameterNullOrEqual_String(string x, string y, bool expected)
         {
             var actual = x.IsParameterNullOrEqual(y);
             Assert.AreEqual(expected, actual);
         }
 
-        [DataRow(1.5, 1.5, true)]
-        [DataRow(1.5, null, true)]
-        [DataRow(1.5, 2.5, false)]
-        [DataTestMethod]
         [TestMethod]
+        [DataTestMethod]
+        [DataRow(1.5, 1.5, true, DisplayName = "Matching Parameters")]
+        [DataRow(1.5, null, true, DisplayName = "Second Parameter Null")]
+        [DataRow(1.5, 2.5, false, DisplayName = "Mismatching Parameters")]
         public void IsParameterNullOrEqualForNonNullable_Double(double x, double? y, bool expected)
         {
             var actual = x.IsParameterNullOrEqualForNonNullable(y);
             Assert.AreEqual(expected, actual);
         }
 
-        [DataRow(1, 1, true)]
-        [DataRow(1, null, true)]
-        [DataRow(1, 2, false)]
-        [DataTestMethod]
         [TestMethod]
+        [DataTestMethod]
+        [DataRow(1, 1, true, DisplayName = "Matching Parameters")]
+        [DataRow(1, null, true, DisplayName = "Second Parameter Null")]
+        [DataRow(1, 2, false, DisplayName = "Mismatching Parameters")]
         public void IsParameterNullOrEqualForNonNullable_Integer(int x, int? y, bool expected)
         {
             var actual = x.IsParameterNullOrEqualForNonNullable(y);

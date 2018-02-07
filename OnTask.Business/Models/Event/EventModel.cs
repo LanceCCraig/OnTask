@@ -16,7 +16,7 @@ namespace OnTask.Business.Models.Event
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventGroupModel"/> class.
         /// </summary>
-        public int? EventGroupId { get; set; }
+        public int EventGroupId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventGroupModel"/> class.
         /// </summary>
@@ -24,7 +24,7 @@ namespace OnTask.Business.Models.Event
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class.
         /// </summary>
-        public int? EventParentId { get; set; }
+        public int EventParentId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventParentModel"/> class.
         /// </summary>
@@ -32,7 +32,7 @@ namespace OnTask.Business.Models.Event
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventTypeModel"/> class.
         /// </summary>
-        public int? EventTypeId { get; set; }
+        public int EventTypeId { get; set; }
         /// <summary>
         /// Gets or sets the name for the associated <see cref="EventTypeModel"/> class.
         /// </summary>

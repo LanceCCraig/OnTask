@@ -198,6 +198,7 @@ namespace OnTask.Web
             .AddTransient<IValidator<ResetPasswordModel>, ResetPasswordModelValidator>()
             // Validators (Event)
             .AddTransient<IValidator<EventDeleteMultipleModel>, EventDeleteMultipleModelValidator>()
+            .AddTransient<IValidator<EventGroupDeleteMultipleModel>, EventGroupDeleteMultipleModelValidator>()
             .AddTransient<IValidator<EventGroupModel>, EventGroupModelValidator>()
             .AddTransient<IValidator<EventModel>, EventModelValidator>()
             .AddTransient<IValidator<EventParentModel>, EventParentModelValidator>()
