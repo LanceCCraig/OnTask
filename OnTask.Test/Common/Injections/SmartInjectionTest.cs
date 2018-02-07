@@ -10,6 +10,7 @@ namespace OnTask.Test.Common.Injections
     [ExcludeFromCodeCoverage]
     public class SmartInjectionTest
     {
+        #region Tests
         [TestMethod]
         public void InjectFrom_DifferentModels_InjectsProperties()
         {
@@ -59,6 +60,7 @@ namespace OnTask.Test.Common.Injections
             Assert.IsTrue(actual.DoubleChanged);
             Assert.IsFalse(actual.IntegerChanged);
             Assert.IsTrue(actual.StringChanged);
-        }
+        } 
+        #endregion
     }
 }

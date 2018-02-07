@@ -8,6 +8,7 @@ namespace OnTask.Test.Common
     [ExcludeFromCodeCoverage]
     public class ExtensionsTest
     {
+        #region Tests
         [DataRow(1, 1, true)]
         [DataRow(1, 2, false)]
         [DataTestMethod]
@@ -64,6 +65,7 @@ namespace OnTask.Test.Common
         {
             var actual = x.IsParameterNullOrEqualForNonNullable(y);
             Assert.AreEqual(expected, actual);
-        }
+        } 
+        #endregion
     }
 }

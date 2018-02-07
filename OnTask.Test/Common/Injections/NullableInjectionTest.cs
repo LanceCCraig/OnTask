@@ -10,6 +10,7 @@ namespace OnTask.Test.Common.Injections
     [ExcludeFromCodeCoverage]
     public class NullableInjectionTest
     {
+        #region Tests
         [TestMethod]
         public void InjectFrom_NonNullableToNonNullable()
         {
@@ -64,6 +65,7 @@ namespace OnTask.Test.Common.Injections
             Assert.AreEqual(expected.Double, actual.Double);
             Assert.AreEqual(expected.Integer, actual.Integer);
             Assert.AreEqual(expected.String, actual.String);
-        }
+        } 
+        #endregion
     }
 }
