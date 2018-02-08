@@ -18,6 +18,7 @@ namespace OnTask.Business.Services
     {
         #region Fields
         private IOnTaskDbContext context;
+        private IMapperService mapper;
         #endregion
 
         #region Initialization
@@ -25,9 +26,11 @@ namespace OnTask.Business.Services
         /// Initializes a new instance of the <see cref="EventParentService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="DbContext"/> that the service will interact with.</param>
-        public EventParentService(IOnTaskDbContext context)
+        /// <param name="mapper">The service which provides mappings from <see cref="EventParent"/> classes to <see cref="EventParentModel"/> classes.</param>
+        public EventParentService(IOnTaskDbContext context, IMapperService mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
         #endregion
 
@@ -63,7 +66,7 @@ namespace OnTask.Business.Services
             {
                 return context
                     .GetEventParents(ApplicationUser.Id)
-                    .Select(x => GetModelFromEntity(x))
+                    .Select(x => mapper.Map<EventParentModel>(x))
                     .Cast<EventParentModel>()
                     .ToList();
             }
@@ -82,7 +85,14 @@ namespace OnTask.Business.Services
         {
             try
             {
-                return GetModelFromEntity(context.GetEventParentById(id));
+                var model = default(EventParentModel);
+                var entity = context.GetEventParentById(id);
+                if (entity != null &&
+                    entity.UserId == ApplicationUser.Id)
+                {
+                    model = mapper.Map<EventParentModel>(entity);
+                }
+                return model;
             }
             catch (Exception)
             {
@@ -133,17 +143,6 @@ namespace OnTask.Business.Services
             {
                 throw;
             }
-        }
-        #endregion
-
-        #region Private Helpers
-        private static EventParentModel GetModelFromEntity(EventParent entity)
-        {
-            if (entity != null)
-            {
-                return (EventParentModel)new EventParentModel().InjectFrom<SmartInjection>(entity);
-            }
-            return null;
         }
         #endregion
     }

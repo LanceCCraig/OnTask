@@ -190,6 +190,7 @@ namespace OnTask.Web
             .AddTransient<IEventGroupService, EventGroupService>()
             .AddTransient<IEventParentService, EventParentService>()
             .AddTransient<IEventTypeService, EventTypeService>()
+            .AddTransient<IMapperService, MapperService>()
             // Validators (Account)
             .AddTransient<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
             .AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordModelValidator>()
