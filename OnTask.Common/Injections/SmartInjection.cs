@@ -19,8 +19,11 @@ namespace OnTask.Common.Injections
         {
             var sourceValue = sp.GetValue(source, null);
             var targetValue = tp.GetValue(target, null);
-            if ((sourceValue == null && targetValue != null) ||
-                (sourceValue != null && !sourceValue.Equals(targetValue)))
+
+            var sourceIsNullAndDoesNotMatch = sourceValue == null && targetValue != null;
+            var sourceIsNotNullAndDoesNotMatch = sourceValue != null && !sourceValue.Equals(targetValue);
+
+            if (sourceIsNullAndDoesNotMatch || sourceIsNotNullAndDoesNotMatch)
             {
                 tp.SetValue(target, sourceValue, null);
             }

@@ -18,6 +18,7 @@ namespace OnTask.Business.Services
     {
         #region Fields
         private IOnTaskDbContext context;
+        private IMapperService mapper;
         #endregion
 
         #region Initialization
@@ -25,9 +26,11 @@ namespace OnTask.Business.Services
         /// Initializes a new instance of the <see cref="EventService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="DbContext"/> that the service will interact with.</param>
-        public EventService(IOnTaskDbContext context)
+        /// <param name="mapper">The service which provides mappings from <see cref="Event"/> classes to <see cref="EventModel"/> classes.</param>
+        public EventService(IOnTaskDbContext context, IMapperService mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
         #endregion
 
@@ -86,7 +89,7 @@ namespace OnTask.Business.Services
                         model.EventParentId,
                         model.DateRangeStart,
                         model.DateRangeEnd)
-                    .Select(x => GetModelFromEntity(x))
+                    .Select(x => mapper.Map<EventModel>(x))
                     .ToList();
             }
             catch (Exception)
@@ -104,7 +107,14 @@ namespace OnTask.Business.Services
         {
             try
             {
-                return GetModelFromEntity(context.GetEventById(id));
+                var model = default(EventModel);
+                var entity = context.GetEventById(id);
+                if (entity != null &&
+                    entity.UserId == ApplicationUser.Id)
+                {
+                    model = mapper.Map<EventModel>(entity);
+                }
+                return model;
             }
             catch (Exception)
             {
@@ -156,15 +166,6 @@ namespace OnTask.Business.Services
                 throw;
             }
         }
-        #endregion
-
-        #region Private Helpers
-        private EventModel GetModelFromEntity(Event entity) => (EventModel)new EventModel
-        {
-            EventGroupName = entity.EventGroup.Name,
-            EventParentName = entity.EventParent.Name,
-            EventTypeName = entity.EventType.Name
-        }.InjectFrom<SmartInjection>(entity);
         #endregion
     }
 }
