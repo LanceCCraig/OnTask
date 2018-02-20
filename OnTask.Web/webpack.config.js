@@ -1,8 +1,11 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
+const bundleOutputDir = './wwwroot/dist';
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -10,29 +13,68 @@ module.exports = (env) => {
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
         stats: { modules: false },
-        resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+        resolve: { extensions: ['.js', '.jsx'] },
         output: {
+            path: path.join(__dirname, bundleOutputDir),
             filename: '[name].js',
             publicPath: 'dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
         module: {
             rules: [
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                {
+                    exclude: [
+                        /\.html$/,
+                        /\.(js|jsx)$/,
+                        /\.css$/,
+                        /\.json$/,
+                        /\.bmp$/,
+                        /\.gif$/,
+                        /\.jpe?g$/,
+                        /\.png$/,
+                        /\.scss$/
+                    ],
+                    loader: require.resolve('file-loader'),
+                    options: {
+                        name: 'static/media/[name].[hash:8].[ext]'
+                    }
+                },
+                {
+                    test: [
+                        /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/
+                    ],
+                    loader: require.resolve('url-loader'),
+                    options: {
+                        limit: 10000,
+                        name: 'static/media/[name].[hash:8].[ext]'
+                    }
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    include: resolveApp('ClientApp'),
+                    loader: require.resolve('babel-loader'),
+                    options: {
+                        cacheDirectory: true
+                    }
+                },
+                {
+                    test: /\.css$/,
+                    use: isDevBuild ? [
+                        require.resolve('style-loader'),
+                        {
+                            loader: require.resolve('css-loader')
+                        }
+                    ] :
+                        ExtractTextPlugin.extract({ use: 'css-loader?minimize' })
+                },
             ]
         },
-        plugins: [new CheckerPlugin()]
+        plugins: []
     });
 
     // Configuration for client-side bundle suitable for running in browsers
     const clientBundleOutputDir = './wwwroot/dist';
     const clientBundleConfig = merge(sharedConfig(), {
-        entry: { 'main-client': './ClientApp/boot-client.tsx' },
-        module: {
-            rules: [
-                { test: /\.css$/, use: ExtractTextPlugin.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
-            ]
-        },
+        entry: { 'main-client': './ClientApp/boot-client.js' },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
             new ExtractTextPlugin('site.css'),
@@ -55,7 +97,7 @@ module.exports = (env) => {
     // Configuration for server-side (prerendering) bundle suitable for running in Node
     const serverBundleConfig = merge(sharedConfig(), {
         resolve: { mainFields: ['main'] },
-        entry: { 'main-server': './ClientApp/boot-server.tsx' },
+        entry: { 'main-server': './ClientApp/boot-server.js' },
         plugins: [
             new webpack.DllReferencePlugin({
                 context: __dirname,
