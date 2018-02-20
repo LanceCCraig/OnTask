@@ -5,11 +5,11 @@ import { StaticRouter } from 'react-router-dom';
 import { replace } from 'react-router-redux';
 import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
-import { routes } from './routes';
-import configureStore from './configureStore';
+import { Routes } from './Routes';
+import configureStore from './ConfigureStore';
 
 export default createServerRenderer(params => {
-    return new Promise<RenderResult>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // Prepare Redux store with in-memory history, and dispatch a navigation event
         // corresponding to the incoming URL
         const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
@@ -19,10 +19,10 @@ export default createServerRenderer(params => {
 
         // Prepare an instance of the application and perform an inital render that will
         // cause any async tasks (e.g., data access) to begin
-        const routerContext: any = {};
+        const routerContext = {};
         const app = (
             <Provider store={ store }>
-                <StaticRouter basename={ basename } context={ routerContext } location={ params.location.path } children={ routes } />
+                <StaticRouter basename={ basename } context={ routerContext } location={ params.location.path } children={ Routes } />
             </Provider>
         );
         renderToString(app);

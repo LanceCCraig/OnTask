@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { PropTypes } from 'react';
 import { NavMenu } from './NavMenu';
 
-export class Layout extends React.Component<{}, {}> {
-    public render() {
+export class Layout extends React.Component {
+    render() {
         return <div className='container-fluid'>
             <div className='row'>
                 <div className='col-sm-3'>
