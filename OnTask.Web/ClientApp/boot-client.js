@@ -1,5 +1,6 @@
 import './css/site.css';
 import 'bootstrap';
+import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

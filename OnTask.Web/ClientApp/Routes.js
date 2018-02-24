@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import Home from './components/Home';
 import FetchData from './components/FetchData';
 import Counter from './components/Counter';
+import Calendar from './components/Calendar';
 
 const Routes = () => {
     return (
@@ -12,6 +13,7 @@ const Routes = () => {
                 <Route exact path='/' component={Home} />
                 <Route path="/counter" component={Counter} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
+                <Route path="/calendar" component={Calendar} />
             </div>
         </Layout>
     );
