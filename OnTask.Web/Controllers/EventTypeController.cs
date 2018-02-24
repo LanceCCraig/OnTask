@@ -106,7 +106,7 @@ namespace OnTask.Web.Controllers
         /// <response code="401">The caller is not authenticated.</response>
         [HttpGet]
         [ProducesResponseType(200)]
-        public IActionResult GetAll([FromBody]EventTypeGetAllModel model) => Ok(service.GetAll(model));
+        public IActionResult GetAll(EventTypeGetAllModel model) => Ok(service.GetAll(model));
 
         /// <summary>
         /// Gets an <see cref="EventTypeModel"/> class by its identifier.

@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using OnTask.Business.Models.Account;
+using OnTask.Business.Models.Account.Jwt;
 using OnTask.Business.Models.Event;
 using OnTask.Business.Services;
 using OnTask.Business.Services.Interfaces;
@@ -22,8 +25,9 @@ using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace OnTask.Web
 {
@@ -81,9 +85,10 @@ namespace OnTask.Web
                 //    .AddRedirectToHttps())
                 .UseStaticFiles()
                 .UseSwagger()
-                .UseSwaggerUI(x =>
+                .UseSwaggerUI(options =>
                 {
-                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "OnTask API v1");
+                    options.DocExpansion("none");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OnTask API v1");
                 });
 
             app.UseMvc(routes =>
@@ -104,7 +109,8 @@ namespace OnTask.Web
         /// <param name="services">The collection of service descriptors.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // The identity must be added before the application cookie is configured, otherwise the options will not be used.
+            // The identity must be added before the authentication is configured, otherwise the options will not be used.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             ConfigureIdentity(services);
             ConfigureGeneral(services);
             ConfigureMvc(services);
@@ -127,6 +133,13 @@ namespace OnTask.Web
             .AddOptions()
             .AddSwaggerGen(options =>
             {
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
+                    In = "header",
+                    Name = "Authorization",
+                    Type = "apiKey"
+                });
                 options.SwaggerDoc("v1", new Info
                 {
                     Description = "The Web API for the OnTask application",
@@ -151,26 +164,6 @@ namespace OnTask.Web
                 // User
                 options.User.RequireUniqueEmail = true;
             })
-            .ConfigureApplicationCookie(options =>
-            {
-                // TODO: Determine if a server redirect is necessary for access denied, login, or logout.
-                //options.AccessDeniedPath = "/";
-                options.Cookie.Expiration = TimeSpan.FromDays(7);
-                options.Cookie.HttpOnly = true;
-                options.Events.OnRedirectToAccessDenied = context =>
-                {
-                    context.Response.StatusCode = 403;
-                    return Task.CompletedTask;
-                };
-                options.Events.OnRedirectToLogin = context =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-                //options.LoginPath = "/";
-                //options.LogoutPath = "/";
-                options.SlidingExpiration = true;
-            })
             ;//.Configure<MvcOptions>(options =>
                 //{
                 //    options.Filters.Add(new RequireHttpsAttribute());
@@ -180,16 +173,37 @@ namespace OnTask.Web
             .AddMvc()
             .AddFluentValidation();
 
-        private static void ConfigureAuthentication(IServiceCollection services) => services
-            .AddAuthentication();
+        private void ConfigureAuthentication(IServiceCollection services) => services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ClockSkew = TimeSpan.Zero,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    ValidIssuer = Configuration["Jwt:Issuer"]
+                };
+            });
 
-        private static void ConfigureBusinessServices(IServiceCollection services) => services
+        private void ConfigureBusinessServices(IServiceCollection services) => services
+            // Models
+            .Configure<JwtSettings>(Configuration.GetSection("Jwt"))
             // Services
+            .AddTransient<IAccountService, AccountService>()
             .AddTransient<IBaseService, BaseService>()
             .AddTransient<IEventService, EventService>()
             .AddTransient<IEventGroupService, EventGroupService>()
             .AddTransient<IEventParentService, EventParentService>()
             .AddTransient<IEventTypeService, EventTypeService>()
+            .AddTransient<IJwtHandler, JwtHandler>()
             .AddTransient<IMapperService, MapperService>()
             // Validators (Account)
             .AddSingleton<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
