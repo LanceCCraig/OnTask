@@ -1,19 +1,28 @@
+/**
+ * External dependencies
+ */
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import Home from './components/Home';
-import FetchData from './components/FetchData';
-import Counter from './components/Counter';
-import Calendar from './components/Calendar';
+
+/**
+ * Internal dependencies
+ */
+import Layout from 'ClientApp/components/layout';
+import HomePage from 'ClientApp/pages/homePage';
+import FetchDataPage from 'ClientApp/pages/fetchDataPage';
+import CounterPage from 'ClientApp/pages/counterPage';
+import CalendarPage from 'ClientApp/pages/calendarPage';
+import LoginPage from 'ClientApp/pages/auth/loginPage';
 
 const Routes = () => {
     return (
         <Layout>
             <div>
-                <Route exact path='/' component={Home} />
-                <Route path="/counter" component={Counter} />
-                <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
-                <Route path="/calendar" component={Calendar} />
+                <Route exact path='/' component={HomePage} />
+                <Route path="/counter" component={CounterPage} />
+                <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
+                <Route path="/calendar" component={CalendarPage} />
+                <Route path="/login" component={LoginPage} />
             </div>
         </Layout>
     );

@@ -1,7 +1,14 @@
-import React, { PropTypes } from 'react';
-import { NavMenu } from './NavMenu';
+/**
+ * External dependencies
+ */
+import React from 'react';
 
-export class Layout extends React.Component {
+/**
+ * Internal dependencies
+ */
+import { NavMenu } from 'ClientApp/components/navMenu';
+
+export default class Layout extends React.Component {
     render() {
         return <div className='container-fluid'>
             <div className='row'>

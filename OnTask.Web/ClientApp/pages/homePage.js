@@ -1,10 +1,18 @@
+/**
+ * External dependencies
+ */
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-class Home extends React.Component {
+/**
+ * Internal dependencies
+ */
+import authHelper from 'ClientApp/helpers/authHelper';
+
+class HomePage extends React.Component {
     render() {
         return <div>
             <h1>Hello, world!</h1>
+            <h4>You are {!authHelper.getToken() ? 'not' : ''} logged in.</h4>
             <p>Welcome to your new single-page application, built with:</p>
             <ul>
                 <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
@@ -24,4 +32,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default HomePage;

@@ -1,10 +1,16 @@
-﻿import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+﻿/**
+ * External dependencies
+ */
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import * as WeatherForecastsState from '../store/WeatherForecasts';
 
-class FetchData extends React.Component {
+/**
+ * Internal dependencies
+ */
+import * as weatherForecastsStore from 'ClientApp/store/WeatherForecasts';
+
+class FetchDataPage extends React.Component {
     componentWillMount() {
         // This method runs when the component is first added to the page
         let startDateIndex = parseInt(this.props.match.params.startDateIndex, 10) || 0;
@@ -69,5 +75,5 @@ class FetchData extends React.Component {
 
 export default connect(
     (state) => state.weatherForecasts, // Selects which state properties are merged into the component's props
-    WeatherForecastsState.actionCreators                 // Selects which action creators are merged into the component's props
-)(FetchData);
+    weatherForecastsStore.actionCreators                 // Selects which action creators are merged into the component's props
+)(FetchDataPage);

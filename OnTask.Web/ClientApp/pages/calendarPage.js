@@ -1,11 +1,13 @@
+/**
+ * External dependencies
+ */
 import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import { RouteComponentProps } from 'react-router-dom';
 
 BigCalendar.momentLocalizer(moment);
 
-class Calendar extends React.Component {
+class CalendarPage extends React.Component {
     render() {
         return (
         <div>
@@ -48,4 +50,4 @@ class Calendar extends React.Component {
     }
 }
 
-export default Calendar;
+export default CalendarPage;

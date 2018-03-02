@@ -1,15 +1,22 @@
-import './css/site.css';
-import 'bootstrap';
-import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
-
+/**
+ * External dependencies
+ */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import configureStore from './ConfigureStore';
-import Routes from './Routes';
+import 'bootstrap';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'toastr/build/toastr.min.css';
+
+/**
+ * Internal dependencies
+ */
+import 'ClientApp/css/site.css';
+import configureStore from 'ClientApp/configureStore';
+import Routes from 'ClientApp/routes';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -24,7 +31,7 @@ function renderApp() {
     // and injects the app into a DOM element.
     ReactDOM.render(
         <AppContainer>
-            <Provider store={ store }>
+            <Provider store={store}>
                 <Router history={history}>
                     <Routes/>
                 </Router>
@@ -38,8 +45,8 @@ renderApp();
 
 // Allow Hot Module Replacement
 if (module.hot) {
-    module.hot.accept('./Routes', () => {
-        //Routes = require('./Routes').routes;
+    module.hot.accept('./routes', () => {
+        //Routes = require('./routes').routes;
         renderApp();
     });
 }

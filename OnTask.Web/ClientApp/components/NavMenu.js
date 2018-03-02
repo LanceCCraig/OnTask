@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 

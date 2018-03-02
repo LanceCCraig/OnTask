@@ -1,7 +1,14 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+/**
+ * External dependencies
+ */
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { routerReducer, routerMiddleware } from 'react-router-redux';
-import { reducers } from './store';
+import { routerMiddleware } from 'react-router-redux';
+
+/**
+ * Internal dependencies
+ */
+import rootReducer from 'ClientApp/reducers';
 
 export default function configureStore(history, initialState) {
     // Build middleware. These are functions that can process the actions before they reach the store.
@@ -13,21 +20,15 @@ export default function configureStore(history, initialState) {
         devToolsExtension ? devToolsExtension() : next => next
     )(createStore);
 
-    // Combine all reducers and instantiate the app-wide store instance
-    const allReducers = buildRootReducer(reducers);
-    const store = createStoreWithMiddleware(allReducers, initialState);
+    const store = createStoreWithMiddleware(rootReducer, initialState);
 
     // Enable Webpack hot module replacement for reducers
     if (module.hot) {
-        module.hot.accept('./store', () => {
-            const nextRootReducer = require('./store');
-            store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
-        });
+        // module.hot.accept('./store', () => {
+        //     const nextRootReducer = require('./store');
+        //     store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
+        // });
     }
 
     return store;
-}
-
-function buildRootReducer(allReducers) {
-    return combineReducers(Object.assign({}, allReducers, { routing: routerReducer }));
 }
