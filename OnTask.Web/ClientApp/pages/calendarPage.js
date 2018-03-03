@@ -5,6 +5,8 @@ import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
+
 BigCalendar.momentLocalizer(moment);
 
 class CalendarPage extends React.Component {
@@ -12,7 +14,8 @@ class CalendarPage extends React.Component {
         return (
         <div>
             <h1>Calendar</h1>
-            <p>This page is under construction! We'll be putting a calendar here soon!</p>
+            {/* <p>This page is under construction! We'll be putting a calendar here soon!</p> */}
+            <div style={{height: '500px'}}>
             <BigCalendar
                 events={
                     [
@@ -38,16 +41,22 @@ class CalendarPage extends React.Component {
                           },
                     ]
                 }
-                views={['month', 'week', 'day']}
+                views={{
+                    month: true,
+                    week: true,
+                  }}
                 step={60}
                 showMultiDayTimes
                 startAccessor="start"
                 endAccessor="end"
                 defaultDate={new Date(2018, 1, 21)}
             />
+            </div>
         </div>
         )
     }
 }
 
 export default CalendarPage;
+
+
