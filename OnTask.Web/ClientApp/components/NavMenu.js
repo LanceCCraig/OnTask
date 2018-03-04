@@ -45,11 +45,11 @@ export class NavMenu extends React.Component {
                                 <span className="glyphicon glyphicon-calendar" /> Calendar
                             </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink to={"/task"} activeClassName="active">
                                 <span className="glyphicon glyphicon-check" /> Tasks
                             </NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

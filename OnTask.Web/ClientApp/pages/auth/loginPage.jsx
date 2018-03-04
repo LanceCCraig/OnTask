@@ -53,7 +53,7 @@ class LoginPage extends React.Component {
     render() {
         const { loggingIn } = this.props;
         return (
-            <div>
+            <div style={{textAlign:'center'}} >
                 <h1>Login</h1>
                 <form>
                     <TextField

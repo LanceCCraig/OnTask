@@ -13,7 +13,7 @@ import FetchDataPage from 'ClientApp/pages/fetchDataPage';
 import CounterPage from 'ClientApp/pages/counterPage';
 import CalendarPage from 'ClientApp/pages/calendarPage';
 import LoginPage from 'ClientApp/pages/auth/loginPage';
-import TaskPage from 'ClientApp/pages/taskPage';
+// import TaskPage from 'ClientApp/pages/taskPage';
 
 const Routes = () => {
     return (
@@ -24,7 +24,7 @@ const Routes = () => {
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
                 <Route path="/calendar" component={CalendarPage} />
                 <Route path="/login" component={LoginPage} />
-                <Route path="/task" component={TaskPage} />
+                {/* <Route path="/task" component={TaskPage} /> */}
             </div>
         </Layout>
     );
