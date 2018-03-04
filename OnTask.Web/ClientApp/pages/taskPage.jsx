@@ -1,5 +1,4 @@
 import React from 'React'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class TaskPage extends React.Component {
     constructor(props, context){
@@ -8,9 +7,10 @@ class TaskPage extends React.Component {
         this.state = {
             tasks: [
                 {
+                    taskGroup: '',
                     taskName: '',
-                    dueDate: '',
-                    taskType: ''
+                    taskType: '',
+                    dueDate: ''
                 }
             ]
         }
@@ -18,13 +18,37 @@ class TaskPage extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <div>
-                    Hello World!
+            <div>
+                <div style={{ border: '1px solid', borderRadius: '50px', marginTop: '10%', textAlign: 'center' }}>
+                    What group is this task for?
+                    <div style={{ margin: 'auto' }}>
+                        <input
+                            name="taskGroup"
+                            value="School"
+                            className="btn btn-primary"
+                            onClick={this.handleChange()}
+                            style={{ margin: '10px 10px 10px 10px' }}
+                        />
+                        <input
+                            name="taskGroup"
+                            value="Work"
+                            className="btn btn-primary"
+                            onClick={this.handleChange()}
+                            style={{ margin: '10px 10px 10px 10px' }}
+                        />
+                        <input
+                            name="taskGroup"
+                            value="Other"
+                            className="btn btn-primary"
+                            onClick={this.handleChange()}
+                            style={{ margin: '10px 10px 10px 10px' }}
+                        />
+                    </div>
                 </div>
-            </MuiThemeProvider>
+                { console.log(this.state) }
+            </div>
         );
-    }
+    };
 }
 
 export default TaskPage;
