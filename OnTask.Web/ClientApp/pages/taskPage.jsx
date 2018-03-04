@@ -1,5 +1,5 @@
-import React from 'React'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'React';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class TaskPage extends React.Component {
     constructor(props, context){
@@ -18,11 +18,11 @@ class TaskPage extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            // <MuiThemeProvider>
                 <div>
-                    Hello World!
+                    <h1>Tasks</h1>
                 </div>
-            </MuiThemeProvider>
+            // </MuiThemeProvider>
         );
     }
 }

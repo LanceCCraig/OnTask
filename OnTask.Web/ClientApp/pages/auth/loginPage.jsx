@@ -5,6 +5,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 /**
  * Internal dependencies
@@ -53,27 +56,28 @@ class LoginPage extends React.Component {
             <div>
                 <h1>Login</h1>
                 <form>
-                    <TextInput
+                    <TextField
                         name="username"
-                        label="Email"
+                        floatingLabelText="Email"
                         disabled={loggingIn}
                         value={this.state.username}
                         onChange={this.handleChange}
-                        error={this.props.errors.email}
-                    />
-                    <PasswordInput
+                        // error={this.props.errors.email}
+                    /><br/>
+                    <TextField
                         name="password"
-                        label="Password"
+                        type="password"
+                        floatingLabelText="Password"
                         disabled={loggingIn}
                         value={this.state.password}
                         onChange={this.handleChange}
-                        error={this.props.errors.password}
-                    />
-                    <input
-                        type="submit"
+                        // error={this.props.errors.password}
+                    /><br/>
+                    <RaisedButton
                         disabled={!this.canSubmitForm()}
-                        value={loggingIn ? 'Logging In...' : 'Login'}
-                        className="btn btn-primary"
+                        primary
+                        label={loggingIn ? 'Logging In...' : 'Login'}
+                        // className="btn btn-primary"
                         onClick={this.submitForm}
                     />
                 </form>
