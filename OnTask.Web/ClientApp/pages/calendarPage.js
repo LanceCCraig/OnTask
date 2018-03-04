@@ -7,16 +7,21 @@ import moment from 'moment';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
-BigCalendar.momentLocalizer(moment);
+// BigCalendar.momentLocalizer(moment);
 
 class CalendarPage extends React.Component {
     render() {
         return (
         <div>
             <h1>Calendar</h1>
+            <br/>
             {/* <p>This page is under construction! We'll be putting a calendar here soon!</p> */}
-            <div style={{height: '500px'}}>
+            <button onClick="" style={{backgroundColor: 'lightblue', margin: '10px'}}>Add Task</button>
+            <div style={{height: '85vh', overflow: 'auto', margin: '10px'}}>
             <BigCalendar
+                // interface View {
+                //     static navigate(date: Date, action: 'PREV' | 'NEXT' | 'DATE'): Date
+                //   }
                 events={
                     [
                         {
@@ -47,6 +52,8 @@ class CalendarPage extends React.Component {
                   }}
                 step={60}
                 showMultiDayTimes
+                popup
+                toolbar
                 startAccessor="start"
                 endAccessor="end"
                 defaultDate={new Date(2018, 1, 21)}
