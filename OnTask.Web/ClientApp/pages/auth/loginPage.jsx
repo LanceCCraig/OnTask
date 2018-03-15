@@ -62,7 +62,7 @@ class LoginPage extends React.Component {
                         disabled={loggingIn}
                         value={this.state.username}
                         onChange={this.handleChange}
-                        // error={this.props.errors.email}
+                        errorText={this.props.errors.email}
                     /><br/>
                     <TextField
                         name="password"
@@ -71,13 +71,12 @@ class LoginPage extends React.Component {
                         disabled={loggingIn}
                         value={this.state.password}
                         onChange={this.handleChange}
-                        // error={this.props.errors.password}
+                        errorText={this.props.errors.password}
                     /><br/>
                     <RaisedButton
                         disabled={!this.canSubmitForm()}
                         primary
                         label={loggingIn ? 'Logging In...' : 'Login'}
-                        // className="btn btn-primary"
                         onClick={this.submitForm}
                     />
                 </form>

@@ -28,6 +28,7 @@
     "jquery": "3.2.1",
     "json-loader": "0.5.4",
     "lodash": "^4.17.5",
+    "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "node-noop": "1.0.0",
     "prop-types": "^15.6.1",
