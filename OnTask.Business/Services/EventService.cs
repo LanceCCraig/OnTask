@@ -84,12 +84,38 @@ namespace OnTask.Business.Services
                 return context
                     .GetEvents(
                         ApplicationUser.Id,
-                        model.EventTypeId,
-                        model.EventGroupId,
-                        model.EventParentId,
-                        model.DateRangeStart,
-                        model.DateRangeEnd)
+                        model?.EventTypeId,
+                        model?.EventGroupId,
+                        model?.EventParentId,
+                        model?.DateRangeStart,
+                        model?.DateRangeEnd)
                     .Select(x => mapper.Map<EventModel>(x))
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets all <see cref="EventFullModel"/> classes.
+        /// </summary>
+        /// <param name="model">The model which provides data on which <see cref="EventFullModel"/> classes to get.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventFullModel"/> classes.</returns>
+        public IEnumerable<EventFullModel> GetAllFull(EventGetAllModel model)
+        {
+            try
+            {
+                return context
+                    .GetEvents(
+                        ApplicationUser.Id,
+                        model?.EventTypeId,
+                        model?.EventGroupId,
+                        model?.EventParentId,
+                        model?.DateRangeStart,
+                        model?.DateRangeEnd)
+                    .Select(x => mapper.Map<EventFullModel>(x))
                     .ToList();
             }
             catch (Exception)

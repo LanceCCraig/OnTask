@@ -137,6 +137,7 @@ namespace OnTask.Data.Contexts.Interfaces
         /// Gets the <see cref="EventParent"/> classes by the provided filters.
         /// </summary>
         /// <param name="userId">The identifier of the associated <see cref="User"/> class.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all matching <see cref="EventParent"/> classes.</returns>
         IEnumerable<EventParent> GetEventParents(string userId);
         /// <summary>
         /// Inserts an <see cref="EventParent"/> class.

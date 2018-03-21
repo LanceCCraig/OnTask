@@ -20,7 +20,7 @@ namespace OnTask.Business.Services
         /// Sets the <see cref="ApplicationUser"/> for the <see cref="BaseService"/> class.
         /// </summary>
         /// <param name="applicationUser">The current <see cref="User"/> of the application.</param>
-        public void AddApplicationUser(User applicationUser)
+        public virtual void AddApplicationUser(User applicationUser)
         {
             ApplicationUser = applicationUser;
         }

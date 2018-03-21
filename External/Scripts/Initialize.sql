@@ -1,7 +1,13 @@
 /*==================================================================================================
 Description:    Initialize the OnTask database and tables.
 Created:        13-Jan-2018 Lance Craig
-Updated:        
+Updated:        20-Jan-2018 Lance Craig         Add ASP.NET Identity tables.
+                23-Jan-2018 Lance Craig         Add EventGroup table and rework constraints.
+                25-Jan-2018 Lance Craig         Add hierarchy between event tables.
+                30-Jan-2018 Lance Craig         Remove DisplayName fields.
+                01-Feb-2018 Lance Craig         Add Description fields.
+                06-Feb-2018 Lance Craig         Add foreign key from EventType to EventParent.
+                14-Mar-2018 Lance Craig         Add Weight fields to event tables and IsRecommended to EventType.
 ==================================================================================================*/
 
 --Drop/Create Database------------------------------------------------------------------------------
@@ -284,6 +290,7 @@ CREATE TABLE [dbo].[EventParent]
     [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
+    [Weight]        INT             NULL,
     [CreatedOn]     DATETIME        NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventParent] PRIMARY KEY CLUSTERED ([Id] ASC),
@@ -302,6 +309,7 @@ CREATE TABLE [dbo].[EventGroup]
     [UserId]        NVARCHAR(450)   NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
+    [Weight]        INT             NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventGroup] PRIMARY KEY CLUSTERED ([Id] ASC), 
@@ -326,6 +334,8 @@ CREATE TABLE [dbo].[EventType]
     [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
+    [Weight]        INT             NULL,
+    [IsRecommended] BIT             NOT NULL CONSTRAINT [DF_EventType_IsRecommended] DEFAULT (1),
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventType] PRIMARY KEY CLUSTERED ([Id] ASC),
@@ -358,6 +368,7 @@ CREATE TABLE [dbo].[Event]
     [Description]   NVARCHAR(MAX)   NULL,
     [StartDate]     DATETIME        NOT NULL,
     [EndDate]       DATETIME        NULL,
+    [Weight]        INT             NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED ([Id] ASC),

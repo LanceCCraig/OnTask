@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Common
 {
@@ -8,6 +9,19 @@ namespace OnTask.Common
     [ExcludeFromCodeCoverage]
     public static class Constants
     {
+        /// <summary>
+        /// Gets the <see cref="DaysOfWeek"/> values that are enumerated through for time calculation logic.
+        /// </summary>
+        public static DaysOfWeek[] EnumeratedDaysOfWeek = new[]
+        {
+            DaysOfWeek.Sunday,
+            DaysOfWeek.Monday,
+            DaysOfWeek.Tuesday,
+            DaysOfWeek.Wednesday,
+            DaysOfWeek.Thursday,
+            DaysOfWeek.Friday,
+            DaysOfWeek.Saturday
+        };
         /// <summary>
         /// Gets the minimum length of a password.
         /// </summary>

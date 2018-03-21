@@ -209,6 +209,7 @@ namespace OnTask.Web
             .AddTransient<IEventTypeService, EventTypeService>()
             .AddTransient<IJwtHandler, JwtHandler>()
             .AddTransient<IMapperService, MapperService>()
+            .AddTransient<IRecommendationService, RecommendationService>()
             // Validators (Account)
             .AddSingleton<IValidator<ExternalLoginModel>, ExternalLoginModelValidator>()
             .AddSingleton<IValidator<ForgotPasswordModel>, ForgotPasswordModelValidator>()

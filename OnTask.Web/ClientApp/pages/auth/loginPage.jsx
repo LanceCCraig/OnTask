@@ -13,8 +13,6 @@ import RaisedButton from 'material-ui/RaisedButton';
  * Internal dependencies
  */
 import * as authActions from 'ClientApp/actions/authActions';
-import PasswordInput from 'ClientApp/components/common/passwordInput';
-import TextInput from 'ClientApp/components/common/textInput';
 
 class LoginPage extends React.Component {
     constructor(props, context) {

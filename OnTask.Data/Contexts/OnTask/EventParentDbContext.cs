@@ -45,6 +45,7 @@ namespace OnTask.Data.Contexts
         /// Gets the <see cref="EventParent"/> classes by the provided filters.
         /// </summary>
         /// <param name="userId">The identifier of the associated <see cref="User"/> class.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all matching <see cref="EventParent"/> classes.</returns>
         public IEnumerable<EventParent> GetEventParents(string userId) => EventParents
             .AsNoTracking()
             .Where(x => x.UserId == userId)

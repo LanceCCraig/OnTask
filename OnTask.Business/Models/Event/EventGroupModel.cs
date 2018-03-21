@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Business.Models.Event
 {
@@ -28,5 +30,9 @@ namespace OnTask.Business.Models.Event
         /// Gets or sets the description for the <see cref="EventGroupModel"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventGroupModel"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
     }
 }

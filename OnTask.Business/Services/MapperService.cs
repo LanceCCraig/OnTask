@@ -18,6 +18,7 @@ namespace OnTask.Business.Services
         public MapperService()
         {
             AddEventMap();
+            AddEventToEventFullMap();
             AddEventTypeMap();
             AddEventGroupMap();
             AddEventParentMap();
@@ -30,8 +31,22 @@ namespace OnTask.Business.Services
             return (EventModel)new EventModel
             {
                 EventGroupName = entity.EventGroup?.Name,
+                EventGroupWeight = entity.EventGroup?.Weight,
                 EventParentName = entity.EventParent?.Name,
-                EventTypeName = entity.EventType?.Name
+                EventParentWeight = entity.EventParent?.Weight,
+                EventTypeName = entity.EventType?.Name,
+                EventTypeWeight = entity.EventType?.Weight,
+                IsEventTypeRecommended = entity.EventType?.IsRecommended ?? true,
+            }.InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddEventToEventFullMap() => AddMap<Event, EventFullModel>(entity =>
+        {
+            return (EventFullModel)new EventFullModel
+            {
+                EventGroup = entity.EventGroup != null ? Map<EventGroupModel>(entity.EventGroup) : null,
+                EventParent = entity.EventParent != null ? Map<EventParentModel>(entity.EventParent) : null,
+                EventType = entity.EventType != null ? Map<EventTypeModel>(entity.EventType) : null,
             }.InjectFrom<SmartInjection>(entity);
         });
 

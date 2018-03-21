@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Data.Entities
 {
@@ -34,6 +36,10 @@ namespace OnTask.Data.Entities
         /// Gets or sets the description for the <see cref="EventGroup"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventGroup"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
         #endregion
 
         #region External Properties

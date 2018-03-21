@@ -5,6 +5,7 @@ using OnTask.Business.Services.Interfaces;
 using OnTask.Data.Entities;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Test.Business.Services
 {

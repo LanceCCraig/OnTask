@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnTask.Data.Contexts.Interfaces;
 using OnTask.Data.Entities;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Data.Contexts
 {

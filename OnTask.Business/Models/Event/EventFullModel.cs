@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace OnTask.Business.Models.Event
 {
     /// <summary>
-    /// Represents an <see cref="Data.Entities.Event"/> class.
+    /// Represents an <see cref="Data.Entities.Event"/> class with all necessary properties.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class EventModel
+    public class EventFullModel
     {
         /// <summary>
         /// Gets or sets the identifier for the <see cref="EventModel"/> class if it exists.
@@ -18,41 +18,25 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public int EventGroupId { get; set; }
         /// <summary>
-        /// Gets or sets the name for the associated <see cref="EventGroupModel"/> class.
+        /// Gets or sets the associated <see cref="EventGroupModel"/> class.
         /// </summary>
-        public string EventGroupName { get; set; }
-        /// <summary>
-        /// Gets or sets the weight for the associated <see cref="EventGroupModel"/> class.
-        /// </summary>
-        public int? EventGroupWeight { get; set; }
+        public EventGroupModel EventGroup { get; set; }
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventParentModel"/> class.
         /// </summary>
         public int EventParentId { get; set; }
         /// <summary>
-        /// Gets or sets the name for the associated <see cref="EventParentModel"/> class.
+        /// Gets or sets the associated <see cref="EventParentModel"/> class.
         /// </summary>
-        public string EventParentName { get; set; }
-        /// <summary>
-        /// Gets or sets the weight for the associated <see cref="EventParentModel"/> class.
-        /// </summary>
-        public int? EventParentWeight { get; set; }
+        public EventParentModel EventParent { get; set; }
         /// <summary>
         /// Gets or sets the identifier for the associated <see cref="EventTypeModel"/> class.
         /// </summary>
         public int EventTypeId { get; set; }
         /// <summary>
-        /// Gets or sets the name for the associated <see cref="EventTypeModel"/> class.
+        /// Gets or sets the associated <see cref="EventTypeModel"/> class.
         /// </summary>
-        public string EventTypeName { get; set; }
-        /// <summary>
-        /// Gets or sets the weight for the associated <see cref="EventTypeModel"/> class.
-        /// </summary>
-        public int? EventTypeWeight { get; set; }
-        /// <summary>
-        /// Gets or sets the value that determines whether the associated <see cref="EventTypeModel"/> class is recommended.
-        /// </summary>
-        public bool IsEventTypeRecommended { get; set; }
+        public EventTypeModel EventType { get; set; }
         /// <summary>
         /// Gets or sets the name for the <see cref="EventModel"/> class.
         /// </summary>

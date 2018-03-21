@@ -25,6 +25,12 @@ namespace OnTask.Business.Services.Interfaces
         /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventModel"/> classes.</returns>
         IEnumerable<EventModel> GetAll(EventGetAllModel model);
         /// <summary>
+        /// Gets all <see cref="EventFullModel"/> classes.
+        /// </summary>
+        /// <param name="model">The model which provides data on which <see cref="EventFullModel"/> classes to get.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventFullModel"/> classes.</returns>
+        IEnumerable<EventFullModel> GetAllFull(EventGetAllModel model);
+        /// <summary>
         /// Gets the <see cref="EventModel"/> class.
         /// </summary>
         /// <param name="id">The identifier for the <see cref="EventModel"/> class to get.</param>

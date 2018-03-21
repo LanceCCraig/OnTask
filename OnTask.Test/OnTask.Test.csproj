@@ -28,4 +28,8 @@
     <ProjectReference Include="..\OnTask.Web\OnTask.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Business\Builders\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Common
 {
@@ -7,6 +9,58 @@ namespace OnTask.Common
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Determines whether a target <see cref="TimeSpan"/> value is between two <see cref="TimeSpan"/> values.
+        /// </summary>
+        /// <param name="target">The <see cref="TimeSpan"/> value to compare with.</param>
+        /// <param name="start">The left hand <see cref="TimeSpan"/> value to compare against.</param>
+        /// <param name="end">The right hand <see cref="TimeSpan"/> value to compare against.</param>
+        /// <returns><c>true</c> if the <paramref name="target"/> is between the two <see cref="TimeSpan"/> values; otherwise, <c>false</c>.</returns>
+        public static bool Between(this TimeSpan target, TimeSpan start, TimeSpan end) =>
+            target >= start &&
+            target <= end;
+
+        /// <summary>
+        /// Gets all <see cref="DateTime"/> values between a specified range.
+        /// </summary>
+        /// <param name="start">The start of the <see cref="DateTime"/> range.</param>
+        /// <param name="end">The end of the <see cref="DateTime"/> range.</param>
+        /// <returns>The <see cref="DateTime"/> values between the specified range.</returns>
+        public static IEnumerable<DateTime> GetDateRange(DateTime start, DateTime end)
+        {
+            for (var day = start.Date; day.Date <= end.Date; day = day.AddDays(1))
+            {
+                yield return day;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DaysOfWeek"/> value for the specified <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="date">The <see cref="DateTime"/> to base the return value off of.</param>
+        /// <returns>The corresponding <see cref="DaysOfWeek"/> value.</returns>
+        public static DaysOfWeek GetDaysOfWeek(this DateTime date)
+        {
+            switch (date.DayOfWeek)
+            {
+                case DayOfWeek.Sunday:
+                    return DaysOfWeek.Sunday;
+                case DayOfWeek.Monday:
+                    return DaysOfWeek.Monday;
+                case DayOfWeek.Tuesday:
+                    return DaysOfWeek.Tuesday;
+                case DayOfWeek.Wednesday:
+                    return DaysOfWeek.Wednesday;
+                case DayOfWeek.Thursday:
+                    return DaysOfWeek.Thursday;
+                case DayOfWeek.Friday:
+                    return DaysOfWeek.Friday;
+                case DayOfWeek.Saturday:
+                    return DaysOfWeek.Saturday;
+            }
+            throw new ArgumentException($"Could not determine the {nameof(DaysOfWeek)} value for '{date.ToString()}'.");
+        }
+
         /// <summary>
         /// Determines whether the two parameters are equal or if <paramref name="y"/> is <c>null</c>.
         /// </summary>

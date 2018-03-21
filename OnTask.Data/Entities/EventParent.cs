@@ -29,6 +29,10 @@ namespace OnTask.Data.Entities
         /// Gets or sets the description for the <see cref="EventParent"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventParent"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
         #endregion
 
         #region External Properties

@@ -53,6 +53,10 @@ namespace OnTask.Data.Entities
         /// Gets or sets the end date for the <see cref="Event"/> class.
         /// </summary>
         public DateTime? EndDate { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="Event"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
         #endregion
 
         #region External Properties
