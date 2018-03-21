@@ -3,6 +3,8 @@
  */
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import logo from './logo_banner.png'
+
 
 export class NavMenu extends React.Component {
     render() {
@@ -15,7 +17,7 @@ export class NavMenu extends React.Component {
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
                     </button>
-                    <Link className='navbar-brand' to={ '/' }>OnTask.Web</Link>
+                    <Link className='navbar-brand' to={'/'}> <img src={logo} width="100" height="40" alt="OnTask"/> </Link>
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
