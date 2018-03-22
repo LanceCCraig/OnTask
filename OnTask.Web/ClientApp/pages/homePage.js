@@ -2,13 +2,13 @@
  * External dependencies
  */
 import * as React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 /**
  * Internal dependencies
  */
 import authHelper from 'ClientApp/helpers/authHelper';
 import logo from 'ClientApp/components/logo_banner.png';
-import RaisedButton from 'material-ui/RaisedButton';
 import TaskDialog from './taskDialog';
 
 class HomePage extends React.Component {

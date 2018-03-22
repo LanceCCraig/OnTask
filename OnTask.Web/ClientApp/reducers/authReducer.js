@@ -16,6 +16,7 @@ export default function authReducer(state = initialState.auth, action) {
             return {
                 ...state,
                 loggedIn: true,
+                loggingIn: false,
                 user: action.user
             };
         case types.LOGIN_FAILURE:

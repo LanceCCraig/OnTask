@@ -4,6 +4,10 @@
 import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+
+/**
+ * Internal dependencies
+ */
 import TaskDialog from './taskDialog';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))

@@ -27,7 +27,7 @@ export function login(username, password) {
             });
     };
 
-    function request(user) { return { type: types.LOGIN_REQUEST, user } }
-    function success(user) { return { type: types.LOGIN_SUCCESS, user } }
-    function failure(errors) { return { type: types.LOGIN_FAILURE, errors } }
+    function request(user) { return { type: types.LOGIN_REQUEST, user }; }
+    function success(user) { return { type: types.LOGIN_SUCCESS, user }; }
+    function failure(errors) { return { type: types.LOGIN_FAILURE, errors }; }
 }
