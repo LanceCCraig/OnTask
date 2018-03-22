@@ -64,3 +64,17 @@
         text-overflow: ellipsis;
     }
 }
+
+body {
+    margin-top: 25px;
+    /* background-color: #2DB1FF; /*blue logo bg*/
+    /* background-color: #FF8F3A; /*orange logo bg */
+}
+
+.home-logo {
+    border: 3px solid white;
+}
+
+.center {
+    margin: auto;
+}

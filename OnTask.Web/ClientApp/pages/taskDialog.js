@@ -156,8 +156,11 @@ class TaskDialog extends React.Component {
       <div>
         <RaisedButton 
             label="New Task" 
-            onClick={this.handleOpen} 
-            primary />
+            onClick={this.handleOpen}
+            labelStyle={{ color: 'white' }}
+            backgroundColor="#2DB1FF"
+            hoverColor="#0092e8"
+            rippleColor="#005c93" />
         <div style={{ margin: 'auto', maxWidth: '400px' }}>
         <Dialog
           title="Create New Task"
