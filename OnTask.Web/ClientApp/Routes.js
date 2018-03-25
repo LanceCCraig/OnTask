@@ -13,18 +13,21 @@ import FetchDataPage from 'ClientApp/pages/fetchDataPage';
 import CounterPage from 'ClientApp/pages/counterPage';
 import CalendarPage from 'ClientApp/pages/calendarPage';
 import LoginPage from 'ClientApp/pages/auth/loginPage';
-// import TaskPage from 'ClientApp/pages/taskPage';
+import EventParentsPage from 'ClientApp/pages/eventParent/eventParentsPage';
+import EventParentPage from 'ClientApp/pages/eventParent/eventParentPage';
 
 const Routes = () => {
     return (
         <Layout>
             <div>
                 <Route exact path='/' component={HomePage} />
+                <Route path="/eventParents" component={EventParentsPage} />
+                <Route exact path="/eventParent" component={EventParentPage} />
+                <Route path="/eventParent/:id" component={EventParentPage} />
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
                 <Route path="/calendar" component={CalendarPage} />
                 <Route path="/login" component={LoginPage} />
-                {/* <Route path="/task" component={TaskPage} /> */}
             </div>
         </Layout>
     );

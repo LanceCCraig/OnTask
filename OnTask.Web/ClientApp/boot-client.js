@@ -17,6 +17,7 @@ import 'toastr/build/toastr.min.css';
 import 'ClientApp/css/site.css';
 import configureStore from 'ClientApp/configureStore';
 import Routes from 'ClientApp/routes';
+import { getAllParents } from 'ClientApp/actions/eventParentActions';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -25,6 +26,7 @@ const history = createBrowserHistory({ basename: baseUrl });
 // Get the application-wide store instance, prepopulating with state from the server where available.
 const initialState = (window).initialReduxState;
 const store = configureStore(history, initialState);
+store.dispatch(getAllParents());
 
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing configuration

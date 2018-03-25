@@ -10,5 +10,6 @@ export default {
         loggingIn: false,
         token: authHelper.getToken(),
         user: {}
-    }
+    },
+    eventParents: []
 };
