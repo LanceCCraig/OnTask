@@ -5,6 +5,13 @@
     return newEventParent;
 }
 
+export function checkBlankEventGroup(eventGroup) {
+    let newEventGroup = Object.assign({}, eventGroup);
+    newEventGroup.description = checkBlankReturnNull(eventGroup.description);
+    newEventGroup.weight = checkBlankReturnNull(eventParent.weight);
+    return newEventGroup;
+}
+
 export function checkNullEventParent(eventParent) {
     let newEventParent = Object.assign({}, eventParent);
     newEventParent.description = checkNullReturnBlank(eventParent.description);
