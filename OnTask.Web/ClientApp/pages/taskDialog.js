@@ -119,12 +119,12 @@ class TaskDialog extends React.Component {
             errorStyle={{color: "#FF8F3A"}}
             onChange={this.handleTypeChange} >
                 <MenuItem value={null} primaryText="" />
-                <MenuItem value={1} primaryText="Paper" />
-                <MenuItem value={2} primaryText="Project" />
-                <MenuItem value={3} primaryText="Worksheet" />
-                <MenuItem value={4} primaryText="Reading" />
-                <MenuItem value={5} primaryText="Test" />
-                <MenuItem value={6} primaryText="Other Homework" />
+                <MenuItem value={0} primaryText="Paper" />
+                <MenuItem value={1} primaryText="Project" />
+                <MenuItem value={2} primaryText="Worksheet" />
+                <MenuItem value={3} primaryText="Reading" />
+                <MenuItem value={4} primaryText="Test" />
+                <MenuItem value={5} primaryText="Other Homework" />
             </SelectField>
         );
 
@@ -136,9 +136,9 @@ class TaskDialog extends React.Component {
                 errorStyle={{color: "#FF8F3A"}}
                 onChange={this.handleTypeChange} >
                     <MenuItem value={null} primaryText="" />
-                    <MenuItem value={1} primaryText="Meeting" />
-                    <MenuItem value={2} primaryText="Call" />
-                    <MenuItem value={3} primaryText="Other Event" />
+                    <MenuItem value={0} primaryText="Meeting" />
+                    <MenuItem value={1} primaryText="Call" />
+                    <MenuItem value={2} primaryText="Other Event" />
                 </SelectField>
         );
 
@@ -150,9 +150,9 @@ class TaskDialog extends React.Component {
                     errorStyle={{color: "#FF8F3A"}}
                     onChange={this.handleTypeChange} >
                         <MenuItem value={null} primaryText="" />
-                        <MenuItem value={1} primaryText="Appointment" />
-                        <MenuItem value={2} primaryText="Goal" />
-                        <MenuItem value={3} primaryText="Other Event" />
+                        <MenuItem value={0} primaryText="Appointment" />
+                        <MenuItem value={1} primaryText="Goal" />
+                        <MenuItem value={2} primaryText="Other Event" />
                 </SelectField>
         );
 
