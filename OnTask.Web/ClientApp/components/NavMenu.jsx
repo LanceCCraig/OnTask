@@ -23,16 +23,16 @@ export class NavMenu extends React.Component {
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
                         <li>
-                            <NavLink exact to={ '/' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Home
-                            </NavLink>
-                        </li>
-                        <li>
                             <NavLink exact to={ '/login' } activeClassName='active'>
                                 <span className='glyphicon glyphicon-log-in'></span> Login
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink exact to={ '/' } activeClassName='active'>
+                                <span className='glyphicon glyphicon-home'></span> Home
+                            </NavLink>
+                        </li>
+                        {/* <li>
                             <NavLink to={"/counter"} activeClassName="active">
                                 <span className="glyphicon glyphicon-education" /> Counter
                             </NavLink>
@@ -41,7 +41,7 @@ export class NavMenu extends React.Component {
                             <NavLink to={"/fetchdata"} activeClassName="active">
                                 <span className="glyphicon glyphicon-th-list" /> Fetch data
                             </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                             <NavLink to={"/calendar"} activeClassName="active">
                                 <span className="glyphicon glyphicon-calendar" /> Calendar

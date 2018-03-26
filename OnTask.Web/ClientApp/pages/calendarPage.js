@@ -18,16 +18,9 @@ class CalendarPage extends React.Component {
         <div>
             <h1>Calendar</h1>
             <br/>
-            {/* <p>This page is under construction! We'll be putting a calendar here soon!</p> */}
-            {/* <button onClick="" style={{backgroundColor: 'lightblue', margin: '10px'}}>Add Task</button> */}
-            
             <TaskDialog />
-            
             <div style={{height: '85vh', overflow: 'auto', margin: '10px'}}>
             <BigCalendar
-                // interface View {
-                //     static navigate(date: Date, action: 'PREV' | 'NEXT' | 'DATE'): Date
-                //   }
                 events={
                     [
                         {

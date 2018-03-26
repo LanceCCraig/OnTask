@@ -2,7 +2,6 @@
  * External dependencies
  */
 import * as React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 
 /**
  * Internal dependencies

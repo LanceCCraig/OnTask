@@ -1,61 +1,3 @@
-// import React from 'React'
-
-// class TaskDialog extends React.Component {
-//     constructor(props, context){
-//         super(props, context);
-
-//         this.state = {
-//             tasks: [
-//                 {
-//                     taskGroup: '',
-//                     taskName: '',
-//                     taskCategory: '',
-//                     dueDate: ''
-//                 }
-//             ]
-//         }
-//     }
-
-//     render() {
-//         return (
-//             <div>
-//                 <div style={{ border: '1px solid', borderRadius: '50px', marginTop: '10%', textAlign: 'center' }}>
-//                     What group is this task for?
-//                     <div style={{ margin: 'auto' }}>
-//                         <input
-//                             name="taskGroup"
-//                             value="School"
-//                             className="btn btn-primary"
-//                             // onClick={this.handleChange()}
-//                             style={{ margin: '10px 10px 10px 10px' }}
-//                         />
-//                         <input
-//                             name="taskGroup"
-//                             value="Work"
-//                             className="btn btn-primary"
-//                             // onClick={this.handleChange()}
-//                             style={{ margin: '10px 10px 10px 10px' }}
-//                         />
-//                         <input
-//                             name="taskGroup"
-//                             value="Other"
-//                             className="btn btn-primary"
-//                             // onClick={this.handleChange()}
-//                             style={{ margin: '10px 10px 10px 10px' }}
-//                         />
-//                     </div>
-//                 </div>
-//                 { console.log(this.state) }
-//             </div>
-//         );
-//     };
-// }
-
-// export default TaskDialog;
-
-
-
-
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -64,48 +6,109 @@ import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import '../css/site.css';
+import { TextField } from 'material-ui';
+
+
 
 
 /**
  * Dialogs can be nested. This example opens a Date Picker from within a Dialog.
  */
 class TaskDialog extends React.Component {
-  state = {
-    open: false,
-    taskCategory: 'school',
-    taskType: 1,
-  };
+    constructor(props){
+        super(props)
+    
+        this.state={
+            open: false,
+            taskCategory: null,
+            taskType: null,
+            taskDate: null,
+            // taskPriority: null,
+            buttonDisabled: true,
+        }
+      }   
+  
 
 
   handleOpen = () => {
     this.setState({open: true});
   };
 
-  handleClose = () => {
+  handleCancel = () => {
     this.setState({open: false});
   };
 
-  handleCatChange = (event, index, value) => this.setState({taskCategory: value});
-  handleTypeChange = (event, index, value) => this.setState({taskType: value});
+  handleCreate = () => {
+    //post event
+    this.setState({open: false});
+  };
+
+  handleButtonDisabling = () => {
+    console.log(this.state.taskCategory);
+    console.log(this.state.taskType);
+    console.log(this.state.taskDate);
+    if (this.state.taskCategory != null && this.state.taskType != null){
+        this.setState({buttonDisabled: false});
+    }
+  }
+
+
+  handleCatChange = (e, index, value) => {
+      this.setState({taskCategory: value});
+      this.handleButtonDisabling();
+  }
+  handleTypeChange = (e, index, value) => {
+      this.setState({taskType: value});
+      this.handleButtonDisabling();
+  }
+  handleDateChange = (e, index, value) => {
+      this.setState({taskDate: value});
+      this.handleButtonDisabling();
+  }
 
   render() {
-
-    
-
     const actions = [
       <RaisedButton
-        label="Ok"
-        primary={true}
+        label="Cancel"
+        style={{margin: '5px'}}
         keyboardFocused={false}
-        onClick={this.handleClose}
+        labelStyle={{ color: '#FF8F3A' }}
+        onClick={this.handleCancel}
+      />,
+      <RaisedButton
+        label="Create Event"
+        disabled={this.state.buttonDisabled}
+        style={{margin: '5px'}}
+        labelStyle={{ color: 'white' }}
+        backgroundColor="#2DB1FF"
+        keyboardFocused={false}
+        onClick={this.handleCreate}
       />,
     ];
+
+    function SwitchTaskCategory({taskCategory}) {
+        switch(taskCategory) {
+            case 'school':
+                return <IfSchool />;
+            case 'work': 
+                return <IfWork />;
+            case 'personal':
+                return <IfPersonal />;
+            // case 'other':
+            //     return <IfOther />;
+            default:
+                return null;
+        }
+    };
 
     const IfSchool = () => (
         <SelectField
         floatingLabelText="School Task Type"
         value={this.state.taskType}
+        errorText = "*Required field"
+        errorStyle={{color: "#FF8F3A"}}
         onChange={this.handleTypeChange} >
+            <MenuItem value={null} primaryText="" />
             <MenuItem value={1} primaryText="Paper" />
             <MenuItem value={2} primaryText="Project" />
             <MenuItem value={3} primaryText="Worksheet" />
@@ -119,7 +122,10 @@ class TaskDialog extends React.Component {
             <SelectField
             floatingLabelText="Work Task Type"
             value={this.state.taskType}
+            errorText = "*Required field"
+            errorStyle={{color: "#FF8F3A"}}
             onChange={this.handleTypeChange} >
+                <MenuItem value={null} primaryText="" />
                 <MenuItem value={1} primaryText="Meeting" />
                 <MenuItem value={2} primaryText="Call" />
                 <MenuItem value={3} primaryText="Other Event" />
@@ -130,27 +136,26 @@ class TaskDialog extends React.Component {
             <SelectField
                 floatingLabelText="Personal Task Type"
                 value={this.state.taskType}
+                errorText = "*Required field"
+                errorStyle={{color: "#FF8F3A"}}
                 onChange={this.handleTypeChange} >
+                    <MenuItem value={null} primaryText="" />
                     <MenuItem value={1} primaryText="Appointment" />
                     <MenuItem value={2} primaryText="Goal" />
                     <MenuItem value={3} primaryText="Other Event" />
             </SelectField>
     );
 
-
-
-    function SwitchTaskCategory({taskCategory}) {
-        switch(taskCategory) {
-            case 'school':
-                return <IfSchool />;
-            case 'work': 
-                return <IfWork />;
-            case 'personal':
-                return <IfPersonal />;
-            default:
-                return null;
-        }
-    };
+    // const IfOther = () => (
+    //     <TextField
+    //         floatingLabelText="Enter Task Type"
+    //         value={this.state.event.taskType}
+    //         errorText = "*Required field"
+    //         errorStyle={{color: "#FF8F3A"}}
+    //         onChange={this.handleTypeChange} >
+    //     </TextField>
+    // );
+    
 
     return (
       <div>
@@ -159,8 +164,9 @@ class TaskDialog extends React.Component {
             onClick={this.handleOpen}
             labelStyle={{ color: 'white' }}
             backgroundColor="#2DB1FF"
-            hoverColor="#0092e8"
-            rippleColor="#005c93" />
+            rippleStyle={{backgroundColor: "#005c93"}}
+            // hoverColor="#0092e8" 
+            />
         <div style={{ margin: 'auto', maxWidth: '400px' }}>
         <Dialog
           title="Create New Task"
@@ -182,14 +188,23 @@ class TaskDialog extends React.Component {
           autoScrollBodyContent>
          <SelectField
             floatingLabelText="Task Category"
+            errorText = "*Required field"
+            errorStyle={{color: "#FF8F3A"}}
             value={this.state.taskCategory}
             onChange={this.handleCatChange} >
+                <MenuItem value={null} primaryText="" />
                 <MenuItem value='school' primaryText="School" />
                 <MenuItem value='work' primaryText="Work" />
                 <MenuItem value='personal' primaryText="Personal" />
+                <MenuItem value='other' primaryText="Other" />
         </SelectField>
-        <div><SwitchTaskCategory taskCategory={this.state.taskCategory}/></div>
-        <DatePicker hintText="Due Date" />
+        <SwitchTaskCategory taskCategory={this.state.taskCategory}/>
+        <DatePicker 
+            errorText = "*Required field"
+            errorStyle={{color: "#FF8F3A"}}
+            value={this.state.taskDate}
+            hintText="Task Date" 
+            onChange={this.handleDateChange}/>
         </Dialog>
         </div>
       </div>
