@@ -7,7 +7,7 @@ import * as React from 'react';
  * Internal dependencies
  */
 import authHelper from 'ClientApp/helpers/authHelper';
-import logo from 'ClientApp/components/logo_banner.png';
+import logo from 'ClientApp/static/logo_banner.png';
 import TaskDialog from './taskDialog';
 
 class HomePage extends React.Component {
