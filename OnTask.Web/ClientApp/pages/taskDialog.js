@@ -9,6 +9,15 @@ import '../css/site.css';
 import { TextField } from 'material-ui';
 
 
+/**
+* Internal dependencies
+*/
+
+import EventApi from 'ClientApp/api/eventApi';
+import eventParentApi from 'ClientApp/api/eventParentApi';
+import eventGroupApi from 'ClientApp/api/eventGroupApi';
+import eventTypeApi from 'ClientApp/api/eventTypeApi';
+
 
 
 /**
@@ -20,7 +29,8 @@ class TaskDialog extends React.Component {
 
         this.state={
             open: false,
-            taskCategory: null,
+            taskParent: null,
+            taskGroup: null,
             taskType: null,
             taskDate: null,
             // taskPriority: null,
@@ -44,21 +54,27 @@ class TaskDialog extends React.Component {
 
     handleCreate = () => {
         //post event
+        //EventApi.create(this.state.taskType, this.state.taskGroup, this.state.taskParent, null, null, null, this.taskDate, null );
         this.setState({open: false});
     };
 
     handleButtonDisabling = () => {
-        console.log(this.state.taskCategory);
+        console.log(this.state.taskParent);
+        console.log(this.state.taskGroup);
         console.log(this.state.taskType);
         console.log(this.state.taskDate);
-        if (this.state.taskCategory != null && this.state.taskType != null){
+        if (this.state.taskGroup != null && this.state.taskType != null){
             this.setState({buttonDisabled: false});
         }
     }
 
+    handleParentChange = (e, index, value) => {
+        this.setState({taskParent: value});
+        this.handleButtonDisabling();
+    }
 
-    handleCatChange = (e, index, value) => {
-        this.setState({taskCategory: value});
+    handleGroupChange = (e, index, value) => {
+        this.setState({taskGroup: value});
         this.handleButtonDisabling();
     }
     handleTypeChange = (e, index, value) => {
@@ -96,13 +112,13 @@ class TaskDialog extends React.Component {
         />,
         ];
 
-        function SwitchTaskCategory({taskCategory}) {
-            switch(taskCategory) {
-                case 'school':
+        function SwitchTaskParent({taskParent}) {
+            switch(taskParent) {
+                case 0:
                     return <IfSchool />;
-                case 'work': 
+                case 1:
                     return <IfWork />;
-                case 'personal':
+                case 2:
                     return <IfPersonal />;
                 // case 'other':
                 //     return <IfOther />;
@@ -112,23 +128,53 @@ class TaskDialog extends React.Component {
         };
 
         const IfSchool = () => (
-            <SelectField
-            floatingLabelText="School Task Type"
-            value={this.state.taskType}
-            errorText = "*Required field"
-            errorStyle={{color: "#FF8F3A"}}
-            onChange={this.handleTypeChange} >
-                <MenuItem value={null} primaryText="" />
-                <MenuItem value={0} primaryText="Paper" />
-                <MenuItem value={1} primaryText="Project" />
-                <MenuItem value={2} primaryText="Worksheet" />
-                <MenuItem value={3} primaryText="Reading" />
-                <MenuItem value={4} primaryText="Test" />
-                <MenuItem value={5} primaryText="Other Homework" />
-            </SelectField>
+            <div>
+                <SelectField
+                floatingLabelText="School Task Group"
+                value={this.state.taskGroup}
+                errorText = "*Required field"
+                errorStyle={{color: "#FF8F3A"}}
+                onChange={this.handleGroupChange} >
+                    <MenuItem value={null} primaryText="" />
+                    <MenuItem value={0} primaryText="Class 1" />
+                    <MenuItem value={1} primaryText="Class 2" />
+                    <MenuItem value={2} primaryText="Class 3" />
+                    <MenuItem value={3} primaryText="Class 4" />
+                    <MenuItem value={4} primaryText="Class 5" />
+                    <MenuItem value={5} primaryText="Class 6" />
+                </SelectField>
+                
+                <SelectField
+                floatingLabelText="School Task Type"
+                value={this.state.taskType}
+                errorText = "*Required field"
+                errorStyle={{color: "#FF8F3A"}}
+                onChange={this.handleTypeChange} >
+                    <MenuItem value={null} primaryText="" />
+                    <MenuItem value={0} primaryText="Paper" />
+                    <MenuItem value={1} primaryText="Project" />
+                    <MenuItem value={2} primaryText="Worksheet" />
+                    <MenuItem value={3} primaryText="Reading" />
+                    <MenuItem value={4} primaryText="Test" />
+                    <MenuItem value={5} primaryText="Other Homework" />
+                </SelectField>
+            </div>
         );
 
         const IfWork = () => (
+            <div>
+                <SelectField
+                floatingLabelText="Work Task Group"
+                value={this.state.taskGroup}
+                errorText = "*Required field"
+                errorStyle={{color: "#FF8F3A"}}
+                onChange={this.handleGroupChange} >
+                    <MenuItem value={null} primaryText="" />
+                    <MenuItem value={0} primaryText="Work Activity 1" />
+                    <MenuItem value={1} primaryText="Work Activity 2" />
+                    <MenuItem value={2} primaryText="Work Activity 3" />
+                </SelectField>
+
                 <SelectField
                 floatingLabelText="Work Task Type"
                 value={this.state.taskType}
@@ -140,9 +186,23 @@ class TaskDialog extends React.Component {
                     <MenuItem value={1} primaryText="Call" />
                     <MenuItem value={2} primaryText="Other Event" />
                 </SelectField>
+            </div>
         );
 
         const IfPersonal = () => (
+            <div>
+                <SelectField
+                floatingLabelText="Personal Task Group"
+                value={this.state.taskGroup}
+                errorText = "*Required field"
+                errorStyle={{color: "#FF8F3A"}}
+                onChange={this.handleTypeChange} >
+                    <MenuItem value={null} primaryText="" />
+                    <MenuItem value={0} primaryText="Personal Group 1" />
+                    <MenuItem value={1} primaryText="Personal Group 2" />
+                    <MenuItem value={2} primaryText="Personal Group 3" />
+                </SelectField>
+                
                 <SelectField
                     floatingLabelText="Personal Task Type"
                     value={this.state.taskType}
@@ -154,6 +214,7 @@ class TaskDialog extends React.Component {
                         <MenuItem value={1} primaryText="Goal" />
                         <MenuItem value={2} primaryText="Other Event" />
                 </SelectField>
+            </div>
         );
 
         // const IfOther = () => (
@@ -197,18 +258,18 @@ class TaskDialog extends React.Component {
             onRequestClose={this.handleClose}
             autoScrollBodyContent>
             <SelectField
-                floatingLabelText="Task Category"
+                floatingLabelText="Task Parent"
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
-                value={this.state.taskCategory}
-                onChange={this.handleCatChange} >
+                value={this.state.taskParent}
+                onChange={this.handleParentChange} >
                     <MenuItem value={null} primaryText="" />
-                    <MenuItem value='school' primaryText="School" />
-                    <MenuItem value='work' primaryText="Work" />
-                    <MenuItem value='personal' primaryText="Personal" />
-                    <MenuItem value='other' primaryText="Other" />
+                    <MenuItem value={0} primaryText="School" />
+                    <MenuItem value={1} primaryText="Work" />
+                    <MenuItem value={2} primaryText="Personal" />
+                    <MenuItem value={3} primaryText="Other" />
             </SelectField>
-            <SwitchTaskCategory taskCategory={this.state.taskCategory}/>
+            <SwitchTaskParent taskParent={this.state.taskParent}/>
             <DatePicker 
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
