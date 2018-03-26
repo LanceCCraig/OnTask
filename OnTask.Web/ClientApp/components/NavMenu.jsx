@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import logo from './logo_banner.png'
+import logo from 'ClientApp/static/logo_banner.png'
 
 
 export class NavMenu extends React.Component {
