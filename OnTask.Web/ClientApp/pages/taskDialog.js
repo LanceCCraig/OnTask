@@ -1,4 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { routerActions } from 'react-router-redux';
+import toastr from 'toastr';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,12 +17,10 @@ import { TextField } from 'material-ui';
 /**
 * Internal dependencies
 */
-
+import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import EventApi from 'ClientApp/api/eventApi';
 import eventParentApi from 'ClientApp/api/eventParentApi';
-import eventGroupApi from 'ClientApp/api/eventGroupApi';
-import eventTypeApi from 'ClientApp/api/eventTypeApi';
-
+import eventParentPage from 'ClientApp/pages/eventParent/eventParentPage';
 
 
 /**
@@ -54,7 +57,6 @@ class TaskDialog extends React.Component {
 
     handleCreate = () => {
         //post event
-        //EventApi.create(this.state.taskType, this.state.taskGroup, this.state.taskParent, null, null, null, this.taskDate, null );
         this.setState({open: false});
     };
 
@@ -93,6 +95,7 @@ class TaskDialog extends React.Component {
     }
 
     render() {
+        const { eventParents } = this.props;
         const actions = [
         <RaisedButton
             label="Cancel"
@@ -263,11 +266,12 @@ class TaskDialog extends React.Component {
                 errorStyle={{color: "#FF8F3A"}}
                 value={this.state.taskParent}
                 onChange={this.handleParentChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="School" />
-                    <MenuItem value={1} primaryText="Work" />
-                    <MenuItem value={2} primaryText="Personal" />
-                    <MenuItem value={3} primaryText="Other" />
+                    {eventParents.map(eventParent =>
+                        <MenuItem
+                            value={eventParent.id}
+                            primaryText={eventParent.name}
+                        />
+                    )}
             </SelectField>
             <SwitchTaskParent taskParent={this.state.taskParent}/>
             <DatePicker 
@@ -283,4 +287,23 @@ class TaskDialog extends React.Component {
     }
 }
 
-export default TaskDialog;
+TaskDialog.propTypes= {
+    eventParents: PropTypes.array.isRequired,
+    actions: PropTypes.object.isRequired,
+    routerActions: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+    return {
+        eventParents: state.eventParents
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(eventParentActions, dispatch),
+        routerActions: bindActionCreators(routerActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDialog);
