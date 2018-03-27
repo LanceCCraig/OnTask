@@ -18,9 +18,8 @@ import { TextField } from 'material-ui';
 * Internal dependencies
 */
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
+import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import EventApi from 'ClientApp/api/eventApi';
-import eventParentApi from 'ClientApp/api/eventParentApi';
-import eventParentPage from 'ClientApp/pages/eventParent/eventParentPage';
 
 
 /**
@@ -33,7 +32,9 @@ class TaskDialog extends React.Component {
         this.state={
             open: false,
             taskParent: null,
+            taskParentIndex: null,
             taskGroup: null,
+            taskGroupIndex: null,
             taskType: null,
             taskDate: null,
             // taskPriority: null,
@@ -62,21 +63,25 @@ class TaskDialog extends React.Component {
 
     handleButtonDisabling = () => {
         console.log(this.state.taskParent);
+        console.log(this.state.taskParentIndex);
         console.log(this.state.taskGroup);
+        console.log(this.state.taskGroupIndex);
         console.log(this.state.taskType);
         console.log(this.state.taskDate);
-        if (this.state.taskGroup != null && this.state.taskType != null){
+        if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null){
             this.setState({buttonDisabled: false});
         }
     }
 
     handleParentChange = (e, index, value) => {
         this.setState({taskParent: value});
+        this.setState({taskParentIndex: index});
         this.handleButtonDisabling();
     }
 
     handleGroupChange = (e, index, value) => {
         this.setState({taskGroup: value});
+        this.setState({taskGroupIndex: index})
         this.handleButtonDisabling();
     }
     handleTypeChange = (e, index, value) => {
@@ -96,6 +101,7 @@ class TaskDialog extends React.Component {
 
     render() {
         const { eventParents } = this.props;
+        const { eventGroups } = this.props;
         const actions = [
         <RaisedButton
             label="Cancel"
@@ -115,40 +121,28 @@ class TaskDialog extends React.Component {
         />,
         ];
 
-        function SwitchTaskParent({taskParent}) {
-            switch(taskParent) {
-                case 0:
-                    return <IfSchool />;
-                case 1:
-                    return <IfWork />;
-                case 2:
-                    return <IfPersonal />;
-                // case 'other':
-                //     return <IfOther />;
-                default:
-                    return null;
-            }
+        function GetAdditionalFields({taskParentIndex}) {
+            return <AdditionalFields />;
         };
 
-        const IfSchool = () => (
+        const AdditionalFields = () => (
             <div>
                 <SelectField
-                floatingLabelText="School Task Group"
+                floatingLabelText="Task Group"
                 value={this.state.taskGroup}
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
                 onChange={this.handleGroupChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="Class 1" />
-                    <MenuItem value={1} primaryText="Class 2" />
-                    <MenuItem value={2} primaryText="Class 3" />
-                    <MenuItem value={3} primaryText="Class 4" />
-                    <MenuItem value={4} primaryText="Class 5" />
-                    <MenuItem value={5} primaryText="Class 6" />
+                    {eventGroups.map(eventGroup =>
+                        <MenuItem
+                            value={eventGroup.id}
+                            primaryText={eventGroup.name}
+                        />
+                    )}
                 </SelectField>
                 
                 <SelectField
-                floatingLabelText="School Task Type"
+                floatingLabelText="Task Type"
                 value={this.state.taskType}
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
@@ -164,7 +158,7 @@ class TaskDialog extends React.Component {
             </div>
         );
 
-        const IfWork = () => (
+        {/*const IfWork = () => (
             <div>
                 <SelectField
                 floatingLabelText="Work Task Group"
@@ -229,7 +223,7 @@ class TaskDialog extends React.Component {
         //         onChange={this.handleTypeChange} >
         //     </TextField>
         // );
-        
+    */}       
 
         return (
         <div>
@@ -273,7 +267,7 @@ class TaskDialog extends React.Component {
                         />
                     )}
             </SelectField>
-            <SwitchTaskParent taskParent={this.state.taskParent}/>
+            <GetAdditionalFields taskParentIndex={this.state.taskParentIndex}/>
             <DatePicker 
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
@@ -289,19 +283,23 @@ class TaskDialog extends React.Component {
 
 TaskDialog.propTypes= {
     eventParents: PropTypes.array.isRequired,
+    eventGroups: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
+    parentActions: PropTypes.object.isRequired,
     routerActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        eventParents: state.eventParents
+        eventParents: state.eventParents,
+        eventGroups: state.eventGroups,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(eventParentActions, dispatch),
+        actions: bindActionCreators(eventGroupActions, dispatch),
+        parentActions: bindActionCreators(eventParentActions, dispatch),
         routerActions: bindActionCreators(routerActions, dispatch)
     };
 }
