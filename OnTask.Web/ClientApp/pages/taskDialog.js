@@ -53,7 +53,15 @@ class TaskDialog extends React.Component {
     };
 
     handleCancel = () => {
-        this.setState({open: false});
+        this.setState({
+            open: false,
+            taskParent: null,
+            taskParentIndex: null,
+            taskGroup: null,
+            taskGroupIndex: null,
+            taskType: null,
+            taskDate: null,
+            buttonDisabled: true});
     };
 
     handleCreate = () => {
