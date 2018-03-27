@@ -61,7 +61,8 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
-            buttonDisabled: true});
+            buttonDisabled: true
+        });
     };
 
     handleCreate = () => {
@@ -82,14 +83,14 @@ class TaskDialog extends React.Component {
     }
 
     handleParentChange = (e, index, value) => {
-        this.setState({taskParent: value});
-        this.setState({taskParentIndex: index});
+        this.setState({taskParent: value,
+            taskParentIndex: index});
         this.handleButtonDisabling();
     }
 
     handleGroupChange = (e, index, value) => {
-        this.setState({taskGroup: value});
-        this.setState({taskGroupIndex: index})
+        this.setState({taskGroup: value,
+            taskGroupIndex: index});
         this.handleButtonDisabling();
     }
     handleTypeChange = (e, index, value) => {
@@ -129,7 +130,7 @@ class TaskDialog extends React.Component {
         />,
         ];
 
-        function GetAdditionalFields({taskParentIndex}) {
+        function GetAdditionalFields({taskParent}) {
             return <AdditionalFields />;
         };
 
@@ -141,11 +142,12 @@ class TaskDialog extends React.Component {
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
                 onChange={this.handleGroupChange} >
-                    {eventGroups.map(eventGroup =>
-                        <MenuItem
-                            value={eventGroup.id}
-                            primaryText={eventGroup.name}
-                        />
+                    {eventGroups.filter(eventGroup => 
+                        eventGroup.eventParentId === this.state.taskParent).map(eventGroup =>
+                            <MenuItem
+                                value={eventGroup.id}
+                                primaryText={eventGroup.name}
+                            />
                     )}
                 </SelectField>
                 
@@ -275,7 +277,7 @@ class TaskDialog extends React.Component {
                         />
                     )}
             </SelectField>
-            <GetAdditionalFields taskParentIndex={this.state.taskParentIndex}/>
+            <GetAdditionalFields taskParent={this.state.taskParent}/>
             <DatePicker 
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
