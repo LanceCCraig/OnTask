@@ -15,7 +15,7 @@ export function checkNullEventParent(eventParent) {
 export function checkBlankEventGroup(eventGroup) {
     let newEventGroup = Object.assign({}, eventGroup);
     newEventGroup.description = checkBlankReturnNull(eventGroup.description);
-    newEventGroup.weight = checkBlankReturnNull(eventParent.weight);
+    newEventGroup.weight = checkBlankReturnNull(eventGroup.weight);
     return newEventGroup;
 }
 
