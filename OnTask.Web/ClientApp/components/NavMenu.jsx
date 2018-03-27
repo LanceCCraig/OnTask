@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import logo from 'ClientApp/static/logo_banner.png'
 
