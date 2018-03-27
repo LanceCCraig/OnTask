@@ -42,7 +42,7 @@ export function deleteGroup(id) {
     function success(id) { return { type: types.DELETE_EVENT_GROUP_SUCCESS, id }; }
 }
 
-export function deleteMultipleGroups(eventParentId) {
+/*export function deleteMultipleGroups(eventParentId) {
     return function (dispatch) {
         return eventGroupApi.deleteMultiple(eventParentId).then(
             eventGroup => {
@@ -55,7 +55,7 @@ export function deleteMultipleGroups(eventParentId) {
     };
 
     function success(id) { return { type: types.DELETE_EVENT_GROUP_SUCCESS, id }; }
-}
+}*/
 
 export function getAllGroups() {
     return function(dispatch) {

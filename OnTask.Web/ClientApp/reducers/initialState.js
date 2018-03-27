@@ -11,5 +11,6 @@ export default {
         token: authHelper.getToken(),
         user: {}
     },
-    eventParents: []
+    eventParents: [],
+    eventGroups: []
 };
