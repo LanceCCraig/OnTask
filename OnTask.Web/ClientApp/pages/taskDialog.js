@@ -131,7 +131,12 @@ class TaskDialog extends React.Component {
         ];
 
         function GetAdditionalFields({taskParent}) {
-            return <AdditionalFields />;
+            if (taskParent != null) {
+                return <AdditionalFields />;
+            }
+            else {
+                return <div />
+            }
         };
 
         const AdditionalFields = () => (
@@ -166,74 +171,7 @@ class TaskDialog extends React.Component {
                     <MenuItem value={5} primaryText="Other Homework" />
                 </SelectField>
             </div>
-        );
-
-        {/*const IfWork = () => (
-            <div>
-                <SelectField
-                floatingLabelText="Work Task Group"
-                value={this.state.taskGroup}
-                errorText = "*Required field"
-                errorStyle={{color: "#FF8F3A"}}
-                onChange={this.handleGroupChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="Work Activity 1" />
-                    <MenuItem value={1} primaryText="Work Activity 2" />
-                    <MenuItem value={2} primaryText="Work Activity 3" />
-                </SelectField>
-
-                <SelectField
-                floatingLabelText="Work Task Type"
-                value={this.state.taskType}
-                errorText = "*Required field"
-                errorStyle={{color: "#FF8F3A"}}
-                onChange={this.handleTypeChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="Meeting" />
-                    <MenuItem value={1} primaryText="Call" />
-                    <MenuItem value={2} primaryText="Other Event" />
-                </SelectField>
-            </div>
-        );
-
-        const IfPersonal = () => (
-            <div>
-                <SelectField
-                floatingLabelText="Personal Task Group"
-                value={this.state.taskGroup}
-                errorText = "*Required field"
-                errorStyle={{color: "#FF8F3A"}}
-                onChange={this.handleTypeChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="Personal Group 1" />
-                    <MenuItem value={1} primaryText="Personal Group 2" />
-                    <MenuItem value={2} primaryText="Personal Group 3" />
-                </SelectField>
-                
-                <SelectField
-                    floatingLabelText="Personal Task Type"
-                    value={this.state.taskType}
-                    errorText = "*Required field"
-                    errorStyle={{color: "#FF8F3A"}}
-                    onChange={this.handleTypeChange} >
-                        <MenuItem value={null} primaryText="" />
-                        <MenuItem value={0} primaryText="Appointment" />
-                        <MenuItem value={1} primaryText="Goal" />
-                        <MenuItem value={2} primaryText="Other Event" />
-                </SelectField>
-            </div>
-        );
-
-        // const IfOther = () => (
-        //     <TextField
-        //         floatingLabelText="Enter Task Type"
-        //         value={this.state.event.taskType}
-        //         errorText = "*Required field"
-        //         errorStyle={{color: "#FF8F3A"}}
-        //         onChange={this.handleTypeChange} >
-        //     </TextField>
-        // );
-    */}       
+        );      
 
         return (
         <div>
