@@ -29,6 +29,7 @@ const EventGroupList = ({ eventGroups, eventParents, selectedIds, handleRowSelec
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
+                        <TableHeaderColumn>Parent</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
                         <TableHeaderColumn>Weight</TableHeaderColumn>
                     </TableRow>
