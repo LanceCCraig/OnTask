@@ -127,14 +127,6 @@ class EventParentPage extends React.Component {
         );
     }
 }
-//<TextField
-//    name="weight"
-//    floatingLabelText="Weight"
-//    disabled={saving}
-//    value={eventParent.weight}
-//    onChange={this.handleChange}
-//    errorText={errors.weight}
-///> <br />
 
 EventParentPage.propTypes = {
     eventParent: PropTypes.object.isRequired,

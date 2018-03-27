@@ -1,10 +1,16 @@
 /**
  * External dependencies
  */
-import * as React from 'react';
+import React, { Fragment } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import logo from 'ClientApp/static/logo_banner.png'
 
+/**
+ * Internal dependencies
+ */
+import AuthNavLink from 'ClientApp/components/authNavLink';
+import PrivateNavLink from 'ClientApp/components/privateNavLink';
+import authHelper from 'ClientApp/helpers/authHelper';
 
 export class NavMenu extends React.Component {
     render() {
@@ -23,39 +29,36 @@ export class NavMenu extends React.Component {
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
                         <li>
-                            <NavLink exact to={ '/login' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-log-in'></span> Login
-                            </NavLink>
+                            <PrivateNavLink
+                                exact
+                                to={"/"}
+                                glyphiconClassName="glyphicon glyphicon-home"
+                                text="Home"
+                            />
                         </li>
                         <li>
-                            <NavLink exact to={ '/' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Home
-                            </NavLink>
-                        </li>
-                        {/* <li>
-                            <NavLink to={"/counter"} activeClassName="active">
-                                <span className="glyphicon glyphicon-education" /> Counter
-                            </NavLink>
+                            <PrivateNavLink
+                                to={"/calendar"}
+                                glyphiconClassName="glyphicon glyphicon-calendar"
+                                text="Calendar"
+                            />
                         </li>
                         <li>
-                            <NavLink to={"/fetchdata"} activeClassName="active">
-                                <span className="glyphicon glyphicon-th-list" /> Fetch data
-                            </NavLink>
-                        </li> */}
-                        <li>
-                            <NavLink to={"/calendar"} activeClassName="active">
-                                <span className="glyphicon glyphicon-calendar" /> Calendar
-                            </NavLink>
+                            <PrivateNavLink
+                                to={"/eventParents"}
+                                glyphiconClassName="glyphicon glyphicon-th-list"
+                                text="Parents"
+                            />
                         </li>
                         <li>
-                            <NavLink to={"/eventParents"} activeClassName="active">
-                                <span className="glyphicon glyphicon-th-list" /> Parents
-                            </NavLink>
+                            <PrivateNavLink
+                                to={"/eventGroups"}
+                                glyphiconClassName="glyphicon glyphicon-th-list"
+                                text="Groups"
+                            />
                         </li>
                         <li>
-                            <NavLink to={"/eventGroups"} activeClassName="active">
-                                <span className="glyphicon glyphicon-list" /> Groups
-                            </NavLink>
+                            <AuthNavLink />
                         </li>
                     </ul>
                 </div>

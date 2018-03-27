@@ -19,6 +19,7 @@ import configureStore from 'ClientApp/configureStore';
 import Routes from 'ClientApp/routes';
 import { getAllParents } from 'ClientApp/actions/eventParentActions';
 import { getAllGroups } from 'ClientApp/actions/eventGroupActions';
+import authHelper from 'ClientApp/helpers/authHelper';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -27,8 +28,10 @@ const history = createBrowserHistory({ basename: baseUrl });
 // Get the application-wide store instance, prepopulating with state from the server where available.
 const initialState = (window).initialReduxState;
 const store = configureStore(history, initialState);
-store.dispatch(getAllParents());
-store.dispatch(getAllGroups());
+if (authHelper.hasToken()) {
+    store.dispatch(getAllParents());
+    store.dispatch(getAllGroups());
+}
 
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing configuration

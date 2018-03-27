@@ -8,6 +8,10 @@ export default class authHelper {
         return localStorage.getItem(Constants.TOKEN_STORAGE_KEY);
     }
 
+    static hasToken() {
+        return !!this.getToken();
+    }
+
     static setToken(token) {
         localStorage.setItem(Constants.TOKEN_STORAGE_KEY, token);
     }

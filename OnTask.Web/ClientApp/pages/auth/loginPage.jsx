@@ -13,6 +13,8 @@ import RaisedButton from 'material-ui/RaisedButton';
  * Internal dependencies
  */
 import * as authActions from 'ClientApp/actions/authActions';
+import * as eventParentActions from 'ClientApp/actions/eventParentActions';
+import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 
 class LoginPage extends React.Component {
     constructor(props, context) {
@@ -26,7 +28,11 @@ class LoginPage extends React.Component {
 
     submitForm = e => {
         e.preventDefault();
-        this.props.actions.login(this.state.username, this.state.password);
+        this.props.actions.login(this.state.username, this.state.password).then(() => {
+            // Reload all user data into the store.
+            this.props.eventParentActions.getAllParents();
+            this.props.eventGroupActions.getAllGroups();
+        });
     }
 
     handleChange = e => {
@@ -72,6 +78,7 @@ class LoginPage extends React.Component {
                         errorText={this.props.errors.password}
                     /><br/>
                     <RaisedButton
+                        type="submit"
                         disabled={!this.canSubmitForm()}
                         primary
                         label={loggingIn ? 'Logging In...' : 'Login'}
@@ -84,7 +91,9 @@ class LoginPage extends React.Component {
 }
 
 LoginPage.propTypes = {
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    eventParentActions: PropTypes.object,
+    eventGroupsActions: PropTypes.object
 }
 
 function mapStateToProps(state, ownProps) {
@@ -96,7 +105,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(authActions, dispatch)
+        actions: bindActionCreators(authActions, dispatch),
+        eventParentActions: bindActionCreators(eventParentActions, dispatch),
+        eventGroupActions: bindActionCreators(eventGroupActions, dispatch)
     };
 }
 

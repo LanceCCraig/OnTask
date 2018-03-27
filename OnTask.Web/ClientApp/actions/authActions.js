@@ -31,3 +31,15 @@ export function login(username, password) {
     function success(user) { return { type: types.LOGIN_SUCCESS, user }; }
     function failure(errors) { return { type: types.LOGIN_FAILURE, errors }; }
 }
+
+export function logout() {
+    return function (dispatch) {
+        return accountApi.logout().then(
+            user => {
+                toastr.success('Logout successful.');
+            },
+            error => {
+                toastr.error('Logout failed.');
+            });
+    };
+}

@@ -26,7 +26,8 @@ export default function authReducer(state = initialState.auth, action) {
                 errors: action.errors
             };
         case types.LOGOUT:
-            return {...state};
+            // Clear user data from the store.
+            return initialState;
         default:
             return state;
     }
