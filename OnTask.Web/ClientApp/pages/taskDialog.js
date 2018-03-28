@@ -77,7 +77,7 @@ class TaskDialog extends React.Component {
         console.log(this.state.taskGroupIndex);
         console.log(this.state.taskType);
         console.log(this.state.taskDate);
-        if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null){
+        if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null && this.state.taskDate != null){
             this.setState({buttonDisabled: false});
         }
     }
@@ -221,7 +221,8 @@ class TaskDialog extends React.Component {
                 errorStyle={{color: "#FF8F3A"}}
                 value={this.state.taskDate}
                 hintText="Task Date" 
-                onChange={this.handleDateChange}/>
+                onChange={this.handleDateChange}
+                firstDayOfWeek={0}/>
             </Dialog>
             </div>
         </div>
