@@ -16,7 +16,7 @@ import {
  */
 import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow';
 
-const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSelection }) => {
+const EventGroupList = ({ eventGroups, eventParent, selectedIds, handleRowSelection }) => {
     return (
         <div>
             <Table
@@ -37,7 +37,7 @@ const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSele
                     displayRowCheckbox={true}
                     showRowHover={true}>
                     {eventGroups.filter(eventGroup => {
-                        return eventGroup.eventParentId === eventParentId || eventParentId == null;
+                        return eventGroup.eventParentId === eventParent.id || eventParent.id == '';
                     }).map(eventGroup =>
                         <EventGroupListRow
                             key={eventGroup.id}
@@ -53,7 +53,7 @@ const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSele
 
 EventGroupList.propTypes = {
     eventGroups: PropTypes.array.isRequired,
-    eventParents: PropTypes.array.isRequired,
+    eventParent: PropTypes.object.isRequired,
     selectedIds: PropTypes.array.isRequired,
     handleRowSelection: PropTypes.func.isRequired
 };

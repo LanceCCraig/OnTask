@@ -17,6 +17,7 @@ import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import EventGroupList from 'ClientApp/components/eventGroup/eventGroupList';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
+import { checkNullEventParent } from 'ClientApp/helpers/generalHelpers';
 
 class EventGroupsPage extends React.Component {
     constructor(props, context) {
@@ -24,7 +25,7 @@ class EventGroupsPage extends React.Component {
 
         this.state = {
             selectedIds: [],
-            curParentId: null,
+            eventParent: checkNullEventParent(props.eventParent),
             curParentIndex: null
         }
     }
@@ -49,7 +50,7 @@ class EventGroupsPage extends React.Component {
 
     handleParentChange = (event, index, value) => {
         return this.setState({
-            curParentId: value,
+            eventParent: value,
             curParentIndex: index
         });
     }
@@ -75,19 +76,19 @@ class EventGroupsPage extends React.Component {
                     onClick={this.deleteSelected}
                 /> <br />
                 <SelectField
-                    name="eventParentId"
+                    name="eventParent"
                     floatingLabelText="Parent"
                     disabled={false}
-                    value={this.state.curParentId}
+                    value={this.state.eventParent}
                     onChange={this.handleParentChange} >
                     <MenuItem value={null} primaryText="" />
                     {eventParents.map(eventParent =>
-                        <MenuItem value={eventParent.id} primaryText={eventParent.name} />
+                        <MenuItem value={eventParent} primaryText={eventParent.name} />
                     )}<br />
                 </SelectField>
                 <EventGroupList
                     eventGroups={eventGroups}
-                    eventParentId={this.state.curParentId}
+                    eventParent={this.state.eventParent}
                     handleRowSelection={this.handleRowSelection}
                     selectedIds={selectedIds}
                 />
@@ -100,14 +101,23 @@ EventGroupsPage.propTypes = {
     actions: PropTypes.object.isRequired,
     eventGroups: PropTypes.array.isRequired,
     parentActions: PropTypes.object.isRequired,
+    eventParent: PropTypes.object.isRequired,
     eventParents: PropTypes.array.isRequired,
     routerActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
+    let eventParent = {
+        id: '',
+        name: '',
+        description: '',
+        weight: ''
+    };
+
     return {
         eventGroups: state.eventGroups,
-        eventParents: state.eventParents
+        eventParents: state.eventParents,
+        eventParent: eventParent
     };
 }
 
