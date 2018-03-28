@@ -110,7 +110,7 @@ class EventGroupsPage extends React.Component {
                     handleMenuOnChange={this.handleMenuOnChange}
                 />
                 <Dialog
-                    title="Cofirm Deletion"
+                    title="Confirm Deletion"
                     actions={actions}
                     modal={false}
                     open={this.state.deleteConfirmationOpen}
