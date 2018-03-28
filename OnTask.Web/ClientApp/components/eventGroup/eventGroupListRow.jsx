@@ -30,6 +30,14 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
             <TableRowColumn>
                 <Tooltip
                     size="big"
+                    title={eventGroup.eventParentName}
+                    trigger="click">
+                    {eventGroup.eventParentName}
+                </Tooltip>
+            </TableRowColumn>
+            <TableRowColumn>
+                <Tooltip
+                    size="big"
                     title={eventGroup.description}
                     trigger="click">
                     {eventGroup.description}
