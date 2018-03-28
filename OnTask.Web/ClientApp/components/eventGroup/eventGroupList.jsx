@@ -37,7 +37,7 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
                     displayRowCheckbox={false}
                     showRowHover={true}>
                     {eventGroups.filter(eventGroup => {
-                        return eventGroup.eventParentId === eventParent.id || eventParent.id == '';
+                        return eventParent === null || eventParent.id === '' || eventGroup.eventParentId === eventParent.id;
                     }).map(eventGroup =>
                         <EventGroupListRow
                             key={eventGroup.id}
@@ -53,7 +53,7 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
 
 EventGroupList.propTypes = {
     eventGroups: PropTypes.array.isRequired,
-    eventParent: PropTypes.object.isRequired,
+    eventParent: PropTypes.object,
     handleMenuOnChange: PropTypes.func.isRequired
 };
 

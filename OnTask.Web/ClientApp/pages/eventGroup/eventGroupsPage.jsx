@@ -101,7 +101,7 @@ class EventGroupsPage extends React.Component {
                     onChange={this.handleParentChange} >
                     <MenuItem value={null} primaryText="" />
                     {eventParents.map(eventParent =>
-                        <MenuItem value={eventParent} primaryText={eventParent.name} />
+                        <MenuItem key={eventParent.id} value={eventParent} primaryText={eventParent.name} />
                     )}<br />
                 </SelectField>
                 <EventGroupList
