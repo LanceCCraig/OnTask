@@ -37,7 +37,7 @@ const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSele
                     displayRowCheckbox={true}
                     showRowHover={true}>
                     {eventGroups.filter(eventGroup => {
-                        return eventGroup.eventParentId === eventParentId;
+                        return eventGroup.eventParentId === eventParentId || eventParentId == null;
                     }).map(eventGroup =>
                         <EventGroupListRow
                             key={eventGroup.id}
