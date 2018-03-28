@@ -43,6 +43,7 @@ namespace OnTask.Data.Contexts
         /// <returns>The <see cref="EventGroup"/> class or <c>null</c> if not found.</returns>
         public EventGroup GetEventGroupById(int id) => EventGroups
             .AsNoTracking()
+            .Include(x => x.EventParent)
             .FirstOrDefault(x => x.Id == id);
 
         /// <summary>
