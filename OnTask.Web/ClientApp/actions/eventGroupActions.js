@@ -57,9 +57,9 @@ export function deleteGroup(id) {
     function success(id) { return { type: types.DELETE_EVENT_GROUP_SUCCESS, id }; }
 }*/
 
-export function getAllGroups() {
+export function getAllGroups(eventParentId) {
     return function(dispatch) {
-        return eventGroupApi.getAll().then(
+        return eventGroupApi.getAll(eventParentId).then(
             eventGroups => {
                 dispatch(success(eventGroups));
             },
@@ -75,7 +75,7 @@ export function updateGroup(eventGroup) {
     return function(dispatch) {
         let updatedEventGroup = checkBlankEventGroup(eventGroup);
 
-        return eventGroupApi.update(updatedEventGroup.id, updatedEventGroup.name, updatedEventGroup.description, updatedEventGroup.weight).then(
+        return eventGroupApi.update(updatedEventGroup.id, updatedEventGroup.eventParentId, updatedEventGroup.name, updatedEventGroup.description, updatedEventGroup.weight).then(
             () => {
                 dispatch(success(eventGroup));
                 toastr.success('Group updated.');
