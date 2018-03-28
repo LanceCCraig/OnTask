@@ -17,7 +17,6 @@ const EventParentListRow = ({ eventParent, selected, ...otherProps }) => {
             {otherProps.children[0]}
             <TableRowColumn><Link to={'eventParent/' + eventParent.id}>{eventParent.name}</Link></TableRowColumn>
             <TableRowColumn>{eventParent.description}</TableRowColumn>
-            <TableRowColumn>{eventParent.weight}</TableRowColumn>
         </TableRow>
     );
 }

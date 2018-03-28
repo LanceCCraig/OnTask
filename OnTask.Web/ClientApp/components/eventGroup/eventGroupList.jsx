@@ -30,7 +30,6 @@ const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSele
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
-                        <TableHeaderColumn>Weight</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody

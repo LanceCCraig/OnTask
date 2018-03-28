@@ -30,7 +30,6 @@ const EventParentList = ({ eventParents, selectedIds, handleRowSelection }) => {
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
-                        <TableHeaderColumn>Weight</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody
