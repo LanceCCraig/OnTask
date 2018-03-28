@@ -24,6 +24,10 @@
     body {
         padding-top: 50px;
     }
+    .navbar-brand {
+        margin-top: -10px;
+        margin-left: -10px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -62,6 +66,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .navbar-brand {
+        height: 55px;
+        margin-top: -15px;
+        margin-left: -15px;
     }
 }
 
