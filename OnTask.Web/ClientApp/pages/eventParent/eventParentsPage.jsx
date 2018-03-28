@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions } from 'react-router-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 /**
  * Internal dependencies
@@ -19,31 +21,53 @@ class EventParentsPage extends React.Component {
         super(props, context);
 
         this.state = {
-            selectedIds: []
+            deleteConfirmationOpen: false,
+            idToDelete: null
         }
-    }
-
-    deleteSelected = () => {
-        for (let i = 0, len = this.state.selectedIds.length; i < len; i++) {
-            this.props.actions.deleteParent(this.state.selectedIds[i]);
-        }
-        this.setState({ selectedIds: [] });
     }
 
     redirectToAddEventParentPage = () => {
         this.props.routerActions.push('/eventParent');
     }
 
-    handleRowSelection = (selectedRowIndices) => {
-        let newSelectedIds = selectedRowIndices.map(i => {
-            return this.props.eventParents[i].id;
+    handleDelete = () => {
+        this.props.actions.deleteParent(this.state.idToDelete);
+        this.handleDeleteConfirmationClose();
+    }
+
+    handleDeleteConfirmationOpen = () => {
+        this.setState({ deleteConfirmationOpen: true });
+    }
+
+    handleDeleteConfirmationClose = () => {
+        this.setState({
+            deleteConfirmationOpen: false,
+            idToDelete: null
         });
-        this.setState({ selectedIds: newSelectedIds });
+    }
+
+    handleMenuOnChange = (event, id) => {
+        let type = event.target.innerText;
+        if (type === 'Delete') {
+            this.setState({ idToDelete: id });
+            this.handleDeleteConfirmationOpen();
+        }
     }
 
     render() {
         const { eventParents } = this.props;
-        const { selectedIds } = this.state;
+        const actions = [
+            <FlatButton
+                label="No"
+                onClick={this.handleDeleteConfirmationClose}
+            />,
+            <FlatButton
+                primary={true}
+                label="Yes"
+                keyboardFocused={true}
+                onClick={this.handleDelete}
+            />
+        ];
         
         return (
             <div>
@@ -55,17 +79,18 @@ class EventParentsPage extends React.Component {
                     label="Add Parent"
                     onClick={this.redirectToAddEventParentPage}
                 />
-                <RaisedButton
-                    secondary
-                    label={selectedIds.length && selectedIds.length > 1 ? "Delete Parents" : "Delete Parent"}
-                    className={selectedIds.length ? "" : "hidden"}
-                    onClick={this.deleteSelected}
-                />
                 <EventParentList
                     eventParents={eventParents}
-                    handleRowSelection={this.handleRowSelection}
-                    selectedIds={selectedIds}
+                    handleMenuOnChange={this.handleMenuOnChange}
                 />
+                <Dialog
+                    title="Cofirm Deletion"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.deleteConfirmationOpen}
+                    onRequestClose={this.handleDeleteConfirmationClose}>
+                    Are you sure you want to delete this parent?
+                </Dialog>
             </div>
         );
     }

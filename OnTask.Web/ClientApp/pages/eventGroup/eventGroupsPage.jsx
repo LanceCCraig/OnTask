@@ -9,6 +9,8 @@ import { routerActions } from 'react-router-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 /**
  * Internal dependencies
@@ -24,28 +26,39 @@ class EventGroupsPage extends React.Component {
         super(props, context);
 
         this.state = {
-            selectedIds: [],
+            deleteConfirmationOpen: false,
+            idToDelete: null,
             eventParent: checkNullEventParent(props.eventParent),
             curParentIndex: null
         }
-    }
-
-    deleteSelected = () => {
-        for (let i = 0, len = this.state.selectedIds.length; i < len; i++) {
-            this.props.actions.deleteGroup(this.state.selectedIds[i]);
-        }
-        this.setState({ selectedIds: [] });
     }
 
     redirectToAddEventGroupPage = () => {
         this.props.routerActions.push('/eventGroup');
     }
 
-    handleRowSelection = (selectedRowIndices) => {
-        let newSelectedIds = selectedRowIndices.map(i => {
-            return this.props.eventGroups[i].id;
+    handleDelete = () => {
+        this.props.actions.deleteGroup(this.state.idToDelete);
+        this.handleDeleteConfirmationClose();
+    }
+
+    handleDeleteConfirmationOpen = () => {
+        this.setState({ deleteConfirmationOpen: true });
+    }
+
+    handleDeleteConfirmationClose = () => {
+        this.setState({
+            deleteConfirmationOpen: false,
+            idToDelete: null
         });
-        this.setState({ selectedIds: newSelectedIds });
+    }
+
+    handleMenuOnChange = (event, id) => {
+        let type = event.target.innerText;
+        if (type === 'Delete') {
+            this.setState({ idToDelete: id });
+            this.handleDeleteConfirmationOpen();
+        }
     }
 
     handleParentChange = (event, index, value) => {
@@ -57,7 +70,18 @@ class EventGroupsPage extends React.Component {
 
     render() {
         const { eventGroups, eventParents } = this.props;
-        const { selectedIds } = this.state;
+        const actions = [
+            <FlatButton
+                label="No"
+                onClick={this.handleDeleteConfirmationClose}
+            />,
+            <FlatButton
+                primary={true}
+                label="Yes"
+                keyboardFocused={true}
+                onClick={this.handleDelete}
+            />
+        ];
         
         return (
             <div>
@@ -68,13 +92,7 @@ class EventGroupsPage extends React.Component {
                     rippleStyle={{ backgroundColor: "#005c93" }}
                     label="Add Group"
                     onClick={this.redirectToAddEventGroupPage}
-                />
-                <RaisedButton
-                    secondary
-                    label={selectedIds.length && selectedIds.length > 1 ? "Delete Groups" : "Delete Group"}
-                    className={selectedIds.length ? "" : "hidden"}
-                    onClick={this.deleteSelected}
-                /> <br />
+                /><br />
                 <SelectField
                     name="eventParent"
                     floatingLabelText="Parent"
@@ -89,9 +107,16 @@ class EventGroupsPage extends React.Component {
                 <EventGroupList
                     eventGroups={eventGroups}
                     eventParent={this.state.eventParent}
-                    handleRowSelection={this.handleRowSelection}
-                    selectedIds={selectedIds}
+                    handleMenuOnChange={this.handleMenuOnChange}
                 />
+                <Dialog
+                    title="Cofirm Deletion"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.deleteConfirmationOpen}
+                    onRequestClose={this.handleDeleteConfirmationClose}>
+                    Are you sure you want to delete this group?
+                </Dialog>
             </div>
         );
     }

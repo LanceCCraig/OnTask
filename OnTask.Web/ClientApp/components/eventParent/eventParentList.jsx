@@ -16,31 +16,31 @@ import {
  */
 import EventParentListRow from 'ClientApp/components/eventParent/eventParentListRow';
 
-const EventParentList = ({ eventParents, selectedIds, handleRowSelection }) => {
+const EventParentList = ({ eventParents, handleMenuOnChange }) => {
     return (
         <div>
             <Table
                 fixedHeader={true}
-                multiSelectable={true}
-                onRowSelection={handleRowSelection}
-                selectable={true}>
+                multiSelectable={false}
+                selectable={false}>
                 <TableHeader
-                    adjustForCheckbox={true}
+                    adjustForCheckbox={false}
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
+                        <TableHeaderColumn />
                     </TableRow>
                 </TableHeader>
                 <TableBody
                     deselectOnClickaway={false}
-                    displayRowCheckbox={true}
+                    displayRowCheckbox={false}
                     showRowHover={true}>
                     {eventParents.map(eventParent =>
                         <EventParentListRow
                             key={eventParent.id}
                             eventParent={eventParent}
-                            selected={selectedIds.includes(eventParent.id)}
+                            handleMenuOnChange={handleMenuOnChange}
                         />
                     )}
                 </TableBody>
@@ -51,8 +51,7 @@ const EventParentList = ({ eventParents, selectedIds, handleRowSelection }) => {
 
 EventParentList.propTypes = {
     eventParents: PropTypes.array.isRequired,
-    selectedIds: PropTypes.array.isRequired,
-    handleRowSelection: PropTypes.func.isRequired
+    handleMenuOnChange: PropTypes.func.isRequired
 };
 
 export default EventParentList;

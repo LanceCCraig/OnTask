@@ -16,25 +16,25 @@ import {
  */
 import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow';
 
-const EventGroupList = ({ eventGroups, eventParent, selectedIds, handleRowSelection }) => {
+const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
     return (
         <div>
             <Table
                 fixedHeader={true}
-                multiSelectable={true}
-                onRowSelection={handleRowSelection}
-                selectable={true}>
+                multiSelectable={false}
+                selectable={false}>
                 <TableHeader
-                    adjustForCheckbox={true}
+                    adjustForCheckbox={false}
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
+                        <TableHeaderColumn />
                     </TableRow>
                 </TableHeader>
                 <TableBody
                     deselectOnClickaway={false}
-                    displayRowCheckbox={true}
+                    displayRowCheckbox={false}
                     showRowHover={true}>
                     {eventGroups.filter(eventGroup => {
                         return eventGroup.eventParentId === eventParent.id || eventParent.id == '';
@@ -42,7 +42,7 @@ const EventGroupList = ({ eventGroups, eventParent, selectedIds, handleRowSelect
                         <EventGroupListRow
                             key={eventGroup.id}
                             eventGroup={eventGroup}
-                            selected={selectedIds.includes(eventGroup.id)}
+                            handleMenuOnChange={handleMenuOnChange}
                         />
                     )}
                 </TableBody>
@@ -54,8 +54,7 @@ const EventGroupList = ({ eventGroups, eventParent, selectedIds, handleRowSelect
 EventGroupList.propTypes = {
     eventGroups: PropTypes.array.isRequired,
     eventParent: PropTypes.object.isRequired,
-    selectedIds: PropTypes.array.isRequired,
-    handleRowSelection: PropTypes.func.isRequired
+    handleMenuOnChange: PropTypes.func.isRequired
 };
 
 export default EventGroupList;

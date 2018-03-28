@@ -10,6 +10,7 @@ import { createBrowserHistory } from 'history';
 import 'bootstrap';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'toastr/build/toastr.min.css';
+import 'react-tippy/dist/tippy.css'
 
 /**
  * Internal dependencies
