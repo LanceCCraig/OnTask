@@ -10,6 +10,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
 import '../css/site.css';
 import { TextField } from 'material-ui';
 
@@ -48,6 +49,14 @@ class TaskDialog extends React.Component {
         return currentDate;
     };
 
+    checkForValidDate(date) {
+        date.setHours(0,0,0,0);
+        if (date < this.getCurrentDate()) {
+            return false;
+        }
+        return true;
+    }
+
     handleOpen = () => {
         this.setState({open: true});
     };
@@ -61,6 +70,9 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
+            startDate: null,
+            endDate: null,
+            checked: false,
             buttonDisabled: true
         });
     };
@@ -77,6 +89,9 @@ class TaskDialog extends React.Component {
         console.log(this.state.taskGroupIndex);
         console.log(this.state.taskType);
         console.log(this.state.taskDate);
+        console.log(this.state.startDate);
+        console.log(this.state.endDate);
+        console.log(this.state.checked);
         if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null && this.state.taskDate != null){
             this.setState({buttonDisabled: false});
         }
@@ -93,19 +108,46 @@ class TaskDialog extends React.Component {
             taskGroupIndex: index});
         this.handleButtonDisabling();
     }
+
     handleTypeChange = (e, index, value) => {
         this.setState({taskType: value});
         this.handleButtonDisabling();
     }
-    handleDateChange = (event, date) => {
-        date.setHours(0,0,0,0);
-        if (date < this.getCurrentDate()) {
-            window.alert('Date must be on or after today\'s date.')
-        }
-        else {
+
+    handleTaskDateChange = (event, date) => {
+        if (this.checkForValidDate(date)) {
             this.setState({taskDate: date});
             this.handleButtonDisabling();
         }
+    }
+
+    handleRecurringStartDateChange = (event, date) => {
+        if (this.checkForValidDate(date) == true) {
+            this.setState({startDate: date});
+            this.handleButtonDisabling();
+        }
+        else {
+            window.alert('Date must be on or after today\'s date.')
+        }
+    }
+
+    handleRecurringEndDateChange = (event, date) => {
+        if (this.checkForValidDate(date) == true) {
+            this.setState({endDate: date});
+            this.handleButtonDisabling();
+        }
+        else {
+            window.alert('Date must be on or after today\'s date.')
+        }
+    }
+
+    updateCheck() {
+        this.setState((oldState) => {
+            return {
+                checked: !oldState.checked,
+            };
+        });
+        this.handleButtonDisabling();
     }
 
     render() {
@@ -171,7 +213,37 @@ class TaskDialog extends React.Component {
                     <MenuItem value={5} primaryText="Other Homework" />
                 </SelectField>
             </div>
-        );      
+        );
+
+        function GetRecurringEventFields({checked}) {
+            if (checked == true) {
+                return <RecurringEventFields />
+            }
+            else {
+                return <div />
+            }
+        };
+        
+        const RecurringEventFields = () => (
+            <div>
+                <DatePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.startDate}
+                    hintText="Start Date" 
+                    onChange={this.handleRecurringStartDateChange}
+                    firstDayOfWeek={0}
+                />
+                <DatePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.endDate}
+                    hintText="End Date" 
+                    onChange={this.handleRecurringEndDateChange}
+                    firstDayOfWeek={0}
+                />
+            </div>
+        );
 
         return (
         <div>
@@ -216,13 +288,22 @@ class TaskDialog extends React.Component {
                     )}
             </SelectField>
             <GetAdditionalFields taskParent={this.state.taskParent}/>
-            <DatePicker 
-                errorText = "*Required field"
-                errorStyle={{color: "#FF8F3A"}}
-                value={this.state.taskDate}
-                hintText="Task Date" 
-                onChange={this.handleDateChange}
-                firstDayOfWeek={0}/>
+            {(!this.state.checked) ?
+                <DatePicker 
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.taskDate}
+                    hintText="Task Date" 
+                    onChange={this.handleTaskDateChange}
+                    firstDayOfWeek={0}/>
+                : <div />
+            }
+            <Checkbox 
+                label="Recurring"
+                checked={this.state.checked}
+                onCheck={this.updateCheck.bind(this)}
+            />
+            <GetRecurringEventFields checked={this.state.checked}/>
             </Dialog>
             </div>
         </div>
