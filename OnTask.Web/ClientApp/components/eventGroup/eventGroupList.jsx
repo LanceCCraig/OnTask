@@ -18,7 +18,7 @@ import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow
 
 const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
     return (
-        <div>
+        <div style={{ marginBottom: '1%'}}>
             <Table
                 fixedHeader={true}
                 multiSelectable={false}
