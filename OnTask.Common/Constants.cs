@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using static OnTask.Common.Enumerations;
 
 namespace OnTask.Common
@@ -22,6 +23,14 @@ namespace OnTask.Common
             DaysOfWeek.Friday,
             DaysOfWeek.Saturday
         };
+        /// <summary>
+        /// Gets the minimum <see cref="TimeSpan"/> for representing clock time.
+        /// </summary>
+        public static TimeSpan MinimumTimeSpan = new TimeSpan(0, 0, 0);
+        /// <summary>
+        /// Gets the maximum <see cref="TimeSpan"/> for representing clock time.
+        /// </summary>
+        public static TimeSpan MaximumTimeSpan = new TimeSpan(24, 0, 0);
         /// <summary>
         /// Gets the minimum length of a password.
         /// </summary>

@@ -64,6 +64,28 @@ namespace OnTask.Web.Controllers
         }
 
         /// <summary>
+        /// Creates multiple recurring <see cref="EventModel"/> classes.
+        /// </summary>
+        /// <param name="model">The <see cref="RecurringEventModel"/> class to create the <see cref="EventModel"/> classes from.</param>
+        /// <returns>An <see cref="IActionResult"/> response containing the created <see cref="EventModel"/> classes.</returns>
+        /// <response code="200">The request has succeeded and the new models are returned.</response>
+        /// <response code="400">The provided model is invalid.</response>
+        /// <response code="401">The caller is not authenticated.</response>
+        [Route("CreateRecurring")]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateRecurring([FromBody]RecurringEventModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var createdModels = service.InsertRecurring(model);
+                return Ok(createdModels);
+            }
+            return BadRequest(ModelState);
+        }
+
+        /// <summary>
         /// Deletes multiple <see cref="EventModel"/> classes.
         /// </summary>
         /// <param name="model">The model that provides data on which <see cref="EventModel"/> classes to delete.</param>

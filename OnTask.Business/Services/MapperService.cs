@@ -18,10 +18,12 @@ namespace OnTask.Business.Services
         public MapperService()
         {
             AddEventMap();
+            AddEventMapToItself();
             AddEventToEventFullMap();
             AddEventTypeMap();
             AddEventGroupMap();
             AddEventParentMap();
+            AddRecurringEventToEventMap();
         }
         #endregion
 
@@ -38,6 +40,11 @@ namespace OnTask.Business.Services
                 EventTypeWeight = entity.EventType?.Weight,
                 IsEventTypeRecommended = entity.EventType?.IsRecommended ?? true,
             }.InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddEventMapToItself() => AddMap<EventModel, EventModel>(model =>
+        {
+            return (EventModel)new EventModel().InjectFrom<SmartInjection>(model);
         });
 
         private void AddEventToEventFullMap() => AddMap<Event, EventFullModel>(entity =>
@@ -70,6 +77,11 @@ namespace OnTask.Business.Services
         private void AddEventParentMap() => AddMap<EventParent, EventParentModel>(entity =>
         {
             return (EventParentModel)new EventParentModel().InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddRecurringEventToEventMap() => AddMap<RecurringEventModel, EventModel>(recurringEventModel =>
+        {
+            return (EventModel)new EventModel().InjectFrom<SmartInjection>(recurringEventModel);
         });
         #endregion
     }

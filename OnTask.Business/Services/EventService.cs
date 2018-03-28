@@ -8,6 +8,7 @@ using OnTask.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static OnTask.Common.Extensions;
 
 namespace OnTask.Business.Services
 {
@@ -163,6 +164,48 @@ namespace OnTask.Business.Services
                 }.InjectFrom<SmartInjection>(model);
                 context.InsertEvent(entity);
                 model.Id = entity.Id;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Inserts recurring <see cref="EventModel"/> classes.
+        /// </summary>
+        /// <param name="model">The <see cref="RecurringEventModel"/> class that specifies the <see cref="EventModel"/> classes to insert.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventModel"/> classes that were inserted.</returns>
+        public IEnumerable<EventModel> InsertRecurring(RecurringEventModel model)
+        {
+            try
+            {
+                var insertedModels = new List<EventModel>();
+
+                var baseEventModel = mapper.Map<EventModel>(model);
+                var daysOfWeek = model.DaysOfWeek.GetDaysOfWeek();
+                var dateRange = GetDateRange(model.StartDate, model.EndDate);
+                foreach (var date in dateRange)
+                {
+                    var dateDaysOfWeek = date.GetDaysOfWeek();
+                    if (daysOfWeek.HasFlag(dateDaysOfWeek))
+                    {
+                        var eventModel = mapper.Map<EventModel>(baseEventModel);
+                        eventModel.StartDate = date.CombineTimeWithDate(model.StartTime);
+                        eventModel.EndDate = model.EndTime.HasValue ? date.CombineTimeWithDate(model.EndTime.Value) : default(DateTime?);
+                        var entity = (Event)new Event
+                        {
+                            UserId = ApplicationUser.Id,
+                            CreatedOn = DateTime.Now
+                        }.InjectFrom<SmartInjection>(eventModel);
+                        context.InsertEvent(entity);
+                        eventModel.Id = entity.Id;
+                        insertedModels.Add(eventModel);
+                    }
+                }
+                context.SaveChanges();
+
+                return insertedModels;
             }
             catch (Exception)
             {

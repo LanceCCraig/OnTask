@@ -21,6 +21,14 @@ namespace OnTask.Common
             target <= end;
 
         /// <summary>
+        /// Adds a <see cref="TimeSpan"/> to a <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="date">The <see cref="DateTime"/> to use for the date.</param>
+        /// <param name="time">The <see cref="TimeSpan"/> to use for the time.</param>
+        /// <returns>A <see cref="DateTime"/> with the specified <see cref="TimeSpan"/> added.</returns>
+        public static DateTime CombineTimeWithDate(this DateTime date, TimeSpan time) => date.Date.Add(time);
+
+        /// <summary>
         /// Gets all <see cref="DateTime"/> values between a specified range.
         /// </summary>
         /// <param name="start">The start of the <see cref="DateTime"/> range.</param>
@@ -32,6 +40,24 @@ namespace OnTask.Common
             {
                 yield return day;
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DaysOfWeek"/> value from the <see cref="IEnumerable{T}"/> of texts.
+        /// </summary>
+        /// <param name="daysOfWeekTexts">The <see cref="DaysOfWeek"/> text values to parse.</param>
+        /// <returns>The corresponding <see cref="DaysOfWeek"/> value.</returns>
+        public static DaysOfWeek GetDaysOfWeek(this IEnumerable<string> daysOfWeekTexts)
+        {
+            var daysOfWeek = DaysOfWeek.None;
+            foreach (var daysOfWeekText in daysOfWeekTexts)
+            {
+                if (Enum.TryParse(daysOfWeekText, out DaysOfWeek result))
+                {
+                    daysOfWeek |= result;
+                }
+            }
+            return daysOfWeek;
         }
 
         /// <summary>

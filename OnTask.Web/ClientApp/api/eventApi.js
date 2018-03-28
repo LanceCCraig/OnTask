@@ -31,6 +31,29 @@ let EventApi = {
             .then(handleResponse, handleError);
     },
 
+    createRecurring(eventTypeId, eventGroupId, eventParentId, name, description, weight, startTime, endTime, startDate, endDate, daysOfWeek) {
+        let options = {
+            method: 'POST',
+            headers: getAuthorizedHeaders(),
+            body: JSON.stringify({
+                eventTypeId,
+                eventGroupId,
+                eventParentId,
+                name,
+                description,
+                weight,
+                startTime,
+                endTime,
+                startDate,
+                endDate,
+                daysOfWeek
+            })
+        };
+
+        return fetch(`${Constants.EVENT_API_URL}/CreateRecurring`, options)
+            .then(handleResponse, handleError);
+    },
+
     delete(id) {
         let options = {
             method: 'DELETE',

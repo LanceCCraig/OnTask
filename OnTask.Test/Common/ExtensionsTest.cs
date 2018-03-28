@@ -33,6 +33,22 @@ namespace OnTask.Test.Common
 
         [TestMethod]
         [DataTestMethod]
+        [DataRow("2018-01-01", "12:00:00", "2018-01-01 12:00:00", DisplayName = "Date Without Time")]
+        [DataRow("2018-01-01 12:00:00", "06:00:00", "2018-01-01 06:00:00", DisplayName = "Date With Time")]
+        [DataRow("2018-01-01 12:00:00", "12:00:00", "2018-01-01 12:00:00", DisplayName = "Date With Same Time")]
+        public void CombineTimeWithDate(string dateText, string timeText, string expectedText)
+        {
+            var date = DateTime.Parse(dateText);
+            var time = TimeSpan.Parse(timeText);
+            var expected = DateTime.Parse(expectedText);
+
+            var actual = date.CombineTimeWithDate(time);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DataTestMethod]
         [DataRow("2016-01-01", "2016-12-31", 366, DisplayName = "A Leap Year of Dates")]
         [DataRow("2017-01-01", "2017-12-31", 365, DisplayName = "A Year of Dates")]
         [DataRow("2018-01-01", "2018-01-07", 7, DisplayName = "Multiple Dates")]
@@ -53,6 +69,22 @@ namespace OnTask.Test.Common
 
         [TestMethod]
         [DataTestMethod]
+        [DataRow(new[] { "Sunday" }, "Sunday", DisplayName = "Valid Value")]
+        [DataRow(new[] { "foo" }, "None", DisplayName = "Invalid Value")]
+        [DataRow(new[] { "Monday", "Wednesday", "Friday" }, "Monday, Wednesday, Friday", DisplayName = "Valid Values")]
+        [DataRow(new[] { "foo", "bar", "baz" }, "None", DisplayName = "Invalid Values")]
+        [DataRow(new[] { "Monday", "foo", "Friday", "bar" }, "Monday, Friday", DisplayName = "Valid and Invalid Values")]
+        public void GetDaysOfWeek_Strings(string[] dayOfWeekTexts, string expectedText)
+        {
+            var expected = Enum.Parse<DaysOfWeek>(expectedText);
+
+            var actual = dayOfWeekTexts.GetDaysOfWeek();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DataTestMethod]
         [DataRow("2018-03-04", DaysOfWeek.Sunday, DisplayName = "Sunday")]
         [DataRow("2018-03-05", DaysOfWeek.Monday, DisplayName = "Monday")]
         [DataRow("2018-03-06", DaysOfWeek.Tuesday, DisplayName = "Tuesday")]
@@ -60,7 +92,7 @@ namespace OnTask.Test.Common
         [DataRow("2018-03-08", DaysOfWeek.Thursday, DisplayName = "Thursday")]
         [DataRow("2018-03-09", DaysOfWeek.Friday, DisplayName = "Friday")]
         [DataRow("2018-03-10", DaysOfWeek.Saturday, DisplayName = "Saturday")]
-        public void GetDaysOfWeek(string dateText, DaysOfWeek expected)
+        public void GetDaysOfWeek_DateTime(string dateText, DaysOfWeek expected)
         {
             var date = DateTime.Parse(dateText);
 

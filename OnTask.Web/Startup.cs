@@ -223,7 +223,8 @@ namespace OnTask.Web
             .AddSingleton<IValidator<EventModel>, EventModelValidator>()
             .AddSingleton<IValidator<EventParentModel>, EventParentModelValidator>()
             .AddSingleton<IValidator<EventTypeModel>, EventTypeModelValidator>()
-            .AddSingleton<IValidator<EventTypeDeleteMultipleModel>, EventTypeDeleteMultipleModelValidator>();
+            .AddSingleton<IValidator<EventTypeDeleteMultipleModel>, EventTypeDeleteMultipleModelValidator>()
+            .AddSingleton<IValidator<RecurringEventModel>, RecurringEventModelValidator>();
 
         private static void ConfigureCommonServices(IServiceCollection services)
         {
