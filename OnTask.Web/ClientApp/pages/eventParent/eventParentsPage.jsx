@@ -49,7 +49,9 @@ class EventParentsPage extends React.Component {
             <div>
                 <h1>Parents</h1>
                 <RaisedButton
-                    primary
+                    labelStyle={{ color: 'white' }}
+                    backgroundColor="#2DB1FF"
+                    rippleStyle={{ backgroundColor: "#005c93" }}
                     label="Add Parent"
                     onClick={this.redirectToAddEventParentPage}
                 />

@@ -14,7 +14,8 @@ const ParentSelectField = ({ eventParents, disabled, errorText, onChange, value 
             disabled={disabled}
             value={value}
             onChange={onChange}
-            errorText={errorText}>
+            errorText={errorText}
+            errorStyle={{ color: "#FF8F3A" }} >
             <MenuItem value={null} primaryText="" />
             {eventParents.map(eventParent =>
                 <MenuItem value={eventParent.id} primaryText={eventParent.name} />

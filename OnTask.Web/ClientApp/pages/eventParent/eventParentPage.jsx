@@ -118,7 +118,9 @@ class EventParentPage extends React.Component {
                     <RaisedButton
                         type="submit"
                         disabled={!this.canSubmitForm()}
-                        primary
+                        labelStyle={{ color: 'white' }}
+                        backgroundColor="#2DB1FF"
+                        rippleStyle={{ backgroundColor: "#005c93" }}
                         label={saving ? 'Saving...' : 'Save'}
                         onClick={this.submitForm}
                     />

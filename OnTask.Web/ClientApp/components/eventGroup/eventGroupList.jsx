@@ -16,7 +16,7 @@ import {
  */
 import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow';
 
-const EventGroupList = ({ eventGroups, eventParents, selectedIds, handleRowSelection }) => {
+const EventGroupList = ({ eventGroups, eventParentId, selectedIds, handleRowSelection }) => {
     return (
         <div>
             <Table
@@ -29,7 +29,6 @@ const EventGroupList = ({ eventGroups, eventParents, selectedIds, handleRowSelec
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
-                        <TableHeaderColumn>Parent</TableHeaderColumn>
                         <TableHeaderColumn>Description</TableHeaderColumn>
                         <TableHeaderColumn>Weight</TableHeaderColumn>
                     </TableRow>
@@ -38,7 +37,9 @@ const EventGroupList = ({ eventGroups, eventParents, selectedIds, handleRowSelec
                     deselectOnClickaway={false}
                     displayRowCheckbox={true}
                     showRowHover={true}>
-                    {eventGroups.map(eventGroup =>
+                    {eventGroups.filter(eventGroup => {
+                        return eventGroup.eventParentId === eventParentId;
+                    }).map(eventGroup =>
                         <EventGroupListRow
                             key={eventGroup.id}
                             eventGroup={eventGroup}

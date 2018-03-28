@@ -102,14 +102,6 @@ class EventGroupPage extends React.Component {
             <div style={{textAlign: "center"}}>
                 <h1>Group</h1>
                 <form>
-                    <TextField
-                        name="name"
-                        floatingLabelText="Name"
-                        disabled={saving}
-                        value={eventGroup.name}
-                        onChange={this.handleChange}
-                        errorText={errors.name}
-                    /><br />
                     <ParentSelectField
                         name="eventParentId"
                         eventParents={eventParents}
@@ -117,6 +109,14 @@ class EventGroupPage extends React.Component {
                         value={eventGroup.eventParentId}
                         onChange={this.handleParentChange}
                         errorText={errors.eventParentId}
+                    /><br />
+                    <TextField
+                        name="name"
+                        floatingLabelText="Name"
+                        disabled={saving}
+                        value={eventGroup.name}
+                        onChange={this.handleChange}
+                        errorText={errors.name}
                     /><br />
                     <TextField
                         name="description"
@@ -136,8 +136,10 @@ class EventGroupPage extends React.Component {
                     <RaisedButton
                         type="submit"
                         disabled={!this.canSubmitForm()}
-                        primary
                         label={saving ? 'Saving...' : 'Save'}
+                        labelStyle={{ color: 'white' }}
+                        backgroundColor="#2DB1FF"
+                        rippleStyle={{ backgroundColor: "#005c93" }}
                         onClick={this.submitForm}
                     />
                 </form>

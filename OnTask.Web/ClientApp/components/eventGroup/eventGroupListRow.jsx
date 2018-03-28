@@ -16,7 +16,6 @@ const EventGroupListRow = ({ eventGroup, selected, ...otherProps }) => {
             {...otherProps}>
             {otherProps.children[0]}
             <TableRowColumn><Link to={'eventGroup/' + eventGroup.id}>{eventGroup.name}</Link></TableRowColumn>
-            <TableRowColumn>{eventGroup.eventParentId}</TableRowColumn>
             <TableRowColumn>{eventGroup.description}</TableRowColumn>
             <TableRowColumn>{eventGroup.weight}</TableRowColumn>
         </TableRow>

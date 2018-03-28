@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions } from 'react-router-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 /**
  * Internal dependencies
@@ -14,13 +16,16 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import EventGroupList from 'ClientApp/components/eventGroup/eventGroupList';
+import ParentSelectField from 'ClientApp/components/common/parentSelectField';
 
 class EventGroupsPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            selectedIds: []
+            selectedIds: [],
+            curParentId: null,
+            curParentIndex: null
         }
     }
 
@@ -42,6 +47,13 @@ class EventGroupsPage extends React.Component {
         this.setState({ selectedIds: newSelectedIds });
     }
 
+    handleParentChange = (event, index, value) => {
+        return this.setState({
+            curParentId: value,
+            curParentIndex: index
+        });
+    }
+
     render() {
         const { eventGroups, eventParents } = this.props;
         const { selectedIds } = this.state;
@@ -50,7 +62,9 @@ class EventGroupsPage extends React.Component {
             <div>
                 <h1>Groups</h1>
                 <RaisedButton
-                    primary
+                    labelStyle={{ color: 'white' }}
+                    backgroundColor="#2DB1FF"
+                    rippleStyle={{ backgroundColor: "#005c93" }}
                     label="Add Group"
                     onClick={this.redirectToAddEventGroupPage}
                 />
@@ -59,10 +73,21 @@ class EventGroupsPage extends React.Component {
                     label={selectedIds.length && selectedIds.length > 1 ? "Delete Groups" : "Delete Group"}
                     className={selectedIds.length ? "" : "hidden"}
                     onClick={this.deleteSelected}
-                />
+                /> <br />
+                <SelectField
+                    name="eventParentId"
+                    floatingLabelText="Parent"
+                    disabled={false}
+                    value={this.state.curParentId}
+                    onChange={this.handleParentChange} >
+                    <MenuItem value={null} primaryText="" />
+                    {eventParents.map(eventParent =>
+                        <MenuItem value={eventParent.id} primaryText={eventParent.name} />
+                    )}<br />
+                </SelectField>
                 <EventGroupList
                     eventGroups={eventGroups}
-                    eventParents={eventParents}
+                    eventParentId={this.state.curParentId}
                     handleRowSelection={this.handleRowSelection}
                     selectedIds={selectedIds}
                 />
