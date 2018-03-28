@@ -27,8 +27,8 @@ class CalendarPage extends React.Component {
                           id: 0,
                           title: 'All Day Event very long title',
                           allDay: true,
-                          start: new Date(2018, 1, 18),
-                          end: new Date(2018, 1, 1),
+                          start: new Date(2018, 0, 1),
+                          end: new Date(2018, 0, 18),
                         },
                         {
                             id: 1,
@@ -42,7 +42,13 @@ class CalendarPage extends React.Component {
                             title: 'DTS STARTS',
                             start: new Date(2018, 1, 13, 0, 0, 0),
                             end: new Date(2018, 1, 20, 0, 0, 0),
-                          },
+                        },
+                          {
+                              id: 3,
+                              title: 'EXPO',
+                              start: new Date(2018, 3, 3),
+                              end: new Date(2018, 3, 4)
+                          }
                     ]
                 }
                 views={{
@@ -55,7 +61,7 @@ class CalendarPage extends React.Component {
                 toolbar
                 startAccessor="start"
                 endAccessor="end"
-                defaultDate={new Date(2018, 1, 21)}
+                defaultDate={new Date(2018, 2, 28)}
             />
             </div>
         </div>
