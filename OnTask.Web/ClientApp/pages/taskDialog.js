@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -8,6 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
@@ -38,8 +40,14 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
-            // taskPriority: null,
+            startTime: null,
+            endTime: null,
+            startDate: null,
+            endDate: null,
+            frequency: null,
+            checked: false,
             buttonDisabled: true,
+            testAppointment: null
         }
     };
 
@@ -70,8 +78,11 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
+            startTime: null,
+            endTime: null,
             startDate: null,
             endDate: null,
+            frequency: null,
             checked: false,
             buttonDisabled: true
         });
@@ -83,16 +94,25 @@ class TaskDialog extends React.Component {
     };
 
     handleButtonDisabling = () => {
-        console.log(this.state.taskParent);
-        console.log(this.state.taskParentIndex);
-        console.log(this.state.taskGroup);
-        console.log(this.state.taskGroupIndex);
-        console.log(this.state.taskType);
-        console.log(this.state.taskDate);
-        console.log(this.state.startDate);
-        console.log(this.state.endDate);
-        console.log(this.state.checked);
-        if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null && this.state.taskDate != null){
+        console.log("Task Parent: " + this.state.taskParent);
+        console.log("Task Parent Index: " + this.state.taskParentIndex);
+        console.log("Task Group: " + this.state.taskGroup);
+        console.log("Task Group Index: " + this.state.taskGroupIndex);
+        console.log("Task Type: " + this.state.taskType);
+        console.log("Task Date: " + this.state.taskDate);
+        console.log("Start Time: " + this.state.startTime);
+        console.log("End Time: " + this.state.endTime);
+        console.log("(Recurring) Start Date: " + this.state.startDate);
+        console.log("(Recurring) End Date: " + this.state.endDate);
+        console.log("(Recurring) Checked: " + this.state.checked);
+        console.log("(Recurring) Test Appt: " + this.state.testAppointment);
+        if (this.state.taskParent != null && 
+            this.state.taskGroup != null && 
+            this.state.taskType != null && 
+            this.state.taskDate != null &&
+            this.state.startTime != null &&
+            this.state.endTime != null
+        ){
             this.setState({buttonDisabled: false});
         }
     }
@@ -141,10 +161,43 @@ class TaskDialog extends React.Component {
         }
     }
 
+    convertToMoment = (time) => {
+        let momentTime = moment(time);
+        if (this.state.checked) {
+            var date = this.state.startDate;
+        }
+        else {
+            var date = this.state.taskDate;
+        }
+        let momentDate = moment(date);
+        let taskTime = moment({
+            year: momentDate.year(),
+            month: momentDate.month(),
+            day: momentDate.date(),
+            hour: momentTime.hours(),
+            minute: momentTime.minutes()
+        });
+        return taskTime._d;
+    }
+
+    handleStartTimeChange = (event, time, value) => {
+        const result = this.convertToMoment(time);
+        this.setState({testAppointment: result, startTime: result})
+        this.handleButtonDisabling();
+    }
+
+    handleEndTimeChange = (event, time) => {
+        const result = this.convertToMoment(time);
+        this.setState({testAppointment: result, endTime: result});
+        this.handleButtonDisabling();
+    }
+
     updateCheck() {
         this.setState((oldState) => {
             return {
                 checked: !oldState.checked,
+                startTime: null,
+                endTime: null
             };
         });
         this.handleButtonDisabling();
@@ -242,7 +295,25 @@ class TaskDialog extends React.Component {
                     onChange={this.handleRecurringEndDateChange}
                     firstDayOfWeek={0}
                 />
+                <TimeFields />           
             </div>
+        );
+
+        const TimeFields = () => (
+            <div>
+                <TimePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    hintText="Start Time"
+                    value={this.state.startTime}
+                    onChange={this.handleStartTimeChange}/>
+                <TimePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.endTime}
+                    hintText="End Time"
+                    onChange={this.handleEndTimeChange}/>
+            </div> 
         );
 
         return (
@@ -288,21 +359,25 @@ class TaskDialog extends React.Component {
                     )}
             </SelectField>
             <GetAdditionalFields taskParent={this.state.taskParent}/>
-            {(!this.state.checked) ?
-                <DatePicker 
-                    errorText = "*Required field"
-                    errorStyle={{color: "#FF8F3A"}}
-                    value={this.state.taskDate}
-                    hintText="Task Date" 
-                    onChange={this.handleTaskDateChange}
-                    firstDayOfWeek={0}/>
-                : <div />
-            }
             <Checkbox 
                 label="Recurring"
                 checked={this.state.checked}
                 onCheck={this.updateCheck.bind(this)}
             />
+            {(!this.state.checked) ?
+                <div>
+                    <DatePicker 
+                        errorText = "*Required field"
+                        errorStyle={{color: "#FF8F3A"}}
+                        value={this.state.taskDate}
+                        hintText="Task Date" 
+                        onChange={this.handleTaskDateChange}
+                        firstDayOfWeek={0}/>
+                    {(this.state.taskDate == null) ? <div /> :
+                        <TimeFields />}
+                </div>
+                : <div />
+            }
             <GetRecurringEventFields checked={this.state.checked}/>
             </Dialog>
             </div>
