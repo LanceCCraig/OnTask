@@ -20,6 +20,7 @@ import configureStore from 'ClientApp/configureStore';
 import Routes from 'ClientApp/routes';
 import { getAllParents } from 'ClientApp/actions/eventParentActions';
 import { getAllGroups } from 'ClientApp/actions/eventGroupActions';
+import { getAllTypes } from 'ClientApp/actions/eventTypeActions';
 import authHelper from 'ClientApp/helpers/authHelper';
 
 // Create browser history to use in the Redux store
@@ -32,6 +33,7 @@ const store = configureStore(history, initialState);
 if (authHelper.hasToken()) {
     store.dispatch(getAllParents());
     store.dispatch(getAllGroups());
+    store.dispatch(getAllTypes());
 }
 
 function renderApp() {

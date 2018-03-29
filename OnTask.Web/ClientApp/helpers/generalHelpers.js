@@ -26,6 +26,20 @@ export function checkNullEventGroup(eventGroup) {
     return newEventGroup;
 }
 
+export function checkBlankEventType(eventType) {
+    let newEventType = Object.assign({}, eventType);
+    newEventType.description = checkBlankReturnNull(eventType.description);
+    newEventType.weight = checkBlankReturnNull(eventType.weight);
+    return newEventType;
+}
+
+export function checkNullEventType(eventType) {
+    let newEventType = Object.assign({}, eventType);
+    newEventType.description = checkNullReturnBlank(eventType.description);
+    newEventType.weight = checkNullReturnBlank(eventType.weight);
+    return newEventType;
+}
+
 function checkBlankReturnNull(item) {
     return item === '' ? null : item;
 }
