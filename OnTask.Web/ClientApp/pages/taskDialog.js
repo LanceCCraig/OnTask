@@ -44,8 +44,8 @@ class TaskDialog extends React.Component {
             endTime: null,
             startDate: null,
             endDate: null,
-            frequency: null,
             checked: false,
+            days: [],
             buttonDisabled: true
         }
     };
@@ -94,8 +94,8 @@ class TaskDialog extends React.Component {
             endTime: null,
             startDate: null,
             endDate: null,
-            frequency: null,
             checked: false,
+            days: [],
             buttonDisabled: true
         });
     };
@@ -117,12 +117,14 @@ class TaskDialog extends React.Component {
         console.log("(Recurring) Start Date: " + this.state.startDate);
         console.log("(Recurring) End Date: " + this.state.endDate);
         console.log("(Recurring) Checked: " + this.state.checked);
+        console.log("Days: " + this.state.days);
         if (this.state.taskParent != null && 
             this.state.taskGroup != null && 
             this.state.taskType != null && 
-            this.state.taskDate != null &&
             this.state.startTime != null &&
-            this.state.endTime != null
+            this.state.endTime != null &&
+            ((this.state.checked && this.state.startDate != null && this.state.endDate != null) ||
+            (!(this.state.checked) && this.state.taskDate != null))
         ){
             this.setState({buttonDisabled: false});
         }
@@ -223,15 +225,51 @@ class TaskDialog extends React.Component {
                 startTime: null,
                 endTime: null,
                 startDate: null,
-                endDate: null
+                endDate: null,
+                taskDate: null,
+                days: []
             };
         });
         this.handleButtonDisabling();
     }
 
+    addDays() {
+
+    }
+
     render() {
         const { eventParents } = this.props;
         const { eventGroups } = this.props;
+        const week = [
+            {
+                value: "Sun",
+                label: "Sunday"
+            },
+            {
+                value: "Mon",
+                label: "Monday"
+            },
+            {
+                value: "Tue",
+                label: "Tuesday"
+            },
+            {
+                value: "Wed",
+                label: "Wednesday"
+            },
+            {
+                value: "Thu",
+                label: "Thursday"
+            },
+            {
+                value: "Fri",
+                label: "Friday",
+            },
+            {
+                value: "Sat",
+                label: "Saturday"
+            }
+        ]
         const actions = [
         <RaisedButton
             label="Cancel"
@@ -321,7 +359,10 @@ class TaskDialog extends React.Component {
                     onChange={this.handleRecurringEndDateChange}
                     firstDayOfWeek={0}
                 />
-                <TimeFields />           
+                {(this.state.startDate == null) ? <div /> :
+                    <TimeFields />
+                }
+                <DaysFields />           
             </div>
         );
 
@@ -340,6 +381,18 @@ class TaskDialog extends React.Component {
                     hintText="End Time"
                     onChange={this.handleEndTimeChange}/>
             </div> 
+        );
+
+        const DaysFields = () => (
+            <div style={{marginLeft: '40%'}}>
+                <b>Day(s):</b>
+                {week.map(day =>
+                    <Checkbox 
+                        label={day.label}
+                        key={day.value}
+                    />
+                )}
+            </div>            
         );
 
         return (
@@ -388,8 +441,7 @@ class TaskDialog extends React.Component {
             <Checkbox 
                 label="Recurring"
                 checked={this.state.checked}
-                onCheck={this.updateCheck.bind(this)}
-            />
+                onCheck={this.updateCheck.bind(this)}/>
             {(!this.state.checked) ?
                 <div>
                     <DatePicker 
@@ -400,7 +452,8 @@ class TaskDialog extends React.Component {
                         onChange={this.handleTaskDateChange}
                         firstDayOfWeek={0}/>
                     {(this.state.taskDate == null) ? <div /> :
-                        <TimeFields />}
+                        <TimeFields />
+                    }
                 </div>
                 : <div />
             }
