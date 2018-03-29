@@ -20,7 +20,7 @@ const EventParentList = ({ eventParents, handleMenuOnChange }) => {
     return (
         <div>
             <Table
-                fixedHeader={true}
+                fixedHeader={false}
                 multiSelectable={false}
                 selectable={false}>
                 <TableHeader
@@ -28,7 +28,7 @@ const EventParentList = ({ eventParents, handleMenuOnChange }) => {
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
-                        <TableHeaderColumn>Description</TableHeaderColumn>
+                        <TableHeaderColumn className="hidden-xs">Description</TableHeaderColumn>
                         <TableHeaderColumn />
                     </TableRow>
                 </TableHeader>

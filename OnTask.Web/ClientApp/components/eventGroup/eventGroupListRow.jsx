@@ -35,7 +35,7 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
                     {eventGroup.eventParentName}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="hidden-xs">
                 <Tooltip
                     size="big"
                     title={eventGroup.description}
@@ -43,7 +43,7 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
                     {eventGroup.description}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn style={{ textOverflow: 'clip' }}>
                 <IconMenu
                     iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}

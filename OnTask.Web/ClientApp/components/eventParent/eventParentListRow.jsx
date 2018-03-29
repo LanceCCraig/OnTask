@@ -27,7 +27,7 @@ const EventParentListRow = ({ eventParent, handleMenuOnChange, ...otherProps }) 
                     {eventParent.name}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="hidden-xs">
                 <Tooltip
                     size="big"
                     title={eventParent.description}
@@ -35,7 +35,7 @@ const EventParentListRow = ({ eventParent, handleMenuOnChange, ...otherProps }) 
                     {eventParent.description}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn style={{ textOverflow: 'clip' }}>
                 <IconMenu
                     iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
