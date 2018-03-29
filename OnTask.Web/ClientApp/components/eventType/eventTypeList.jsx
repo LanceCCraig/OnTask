@@ -33,7 +33,7 @@ const EventTypeList = ({ eventTypes, eventParentId, eventGroupId, handleMenuOnCh
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
-                        <TableHeaderColumn>Parent</TableHeaderColumn>
+                        <TableHeaderColumn className="hidden-xs">Parent</TableHeaderColumn>
                         <TableHeaderColumn>Group</TableHeaderColumn>
                         <TableHeaderColumn className="hidden-xs">Description</TableHeaderColumn>
                         <TableHeaderColumn />

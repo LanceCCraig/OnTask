@@ -27,7 +27,7 @@ const EventTypeListRow = ({ eventType, handleMenuOnChange, ...otherProps }) => {
                     {eventType.name}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="hidden-xs">
                 <Tooltip
                     size="big"
                     title={eventType.eventParentName}
