@@ -11,6 +11,7 @@ import auth from 'ClientApp/reducers/authReducer';
 import eventParents from 'ClientApp/reducers/eventParentReducer';
 import eventGroups from 'ClientApp/reducers/eventGroupReducer';
 import eventTypes from 'ClientApp/reducers/eventTypeReducer';
+import events from 'ClientApp/reducers/eventReducer';
 import * as counter from 'ClientApp/store/Counter';
 import * as weatherForecasts from 'ClientApp/store/WeatherForecasts';
 
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     eventParents: eventParents,
     eventGroups: eventGroups,
     eventTypes: eventTypes,
+    events: events,
     counter: counter.reducer,
     weatherForecasts: weatherForecasts.reducer
 });

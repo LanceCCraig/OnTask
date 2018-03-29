@@ -13,5 +13,6 @@ export default {
     },
     eventParents: [],
     eventGroups: [],
-    eventTypes: []
+    eventTypes: [],
+    events: []
 };

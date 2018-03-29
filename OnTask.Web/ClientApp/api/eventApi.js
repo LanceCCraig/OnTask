@@ -83,7 +83,7 @@ let EventApi = {
     getAll(eventTypeId, eventGroupId, eventParentId, dateRangeStart, dateRangeEnd) {
         let options = {
             method: 'GET',
-            headers: getAuthorizedHeaders(),
+            headers: getAuthorizedHeaders()
         };
         let parameters = {
             eventTypeId,

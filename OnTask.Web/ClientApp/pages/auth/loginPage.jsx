@@ -16,6 +16,7 @@ import * as authActions from 'ClientApp/actions/authActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
+import * as eventActions from 'ClientApp/actions/eventActions';
 
 class LoginPage extends React.Component {
     constructor(props, context) {
@@ -34,6 +35,7 @@ class LoginPage extends React.Component {
             this.props.eventParentActions.getAllParents();
             this.props.eventGroupActions.getAllGroups();
             this.props.eventTypeActions.getAllTypes();
+            this.props.eventActions.getAllEvents();
         });
     }
 
@@ -96,7 +98,8 @@ LoginPage.propTypes = {
     actions: PropTypes.object.isRequired,
     eventParentActions: PropTypes.object,
     eventGroupActions: PropTypes.object,
-    eventTypeActions: PropTypes.object
+    eventTypeActions: PropTypes.object,
+    eventActions: PropTypes.object
 }
 
 function mapStateToProps(state, ownProps) {
@@ -111,7 +114,8 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(authActions, dispatch),
         eventParentActions: bindActionCreators(eventParentActions, dispatch),
         eventGroupActions: bindActionCreators(eventGroupActions, dispatch),
-        eventTypeActions: bindActionCreators(eventTypeActions, dispatch)
+        eventTypeActions: bindActionCreators(eventTypeActions, dispatch),
+        eventActions: bindActionCreators(eventActions, dispatch)
     };
 }
 
