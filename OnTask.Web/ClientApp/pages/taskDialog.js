@@ -14,7 +14,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import '../css/site.css';
-import { TextField } from 'material-ui';
+import { TextField, NavigationExpandLess } from 'material-ui';
 
 
 /**
@@ -46,20 +46,32 @@ class TaskDialog extends React.Component {
             endDate: null,
             frequency: null,
             checked: false,
-            buttonDisabled: true,
-            testAppointment: null
+            buttonDisabled: true
         }
     };
 
     getCurrentDate() {
         const currentDate = new Date();
-        currentDate.setHours(0,0,0,0)
         return currentDate;
     };
 
     checkForValidDate(date) {
         date.setHours(0,0,0,0);
-        if (date < this.getCurrentDate()) {
+        if (date < this.getCurrentDate().setHours(0,0,0,0)) {
+            return false;
+        }
+        return true;
+    }
+
+    checkForValidTime(time) {
+        if (time < this.getCurrentDate()) {
+            return false;
+        }
+        return true;
+    }
+
+    compareTimes(startTime, endTime) {
+        if (endTime < startTime) {
             return false;
         }
         return true;
@@ -105,7 +117,6 @@ class TaskDialog extends React.Component {
         console.log("(Recurring) Start Date: " + this.state.startDate);
         console.log("(Recurring) End Date: " + this.state.endDate);
         console.log("(Recurring) Checked: " + this.state.checked);
-        console.log("(Recurring) Test Appt: " + this.state.testAppointment);
         if (this.state.taskParent != null && 
             this.state.taskGroup != null && 
             this.state.taskType != null && 
@@ -135,30 +146,33 @@ class TaskDialog extends React.Component {
     }
 
     handleTaskDateChange = (event, date) => {
-        if (this.checkForValidDate(date)) {
-            this.setState({taskDate: date});
-            this.handleButtonDisabling();
+        if (!this.checkForValidDate(date)) {
+            window.alert('Date must be on or after today\'s date.')
+            return 0;
         }
+        
+        this.setState({taskDate: date});
+        this.handleButtonDisabling();
     }
 
     handleRecurringStartDateChange = (event, date) => {
-        if (this.checkForValidDate(date) == true) {
-            this.setState({startDate: date});
-            this.handleButtonDisabling();
-        }
-        else {
+        if (!this.checkForValidDate(date)) {
             window.alert('Date must be on or after today\'s date.')
+            return 0;
         }
+
+        this.setState({startDate: date});
+        this.handleButtonDisabling();
     }
 
     handleRecurringEndDateChange = (event, date) => {
-        if (this.checkForValidDate(date) == true) {
-            this.setState({endDate: date});
-            this.handleButtonDisabling();
-        }
-        else {
+        if (!this.checkForValidDate(date)) {
             window.alert('Date must be on or after today\'s date.')
+            return 0;
         }
+
+        this.setState({endDate: date});
+        this.handleButtonDisabling();
     }
 
     convertToMoment = (time) => {
@@ -177,6 +191,10 @@ class TaskDialog extends React.Component {
             hour: momentTime.hours(),
             minute: momentTime.minutes()
         });
+        if(!(this.checkForValidTime(taskTime._d))) {
+            window.alert('Selected time cannot be in the past.');
+            return 0;
+        }
         return taskTime._d;
     }
 
@@ -188,16 +206,24 @@ class TaskDialog extends React.Component {
 
     handleEndTimeChange = (event, time) => {
         const result = this.convertToMoment(time);
-        this.setState({testAppointment: result, endTime: result});
-        this.handleButtonDisabling();
+        if(!(this.compareTimes(this.state.startTime, result))) {
+            window.alert('End Time must be greater than Start Time.');
+            this.setState({endTime: null});
+        }
+        else {
+            this.setState({testAppointment: result, endTime: result});
+            this.handleButtonDisabling();
+        }
     }
 
     updateCheck() {
         this.setState((oldState) => {
             return {
-                checked: !oldState.checked,
+                checked: !(oldState.checked),
                 startTime: null,
-                endTime: null
+                endTime: null,
+                startDate: null,
+                endDate: null
             };
         });
         this.handleButtonDisabling();
