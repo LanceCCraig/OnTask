@@ -16,7 +16,12 @@ import {
  */
 import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow';
 
-const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
+const EventGroupList = ({ eventGroups, eventParentId, handleMenuOnChange }) => {
+    function filterGroups(element) {
+        return eventParentId === null ||
+            element.eventParentId === eventParentId;
+    }
+
     return (
         <div style={{ marginBottom: '1%'}}>
             <Table
@@ -37,9 +42,8 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
                     deselectOnClickaway={false}
                     displayRowCheckbox={false}
                     showRowHover={true}>
-                    {eventGroups.filter(eventGroup => {
-                        return eventParent === null || eventParent.id === '' || eventGroup.eventParentId === eventParent.id;
-                    }).map(eventGroup =>
+                    {eventGroups.filter(filterGroups)
+                        .map(eventGroup =>
                         <EventGroupListRow
                             key={eventGroup.id}
                             eventGroup={eventGroup}
@@ -54,7 +58,10 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
 
 EventGroupList.propTypes = {
     eventGroups: PropTypes.array.isRequired,
-    eventParent: PropTypes.object,
+    eventParentId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]),
     handleMenuOnChange: PropTypes.func.isRequired
 };
 

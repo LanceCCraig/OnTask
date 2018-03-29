@@ -14,13 +14,18 @@ import {
 /**
  * Internal dependencies
  */
-import EventGroupListRow from 'ClientApp/components/eventGroup/eventGroupListRow';
+import EventTypeListRow from 'ClientApp/components/eventType/eventTypeListRow';
 
-const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
+const EventTypeList = ({ eventTypes, eventParentId, eventGroupId, handleMenuOnChange }) => {
+    function filterTypes(element) {
+        return (eventParentId === null || element.eventParentId === eventParentId) &&
+            (eventGroupId === null || element.eventGroupId === eventGroupId);
+    }
+
     return (
         <div style={{ marginBottom: '1%'}}>
             <Table
-                fixedHeader={true}
+                fixedHeader={false}
                 multiSelectable={false}
                 selectable={false}>
                 <TableHeader
@@ -28,8 +33,9 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
                     displaySelectAll={false}>
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
-                        <TableHeaderColumn>Parent</TableHeaderColumn>
-                        <TableHeaderColumn>Description</TableHeaderColumn>
+                        <TableHeaderColumn className="hidden-xs">Parent</TableHeaderColumn>
+                        <TableHeaderColumn>Group</TableHeaderColumn>
+                        <TableHeaderColumn className="hidden-xs">Description</TableHeaderColumn>
                         <TableHeaderColumn />
                     </TableRow>
                 </TableHeader>
@@ -37,12 +43,10 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
                     deselectOnClickaway={false}
                     displayRowCheckbox={false}
                     showRowHover={true}>
-                    {eventGroups.filter(eventGroup => {
-                        return eventParent === null || eventParent.id === '' || eventGroup.eventParentId === eventParent.id;
-                    }).map(eventGroup =>
-                        <EventGroupListRow
-                            key={eventGroup.id}
-                            eventGroup={eventGroup}
+                    {eventTypes.filter(filterTypes).map(eventType =>
+                        <EventTypeListRow
+                            key={eventType.id}
+                            eventType={eventType}
                             handleMenuOnChange={handleMenuOnChange}
                         />
                     )}
@@ -52,10 +56,17 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
     );
 }
 
-EventGroupList.propTypes = {
-    eventGroups: PropTypes.array.isRequired,
-    eventParent: PropTypes.object,
+EventTypeList.propTypes = {
+    eventTypes: PropTypes.array.isRequired,
+    eventParentId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]),
+    eventGroupId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]),
     handleMenuOnChange: PropTypes.func.isRequired
 };
 
-export default EventGroupList;
+export default EventTypeList;

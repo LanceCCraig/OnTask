@@ -309,6 +309,7 @@ class TaskDialog extends React.Component {
                     {eventGroups.filter(eventGroup => 
                         eventGroup.eventParentId === this.state.taskParent).map(eventGroup =>
                             <MenuItem
+                                key={eventGroup.id}
                                 value={eventGroup.id}
                                 primaryText={eventGroup.name}
                             />
@@ -321,13 +322,13 @@ class TaskDialog extends React.Component {
                 errorText = "*Required field"
                 errorStyle={{color: "#FF8F3A"}}
                 onChange={this.handleTypeChange} >
-                    <MenuItem value={null} primaryText="" />
-                    <MenuItem value={0} primaryText="Paper" />
-                    <MenuItem value={1} primaryText="Project" />
-                    <MenuItem value={2} primaryText="Worksheet" />
-                    <MenuItem value={3} primaryText="Reading" />
-                    <MenuItem value={4} primaryText="Test" />
-                    <MenuItem value={5} primaryText="Other Homework" />
+                    <MenuItem key={null} value={null} primaryText="" />
+                    <MenuItem key={0} value={0} primaryText="Paper" />
+                    <MenuItem key={1} value={1} primaryText="Project" />
+                    <MenuItem key={2} value={2} primaryText="Worksheet" />
+                    <MenuItem key={3} value={3} primaryText="Reading" />
+                    <MenuItem key={4} value={4} primaryText="Test" />
+                    <MenuItem key={5} value={5} primaryText="Other Homework" />
                 </SelectField>
             </div>
         );
@@ -432,6 +433,7 @@ class TaskDialog extends React.Component {
                 onChange={this.handleParentChange} >
                     {eventParents.map(eventParent =>
                         <MenuItem
+                            key={eventParent.id}
                             value={eventParent.id}
                             primaryText={eventParent.name}
                         />

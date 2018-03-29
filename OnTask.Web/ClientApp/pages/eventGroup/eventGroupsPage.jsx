@@ -28,8 +28,7 @@ class EventGroupsPage extends React.Component {
         this.state = {
             deleteConfirmationOpen: false,
             idToDelete: null,
-            eventParent: checkNullEventParent(props.eventParent),
-            curParentIndex: null
+            eventParentId: null
         }
     }
 
@@ -61,12 +60,7 @@ class EventGroupsPage extends React.Component {
         }
     }
 
-    handleParentChange = (event, index, value) => {
-        return this.setState({
-            eventParent: value,
-            curParentIndex: index
-        });
-    }
+    handleParentChange = (event, index, value) => this.setState({ eventParentId: value });
 
     render() {
         const { eventGroups, eventParents } = this.props;
@@ -93,20 +87,15 @@ class EventGroupsPage extends React.Component {
                     label="Add Group"
                     onClick={this.redirectToAddEventGroupPage}
                 /><br />
-                <SelectField
-                    name="eventParent"
-                    floatingLabelText="Parent"
+                <ParentSelectField
+                    eventParents={eventParents}
                     disabled={false}
-                    value={this.state.eventParent}
-                    onChange={this.handleParentChange} >
-                    <MenuItem value={null} primaryText="" />
-                    {eventParents.map(eventParent =>
-                        <MenuItem key={eventParent.id} value={eventParent} primaryText={eventParent.name} />
-                    )}<br />
-                </SelectField>
+                    onChange={this.handleParentChange}
+                    value={this.state.eventParentId}
+                />
                 <EventGroupList
                     eventGroups={eventGroups}
-                    eventParent={this.state.eventParent}
+                    eventParentId={this.state.eventParentId}
                     handleMenuOnChange={this.handleMenuOnChange}
                 />
                 <Dialog
@@ -125,31 +114,20 @@ class EventGroupsPage extends React.Component {
 EventGroupsPage.propTypes = {
     actions: PropTypes.object.isRequired,
     eventGroups: PropTypes.array.isRequired,
-    parentActions: PropTypes.object.isRequired,
-    eventParent: PropTypes.object.isRequired,
     eventParents: PropTypes.array.isRequired,
     routerActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    let eventParent = {
-        id: '',
-        name: '',
-        description: '',
-        weight: ''
-    };
-
     return {
         eventGroups: state.eventGroups,
-        eventParents: state.eventParents,
-        eventParent: eventParent
+        eventParents: state.eventParents
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(eventGroupActions, dispatch),
-        parentActions: bindActionCreators(eventParentActions, dispatch),
         routerActions: bindActionCreators(routerActions, dispatch)
     };
 }

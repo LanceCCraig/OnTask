@@ -14,7 +14,7 @@ export function createType(eventType) {
     return function(dispatch) {
         let createdEventType = checkBlankEventType(eventType);
 
-        return eventTypeApi.create(createdEventType.eventGroupId, createdEventType.eventParentId, createdEventType.name, createdEventType.description, createdEventType.weight).then(
+        return eventTypeApi.create(createdEventType.eventGroupId, createdEventType.eventParentId, createdEventType.name, createdEventType.description, createdEventType.weight, createdEventType.isRecommended).then(
             eventType => {
                 dispatch(success(eventType));
                 toastr.success('Type created.');

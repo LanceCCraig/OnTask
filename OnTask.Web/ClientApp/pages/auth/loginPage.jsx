@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as authActions from 'ClientApp/actions/authActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
+import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
 
 class LoginPage extends React.Component {
     constructor(props, context) {
@@ -32,6 +33,7 @@ class LoginPage extends React.Component {
             // Reload all user data into the store.
             this.props.eventParentActions.getAllParents();
             this.props.eventGroupActions.getAllGroups();
+            this.props.eventTypeActions.getAllTypes();
         });
     }
 
@@ -93,7 +95,8 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
     actions: PropTypes.object.isRequired,
     eventParentActions: PropTypes.object,
-    eventGroupsActions: PropTypes.object
+    eventGroupActions: PropTypes.object,
+    eventTypeActions: PropTypes.object
 }
 
 function mapStateToProps(state, ownProps) {
@@ -107,7 +110,8 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(authActions, dispatch),
         eventParentActions: bindActionCreators(eventParentActions, dispatch),
-        eventGroupActions: bindActionCreators(eventGroupActions, dispatch)
+        eventGroupActions: bindActionCreators(eventGroupActions, dispatch),
+        eventTypeActions: bindActionCreators(eventTypeActions, dispatch)
     };
 }
 

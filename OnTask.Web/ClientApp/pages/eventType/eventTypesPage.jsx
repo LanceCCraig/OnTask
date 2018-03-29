@@ -16,10 +16,9 @@ import FlatButton from 'material-ui/FlatButton';
  * Internal dependencies
  */
 import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
-import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
-import * as eventParentActions from 'ClientApp/actions/eventParentActions';
-//import EventTypeList from 'ClientApp/components/eventType/eventTypeList';
+import EventTypeList from 'ClientApp/components/eventType/eventTypeList';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
+import GroupSelectField from 'ClientApp/components/common/groupSelectField';
 import { checkNullEventParent } from 'ClientApp/helpers/generalHelpers';
 
 class EventTypesPage extends React.Component {
@@ -30,9 +29,7 @@ class EventTypesPage extends React.Component {
             deleteConfirmationOpen: false,
             idToDelete: null,
             eventParentId: null,
-            eventParentIndex: null,
-            eventGroupId: null,
-            eventGroupIndex: null
+            eventGroupId: null
         }
     }
 
@@ -65,18 +62,16 @@ class EventTypesPage extends React.Component {
     }
 
     handleParentChange = (event, index, value) => {
-        return this.setState({
-            eventParentId: value,
-            eventParentIndex: index
-        });
+        // Reset the group filter if the parent filter is changed.
+        if (value !== this.state.eventParentId) {
+            this.setState({ eventGroupId: null });
+        }
+        return this.setState({ eventParentId: value });
     }
 
-    handleGroupChange = (event, index, value) => {
-        return this.setState({
-            eventGroupId: value,
-            eventGroupIndex: index
-        });
-    }
+    handleGroupChange = (event, index, value) => this.setState({eventGroupId: value});
+
+    isGroupFilterDisabled = () => this.state.eventParentId === null || this.state.eventParentId === '';
 
     render() {
         const { eventTypes, eventGroups, eventParents } = this.props;
@@ -103,30 +98,25 @@ class EventTypesPage extends React.Component {
                     label="Add Type"
                     onClick={this.redirectToAddEventTypePage}
                 /><br />
-                <SelectField
-                    name="eventParent"
-                    floatingLabelText="Parent"
+                <ParentSelectField
+                    eventParents={eventParents}
                     disabled={false}
+                    onChange={this.handleParentChange}
                     value={this.state.eventParentId}
-                    onChange={this.handleParentChange} >
-                    <MenuItem value={null} primaryText="" />
-                    {eventParents.map(eventParent =>
-                        <MenuItem key={eventParent.id} value={eventParent.id} primaryText={eventParent.name} />
-                    )}<br />
-                </SelectField>
-                <SelectField
-                    name="eventGroup"
-                    floatingLabelText="Group"
-                    disabled={false}
+                />
+                <GroupSelectField
+                    eventGroups={eventGroups}
+                    eventParentId={this.state.eventParentId}
+                    disabled={this.isGroupFilterDisabled()}
+                    onChange={this.handleGroupChange}
                     value={this.state.eventGroupId}
-                    onChange={this.handleGroupChange} >
-                    <MenuItem value={null} primaryText="" />
-                    {eventGroups.filter(eventGroup => {
-                        eventGroup.eventParentId == this.state.eventParent.id;
-                    }).map(eventGroup =>
-                        <MenuItem key={eventGroup.id} value={eventGroup.id} primaryText={eventGroup.name} />
-                    )}<br />
-                </SelectField>
+                />
+                <EventTypeList
+                    eventTypes={eventTypes}
+                    eventParentId={this.state.eventParentId}
+                    eventGroupId={this.state.eventGroupId}
+                    handleMenuOnChange={this.handleMenuOnChange}
+                />
                 <Dialog
                     title="Confirm Deletion"
                     actions={actions}
@@ -143,35 +133,22 @@ class EventTypesPage extends React.Component {
 EventTypesPage.propTypes = {
     actions: PropTypes.object.isRequired,
     eventTypes: PropTypes.array.isRequired,
-    groupActions: PropTypes.object.isRequired,
     eventGroups: PropTypes.array.isRequired,
-    parentActions: PropTypes.object.isRequired,
-    eventParentId: PropTypes.object.isRequired,
     eventParents: PropTypes.array.isRequired,
     routerActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    let eventParent = {
-        id: '',
-        name: '',
-        description: '',
-        weight: ''
-    };
-
     return {
         eventTypes: state.eventTypes,
         eventGroups: state.eventGroups,
-        eventParents: state.eventParents,
-        eventParent: eventParent
+        eventParents: state.eventParents
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(eventTypeActions, dispatch),
-        groupActions: bindActionCreators(eventGroupActions, dispatch),
-        parentActions: bindActionCreators(eventParentActions, dispatch),
         routerActions: bindActionCreators(routerActions, dispatch)
     };
 }
