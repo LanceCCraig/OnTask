@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import logo from 'ClientApp/static/logo_banner.png'
 
 /**
  * Internal dependencies
@@ -11,6 +10,7 @@ import logo from 'ClientApp/static/logo_banner.png'
 import AuthNavLink from 'ClientApp/components/authNavLink';
 import PrivateNavLink from 'ClientApp/components/privateNavLink';
 import authHelper from 'ClientApp/helpers/authHelper';
+import logo from 'ClientApp/static/logo_banner.png'
 
 export class NavMenu extends React.Component {
     render() {
@@ -55,6 +55,13 @@ export class NavMenu extends React.Component {
                                 to={"/eventGroups"}
                                 glyphiconClassName="glyphicon glyphicon-th-list"
                                 text="Groups"
+                            />
+                        </li>
+                        <li>
+                            <PrivateNavLink
+                                to={"/eventTypes"}
+                                glyphiconClassName="glyphicon glyphicon-th-list"
+                                text="Types"
                             />
                         </li>
                         <li>

@@ -20,7 +20,7 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
     return (
         <div style={{ marginBottom: '1%'}}>
             <Table
-                fixedHeader={false}
+                fixedHeader={true}
                 multiSelectable={false}
                 selectable={false}>
                 <TableHeader
@@ -29,7 +29,7 @@ const EventGroupList = ({ eventGroups, eventParent, handleMenuOnChange }) => {
                     <TableRow>
                         <TableHeaderColumn>Name</TableHeaderColumn>
                         <TableHeaderColumn>Parent</TableHeaderColumn>
-                        <TableHeaderColumn className="hidden-xs">Description</TableHeaderColumn>
+                        <TableHeaderColumn>Description</TableHeaderColumn>
                         <TableHeaderColumn />
                     </TableRow>
                 </TableHeader>

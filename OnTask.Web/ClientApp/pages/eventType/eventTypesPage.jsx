@@ -15,30 +15,33 @@ import FlatButton from 'material-ui/FlatButton';
 /**
  * Internal dependencies
  */
+import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
 import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
-import EventGroupList from 'ClientApp/components/eventGroup/eventGroupList';
+//import EventTypeList from 'ClientApp/components/eventType/eventTypeList';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
 import { checkNullEventParent } from 'ClientApp/helpers/generalHelpers';
 
-class EventGroupsPage extends React.Component {
+class EventTypesPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
             deleteConfirmationOpen: false,
             idToDelete: null,
-            eventParent: checkNullEventParent(props.eventParent),
-            curParentIndex: null
+            eventParentId: null,
+            eventParentIndex: null,
+            eventGroupId: null,
+            eventGroupIndex: null
         }
     }
 
-    redirectToAddEventGroupPage = () => {
-        this.props.routerActions.push('/eventGroup');
+    redirectToAddEventTypePage = () => {
+        this.props.routerActions.push('/eventType');
     }
 
     handleDelete = () => {
-        this.props.actions.deleteGroup(this.state.idToDelete);
+        this.props.actions.deleteType(this.state.idToDelete);
         this.handleDeleteConfirmationClose();
     }
 
@@ -63,13 +66,20 @@ class EventGroupsPage extends React.Component {
 
     handleParentChange = (event, index, value) => {
         return this.setState({
-            eventParent: value,
-            curParentIndex: index
+            eventParentId: value,
+            eventParentIndex: index
+        });
+    }
+
+    handleGroupChange = (event, index, value) => {
+        return this.setState({
+            eventGroupId: value,
+            eventGroupIndex: index
         });
     }
 
     render() {
-        const { eventGroups, eventParents } = this.props;
+        const { eventTypes, eventGroups, eventParents } = this.props;
         const actions = [
             <FlatButton
                 label="No"
@@ -85,48 +95,58 @@ class EventGroupsPage extends React.Component {
         
         return (
             <div>
-                <h1>Groups</h1>
+                <h1>Types</h1>
                 <RaisedButton
                     labelStyle={{ color: 'white' }}
                     backgroundColor="#2DB1FF"
                     rippleStyle={{ backgroundColor: "#005c93" }}
-                    label="Add Group"
-                    onClick={this.redirectToAddEventGroupPage}
+                    label="Add Type"
+                    onClick={this.redirectToAddEventTypePage}
                 /><br />
                 <SelectField
                     name="eventParent"
                     floatingLabelText="Parent"
                     disabled={false}
-                    value={this.state.eventParent}
+                    value={this.state.eventParentId}
                     onChange={this.handleParentChange} >
                     <MenuItem value={null} primaryText="" />
                     {eventParents.map(eventParent =>
-                        <MenuItem key={eventParent.id} value={eventParent} primaryText={eventParent.name} />
+                        <MenuItem key={eventParent.id} value={eventParent.id} primaryText={eventParent.name} />
                     )}<br />
                 </SelectField>
-                <EventGroupList
-                    eventGroups={eventGroups}
-                    eventParent={this.state.eventParent}
-                    handleMenuOnChange={this.handleMenuOnChange}
-                />
+                <SelectField
+                    name="eventGroup"
+                    floatingLabelText="Group"
+                    disabled={false}
+                    value={this.state.eventGroupId}
+                    onChange={this.handleGroupChange} >
+                    <MenuItem value={null} primaryText="" />
+                    {eventGroups.filter(eventGroup => {
+                        eventGroup.eventParentId == this.state.eventParent.id;
+                    }).map(eventGroup =>
+                        <MenuItem key={eventGroup.id} value={eventGroup.id} primaryText={eventGroup.name} />
+                    )}<br />
+                </SelectField>
                 <Dialog
                     title="Confirm Deletion"
                     actions={actions}
                     modal={false}
                     open={this.state.deleteConfirmationOpen}
                     onRequestClose={this.handleDeleteConfirmationClose}>
-                    Are you sure you want to delete this group?
+                    Are you sure you want to delete this type?
                 </Dialog>
             </div>
         );
     }
 }
 
-EventGroupsPage.propTypes = {
+EventTypesPage.propTypes = {
     actions: PropTypes.object.isRequired,
+    eventTypes: PropTypes.array.isRequired,
+    groupActions: PropTypes.object.isRequired,
     eventGroups: PropTypes.array.isRequired,
     parentActions: PropTypes.object.isRequired,
-    eventParent: PropTypes.object.isRequired,
+    eventParentId: PropTypes.object.isRequired,
     eventParents: PropTypes.array.isRequired,
     routerActions: PropTypes.object.isRequired
 };
@@ -140,6 +160,7 @@ function mapStateToProps(state, ownProps) {
     };
 
     return {
+        eventTypes: state.eventTypes,
         eventGroups: state.eventGroups,
         eventParents: state.eventParents,
         eventParent: eventParent
@@ -148,10 +169,11 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(eventGroupActions, dispatch),
+        actions: bindActionCreators(eventTypeActions, dispatch),
+        groupActions: bindActionCreators(eventGroupActions, dispatch),
         parentActions: bindActionCreators(eventParentActions, dispatch),
         routerActions: bindActionCreators(routerActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventGroupsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(EventTypesPage);

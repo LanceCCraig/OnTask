@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -8,10 +9,12 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
 import '../css/site.css';
-import { TextField } from 'material-ui';
+import { TextField, NavigationExpandLess } from 'material-ui';
 
 
 /**
@@ -37,16 +40,42 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
-            // taskPriority: null,
-            buttonDisabled: true,
+            startTime: null,
+            endTime: null,
+            startDate: null,
+            endDate: null,
+            frequency: null,
+            checked: false,
+            buttonDisabled: true
         }
     };
 
     getCurrentDate() {
         const currentDate = new Date();
-        currentDate.setHours(0,0,0,0)
         return currentDate;
     };
+
+    checkForValidDate(date) {
+        date.setHours(0,0,0,0);
+        if (date < this.getCurrentDate().setHours(0,0,0,0)) {
+            return false;
+        }
+        return true;
+    }
+
+    checkForValidTime(time) {
+        if (time < this.getCurrentDate()) {
+            return false;
+        }
+        return true;
+    }
+
+    compareTimes(startTime, endTime) {
+        if (endTime < startTime) {
+            return false;
+        }
+        return true;
+    }
 
     handleOpen = () => {
         this.setState({open: true});
@@ -61,6 +90,12 @@ class TaskDialog extends React.Component {
             taskGroupIndex: null,
             taskType: null,
             taskDate: null,
+            startTime: null,
+            endTime: null,
+            startDate: null,
+            endDate: null,
+            frequency: null,
+            checked: false,
             buttonDisabled: true
         });
     };
@@ -71,13 +106,24 @@ class TaskDialog extends React.Component {
     };
 
     handleButtonDisabling = () => {
-        console.log(this.state.taskParent);
-        console.log(this.state.taskParentIndex);
-        console.log(this.state.taskGroup);
-        console.log(this.state.taskGroupIndex);
-        console.log(this.state.taskType);
-        console.log(this.state.taskDate);
-        if (this.state.taskParent != null && this.state.taskGroup != null && this.state.taskType != null && this.state.taskDate != null){
+        console.log("Task Parent: " + this.state.taskParent);
+        console.log("Task Parent Index: " + this.state.taskParentIndex);
+        console.log("Task Group: " + this.state.taskGroup);
+        console.log("Task Group Index: " + this.state.taskGroupIndex);
+        console.log("Task Type: " + this.state.taskType);
+        console.log("Task Date: " + this.state.taskDate);
+        console.log("Start Time: " + this.state.startTime);
+        console.log("End Time: " + this.state.endTime);
+        console.log("(Recurring) Start Date: " + this.state.startDate);
+        console.log("(Recurring) End Date: " + this.state.endDate);
+        console.log("(Recurring) Checked: " + this.state.checked);
+        if (this.state.taskParent != null && 
+            this.state.taskGroup != null && 
+            this.state.taskType != null && 
+            this.state.taskDate != null &&
+            this.state.startTime != null &&
+            this.state.endTime != null
+        ){
             this.setState({buttonDisabled: false});
         }
     }
@@ -93,19 +139,94 @@ class TaskDialog extends React.Component {
             taskGroupIndex: index});
         this.handleButtonDisabling();
     }
+
     handleTypeChange = (e, index, value) => {
         this.setState({taskType: value});
         this.handleButtonDisabling();
     }
-    handleDateChange = (event, date) => {
-        date.setHours(0,0,0,0);
-        if (date < this.getCurrentDate()) {
+
+    handleTaskDateChange = (event, date) => {
+        if (!this.checkForValidDate(date)) {
             window.alert('Date must be on or after today\'s date.')
+            return 0;
+        }
+        
+        this.setState({taskDate: date});
+        this.handleButtonDisabling();
+    }
+
+    handleRecurringStartDateChange = (event, date) => {
+        if (!this.checkForValidDate(date)) {
+            window.alert('Date must be on or after today\'s date.')
+            return 0;
+        }
+
+        this.setState({startDate: date});
+        this.handleButtonDisabling();
+    }
+
+    handleRecurringEndDateChange = (event, date) => {
+        if (!this.checkForValidDate(date)) {
+            window.alert('Date must be on or after today\'s date.')
+            return 0;
+        }
+
+        this.setState({endDate: date});
+        this.handleButtonDisabling();
+    }
+
+    convertToMoment = (time) => {
+        let momentTime = moment(time);
+        if (this.state.checked) {
+            var date = this.state.startDate;
         }
         else {
-            this.setState({taskDate: date});
+            var date = this.state.taskDate;
+        }
+        let momentDate = moment(date);
+        let taskTime = moment({
+            year: momentDate.year(),
+            month: momentDate.month(),
+            day: momentDate.date(),
+            hour: momentTime.hours(),
+            minute: momentTime.minutes()
+        });
+        if(!(this.checkForValidTime(taskTime._d))) {
+            window.alert('Selected time cannot be in the past.');
+            return 0;
+        }
+        return taskTime._d;
+    }
+
+    handleStartTimeChange = (event, time, value) => {
+        const result = this.convertToMoment(time);
+        this.setState({testAppointment: result, startTime: result})
+        this.handleButtonDisabling();
+    }
+
+    handleEndTimeChange = (event, time) => {
+        const result = this.convertToMoment(time);
+        if(!(this.compareTimes(this.state.startTime, result))) {
+            window.alert('End Time must be greater than Start Time.');
+            this.setState({endTime: null});
+        }
+        else {
+            this.setState({testAppointment: result, endTime: result});
             this.handleButtonDisabling();
         }
+    }
+
+    updateCheck() {
+        this.setState((oldState) => {
+            return {
+                checked: !(oldState.checked),
+                startTime: null,
+                endTime: null,
+                startDate: null,
+                endDate: null
+            };
+        });
+        this.handleButtonDisabling();
     }
 
     render() {
@@ -171,7 +292,55 @@ class TaskDialog extends React.Component {
                     <MenuItem value={5} primaryText="Other Homework" />
                 </SelectField>
             </div>
-        );      
+        );
+
+        function GetRecurringEventFields({checked}) {
+            if (checked == true) {
+                return <RecurringEventFields />
+            }
+            else {
+                return <div />
+            }
+        };
+        
+        const RecurringEventFields = () => (
+            <div>
+                <DatePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.startDate}
+                    hintText="Start Date" 
+                    onChange={this.handleRecurringStartDateChange}
+                    firstDayOfWeek={0}
+                />
+                <DatePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.endDate}
+                    hintText="End Date" 
+                    onChange={this.handleRecurringEndDateChange}
+                    firstDayOfWeek={0}
+                />
+                <TimeFields />           
+            </div>
+        );
+
+        const TimeFields = () => (
+            <div>
+                <TimePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    hintText="Start Time"
+                    value={this.state.startTime}
+                    onChange={this.handleStartTimeChange}/>
+                <TimePicker
+                    errorText = "*Required field"
+                    errorStyle={{color: "#FF8F3A"}}
+                    value={this.state.endTime}
+                    hintText="End Time"
+                    onChange={this.handleEndTimeChange}/>
+            </div> 
+        );
 
         return (
         <div>
@@ -216,13 +385,26 @@ class TaskDialog extends React.Component {
                     )}
             </SelectField>
             <GetAdditionalFields taskParent={this.state.taskParent}/>
-            <DatePicker 
-                errorText = "*Required field"
-                errorStyle={{color: "#FF8F3A"}}
-                value={this.state.taskDate}
-                hintText="Task Date" 
-                onChange={this.handleDateChange}
-                firstDayOfWeek={0}/>
+            <Checkbox 
+                label="Recurring"
+                checked={this.state.checked}
+                onCheck={this.updateCheck.bind(this)}
+            />
+            {(!this.state.checked) ?
+                <div>
+                    <DatePicker 
+                        errorText = "*Required field"
+                        errorStyle={{color: "#FF8F3A"}}
+                        value={this.state.taskDate}
+                        hintText="Task Date" 
+                        onChange={this.handleTaskDateChange}
+                        firstDayOfWeek={0}/>
+                    {(this.state.taskDate == null) ? <div /> :
+                        <TimeFields />}
+                </div>
+                : <div />
+            }
+            <GetRecurringEventFields checked={this.state.checked}/>
             </Dialog>
             </div>
         </div>

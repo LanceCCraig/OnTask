@@ -19,6 +19,8 @@ import EventParentsPage from 'ClientApp/pages/eventParent/eventParentsPage';
 import EventParentPage from 'ClientApp/pages/eventParent/eventParentPage';
 import EventGroupsPage from 'ClientApp/pages/eventGroup/eventGroupsPage';
 import EventGroupPage from 'ClientApp/pages/eventGroup/eventGroupPage';
+import EventTypesPage from 'ClientApp/pages/eventType/eventTypesPage';
+import EventTypePage from 'ClientApp/pages/eventType/eventTypePage';
 
 const Routes = () => {
     return (
@@ -31,6 +33,9 @@ const Routes = () => {
                 <PrivateRoute path="/eventGroups" component={EventGroupsPage} />
                 <PrivateRoute exact path="/eventGroup" component={EventGroupPage} />
                 <PrivateRoute path="/eventGroup/:id" component={EventGroupPage} />
+                <PrivateRoute path="/eventTypes" component={EventTypesPage} />
+                <PrivateRoute exact path="/eventType" component={EventTypePage} />
+                <PrivateRoute path="/eventType/:id" component={EventTypePage} />
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
                 <PrivateRoute path="/calendar" component={CalendarPage} />

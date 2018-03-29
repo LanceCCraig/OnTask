@@ -12,5 +12,6 @@ export default {
         user: {}
     },
     eventParents: [],
-    eventGroups: []
+    eventGroups: [],
+    eventTypes: []
 };
