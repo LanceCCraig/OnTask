@@ -14,7 +14,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Tooltip } from 'react-tippy';
 
-const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) => {
+const EventTypeListRow = ({ eventType, handleMenuOnChange, ...otherProps }) => {
     return (
         <TableRow
             {...otherProps}>
@@ -22,28 +22,36 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
             <TableRowColumn>
                 <Tooltip
                     size="big"
-                    title={eventGroup.name}
+                    title={eventType.name}
                     trigger="click">
-                    {eventGroup.name}
+                    {eventType.name}
                 </Tooltip>
             </TableRowColumn>
             <TableRowColumn>
                 <Tooltip
                     size="big"
-                    title={eventGroup.eventParentName}
+                    title={eventType.eventParentName}
                     trigger="click">
-                    {eventGroup.eventParentName}
+                    {eventType.eventParentName}
                 </Tooltip>
             </TableRowColumn>
             <TableRowColumn>
                 <Tooltip
                     size="big"
-                    title={eventGroup.description}
+                    title={eventType.eventGroupName}
                     trigger="click">
-                    {eventGroup.description}
+                    {eventType.eventGroupName}
                 </Tooltip>
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="hidden-xs">
+                <Tooltip
+                    size="big"
+                    title={eventType.description}
+                    trigger="click">
+                    {eventType.description}
+                </Tooltip>
+            </TableRowColumn>
+            <TableRowColumn style={{ textOverflow: 'clip' }}>
                 <IconMenu
                     iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
@@ -53,12 +61,12 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
                     <MenuItem
                         key="edit"
                         primaryText="Edit"
-                        containerElement={<Link to={'eventGroup/' + eventGroup.id} />}
+                        containerElement={<Link to={'eventType/' + eventType.id} />}
                     />
                     <MenuItem
                         key="delete"
                         primaryText="Delete"
-                        value={eventGroup.id}
+                        value={eventType.id}
                     />
                 </IconMenu>
             </TableRowColumn>
@@ -66,10 +74,10 @@ const EventGroupListRow = ({ eventGroup, handleMenuOnChange, ...otherProps }) =>
     );
 }
 
-EventGroupListRow.propTypes = {
-    eventGroup: PropTypes.object.isRequired,
+EventTypeListRow.propTypes = {
+    eventType: PropTypes.object.isRequired,
     handleMenuOnChange: PropTypes.func.isRequired,
     otherProps: PropTypes.array
 };
 
-export default EventGroupListRow;
+export default EventTypeListRow;

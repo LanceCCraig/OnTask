@@ -10,46 +10,47 @@ import toastr from 'toastr';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
+import Toggle from 'material-ui/Toggle';
 
 /**
  * Internal dependencies
  */
-import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
-import * as eventParentActions from 'ClientApp/actions/eventParentActions';
+import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
 import WeightSelectField from 'ClientApp/components/common/weightSelectField';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
-import { checkNullEventGroup } from 'ClientApp/helpers/generalHelpers';
+import GroupSelectField from 'ClientApp/components/common/groupSelectField';
+import { checkNullEventType } from 'ClientApp/helpers/generalHelpers';
 
-class EventGroupPage extends React.Component {
+class EventTypePage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            eventGroup: checkNullEventGroup(props.eventGroup),
+            eventType: checkNullEventType(props.eventType),
             errors: {},
             saving: false
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.eventGroup.id !== nextProps.eventGroup.id) {
-            this.setState({ eventGroup: checkNullEventGroup(nextProps.eventGroup) });
+        if (this.props.eventType.id !== nextProps.eventType.id) {
+            this.setState({ eventType: checkNullEventType(nextProps.eventType) });
         }
     }
 
     submitForm = e => {
         e.preventDefault();
         this.setState({ saving: true });
-        if (this.props.eventGroup.id === '') {
-            this.props.actions.createGroup(this.state.eventGroup)
-                .then(() => this.redirectToEventGroupsPage())
+        if (this.props.eventType.id === '') {
+            this.props.actions.createType(this.state.eventType)
+                .then(() => this.redirectToEventTypesPage())
                 .catch(error => {
                     this.setState({ saving: false });
                     toastr.error(error);
                 });
         } else {
-            this.props.actions.updateGroup(this.state.eventGroup)
-                .then(() => this.redirectToEventGroupsPage())
+            this.props.actions.updateType(this.state.eventType)
+                .then(() => this.redirectToEventTypesPage())
                 .catch(error => {
                     this.setState({ saving: false });
                     toastr.error(error);
@@ -57,32 +58,50 @@ class EventGroupPage extends React.Component {
         }
     }
 
-    redirectToEventGroupsPage() {
+    redirectToEventTypesPage() {
         this.setState({ saving: false });
-        this.props.routerActions.push('/eventGroups');
+        this.props.routerActions.push('/eventTypes');
     }
 
     handleChange = e => {
         const { name, value } = e.currentTarget;
-        let eventGroup = Object.assign({}, this.state.eventGroup);
-        eventGroup[name] = value;
-        return this.setState({ eventGroup: eventGroup });
+        let eventType = Object.assign({}, this.state.eventType);
+        eventType[name] = value;
+        return this.setState({ eventType: eventType });
+    }
+
+    handleToggle = (e, isChecked) => {
+        let eventType = Object.assign({}, this.state.eventType);
+        eventType[e.currentTarget.name] = isChecked;
+        return this.setState({ eventType: eventType });
     }
 
     handleWeightChange = (event, index, value) => {
-        let eventGroup = Object.assign({}, this.state.eventGroup);
-        eventGroup.weight = value;
-        return this.setState({ eventGroup: eventGroup });
+        let eventType = Object.assign({}, this.state.eventType);
+        eventType.weight = value;
+        return this.setState({ eventType: eventType });
     }
 
     handleParentChange = (event, index, value) => {
-        let eventGroup = Object.assign({}, this.state.eventGroup);
-        eventGroup.eventParentId = value;
-        return this.setState({ eventGroup: eventGroup });
+        let eventType = Object.assign({}, this.state.eventType);
+        // Reset the group filter if the parent filter is changed.
+        if (value !== eventType.eventParentId) {
+            eventType.eventGroupId = '';
+        }
+        eventType.eventParentId = value;
+        return this.setState({ eventType: eventType });
+    }
+
+    handleGroupChange = (event, index, value) => {
+        let eventType = Object.assign({}, this.state.eventType);
+        eventType.eventGroupId = value;
+        return this.setState({ eventType: eventType });
     }
 
     hasRequiredFields() {
-        if (this.state.eventGroup.name === '' || this.state.eventGroup.eventParentId == '') {
+        if (this.state.eventType.name === '' ||
+            this.state.eventType.eventParentId === '' ||
+            this.state.eventType.eventGroupId === '') {
             return false;
         }
         return true;
@@ -95,26 +114,50 @@ class EventGroupPage extends React.Component {
         return this.hasRequiredFields();
     }
 
+    isGroupFilterDisabled = () => this.state.eventType.eventParentId === null || this.state.eventType.eventParentId === '';
+
     render() {
-        const { eventParents } = this.props;
-        const { eventGroup, errors, saving } = this.state;
+        const { eventParents, eventGroups } = this.props;
+        const { eventType, errors, saving } = this.state;
+        const toggleLabelStyle = {
+            color: '#B2B2B2',
+            textAlign: 'left'
+        };
+        const toggleStyle = {
+            display: 'inline-block',
+            fontFamily: '"Roboto", sans-serif',
+            fontSize: 16,
+            fontWeight: 700,
+            marginTop: 34,
+            maxWidth: 256,
+            minHeight: 56
+        };
         return (
             <div style={{textAlign: "center"}}>
-                <h1>Group</h1>
+                <h1>Type</h1>
                 <form>
                     <ParentSelectField
                         name="eventParentId"
                         eventParents={eventParents}
                         disabled={saving}
-                        value={eventGroup.eventParentId}
+                        value={eventType.eventParentId}
                         onChange={this.handleParentChange}
                         errorText={errors.eventParentId}
+                    /><br />
+                    <GroupSelectField
+                        name="eventGroupId"
+                        eventGroups={eventGroups}
+                        eventParentId={eventType.eventParentId}
+                        disabled={this.isGroupFilterDisabled() || saving}
+                        value={eventType.eventGroupId}
+                        onChange={this.handleGroupChange}
+                        errorText={errors.eventGroupId}
                     /><br />
                     <TextField
                         name="name"
                         floatingLabelText="Name"
                         disabled={saving}
-                        value={eventGroup.name}
+                        value={eventType.name}
                         onChange={this.handleChange}
                         errorText={errors.name}
                     /><br />
@@ -122,17 +165,26 @@ class EventGroupPage extends React.Component {
                         name="description"
                         floatingLabelText="Description"
                         disabled={saving}
-                        value={eventGroup.description}
+                        value={eventType.description}
                         onChange={this.handleChange}
                         errorText={errors.description}
                     /><br />
                     <WeightSelectField
                         name="weight"
                         disabled={saving}
-                        value={eventGroup.weight}
+                        value={eventType.weight}
                         onChange={this.handleWeightChange}
                         errorText={errors.weight}
-                    /><br/>
+                    /><br />
+                    <Toggle
+                        name="isRecommended"
+                        label="Is Recommended"
+                        labelStyle={toggleLabelStyle}
+                        disabled={saving}
+                        toggled={eventType.isRecommended}
+                        onToggle={this.handleToggle}
+                        style={toggleStyle}
+                    /><br />
                     <RaisedButton
                         type="submit"
                         disabled={!this.canSubmitForm()}
@@ -147,54 +199,48 @@ class EventGroupPage extends React.Component {
         );
     }
 }
-//<TextField
-//    name="weight"
-//    floatingLabelText="Weight"
-//    disabled={saving}
-//    value={eventGroup.weight}
-//    onChange={this.handleChange}
-//    errorText={errors.weight}
-///> <br />
 
-EventGroupPage.propTypes = {
-    eventGroup: PropTypes.object.isRequired,
+EventTypePage.propTypes = {
+    eventType: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    parentActions: PropTypes.object.isRequired,
     eventParents: PropTypes.array.isRequired,
+    eventGroups: PropTypes.array.isRequired,
     routerActions: PropTypes.object.isRequired
 };
 
-function getEventGroupById(eventGroups, id) {
-    const eventGroup = eventGroups.filter(eventGroup => eventGroup.id == id);
-    return eventGroup.length ? eventGroup[0] : null;
+function getEventTypeById(eventTypes, id) {
+    const eventType = eventTypes.filter(eventType => eventType.id == id);
+    return eventType.length ? eventType[0] : null;
 }
 
 function mapStateToProps(state, ownProps) {
-    const eventGroupId = ownProps.match.params.id;
-    let eventGroup = {
+    const eventTypeId = ownProps.match.params.id;
+    let eventType = {
         id: '',
         eventParentId: '',
+        eventGroupId: '',
         name: '',
         description: '',
-        weight: ''
+        weight: '',
+        isRecommended: false
     };
 
-    if (eventGroupId && state.eventGroups.length > 0) {
-        eventGroup = getEventGroupById(state.eventGroups, eventGroupId);
+    if (eventTypeId && state.eventTypes.length > 0) {
+        eventType = getEventTypeById(state.eventTypes, eventTypeId);
     }
 
     return {
-        eventGroup: eventGroup,
-        eventParents: state.eventParents
+        eventType,
+        eventParents: state.eventParents,
+        eventGroups: state.eventGroups
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(eventGroupActions, dispatch),
-        parentActions: bindActionCreators(eventParentActions, dispatch),
+        actions: bindActionCreators(eventTypeActions, dispatch),
         routerActions: bindActionCreators(routerActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventGroupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(EventTypePage);

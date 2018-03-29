@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 const ParentSelectField = ({ eventParents, disabled, errorText, onChange, value }) => {
     return (
         <SelectField
+            name="eventParentId"
             style={{textAlign: "left"}}
             floatingLabelText="Parent"
             disabled={disabled}
@@ -18,7 +19,7 @@ const ParentSelectField = ({ eventParents, disabled, errorText, onChange, value 
             errorStyle={{ color: "#FF8F3A" }} >
             <MenuItem value={null} primaryText="" />
             {eventParents.map(eventParent =>
-                <MenuItem value={eventParent.id} primaryText={eventParent.name} />
+                <MenuItem key={eventParent.id} value={eventParent.id} primaryText={eventParent.name} />
             )}<br />
         </SelectField>
     );
