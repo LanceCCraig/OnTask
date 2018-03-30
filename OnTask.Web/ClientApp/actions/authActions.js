@@ -70,11 +70,11 @@ export function forgotPassword(username) {
     return function (dispatch) {
         dispatch(request({ username }));
 
-        return accountApi.forgotPassword().then(
+        return accountApi.forgotPassword(username).then(
             user => {
                 dispatch(success(user));
                 toastr.success('Acknowledged.');
-                dispatch.push('/');
+                dispatch(push('/login'));
             },
             error => {
                 toastr.error('Acknowledge Failed.');
