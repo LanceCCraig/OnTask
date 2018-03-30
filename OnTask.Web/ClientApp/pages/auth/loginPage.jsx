@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 
 /**
@@ -87,8 +88,24 @@ class LoginPage extends React.Component {
                         primary
                         label={loggingIn ? 'Logging In...' : 'Login'}
                         onClick={this.submitForm}
-                    />
+                    /><br/><br/>
+                    <FlatButton
+                        href="/forgotPassword"
+                        label="Forgot Password?"
+                        secondary={true}
+                    /><br/><br/>
+                    <FlatButton
+                        href="/register"
+                        label="Register"
+                        secondary={true}
+                    /><br/>
                 </form>
+                {/*
+                <br />
+                <a href='/forgotPassword'>Forgot Password?</a>
+                <br />
+                <a href='/register'>Register</a>
+                */}
             </div>
         );
     }

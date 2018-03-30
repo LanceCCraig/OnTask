@@ -10,6 +10,8 @@ import { Route } from 'react-router-dom';
 import PrivateRoute from 'ClientApp/components/privateRoute';
 import Layout from 'ClientApp/components/layout';
 import HomePage from 'ClientApp/pages/homePage';
+import ForgotPasswordPage from 'ClientApp/pages/auth/forgotPasswordPage';
+import RegisterPage from 'ClientApp/pages/auth/registerPage';
 import LoginPage from 'ClientApp/pages/auth/loginPage';
 import LogoutPage from 'ClientApp/pages/auth/logoutPage';
 import FetchDataPage from 'ClientApp/pages/fetchDataPage';
@@ -43,6 +45,8 @@ const Routes = () => {
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
                 <PrivateRoute path="/calendar" component={CalendarPage} />
+                <Route path="/register" component={RegisterPage} />
+                <Route path="/forgotPassword" component={ForgotPasswordPage} />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/logout" component={LogoutPage} />
             </div>

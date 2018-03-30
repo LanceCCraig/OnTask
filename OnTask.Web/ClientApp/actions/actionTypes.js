@@ -1,8 +1,18 @@
+// Registering
+export const REGISTER_REQUEST = 'REGISTER_REQUEST';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAILURE = 'REGISTER_FAILURE';
+
 // Auth
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
+
+//Auth (Forgot Password)
+export const PASSWORD_REQUEST = 'PASSWORD_REQUEST';
+export const PASSWORD_SUCCESS = 'PASSWORD_REQUEST';
+export const PASSWORD_FAILURE = 'PASSWORD_FAILURE';
 
 // EventParent
 export const CREATE_EVENT_PARENT_SUCCESS = 'CREATE_EVENT_PARENT_SUCCESS';
