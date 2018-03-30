@@ -21,6 +21,8 @@ import EventGroupsPage from 'ClientApp/pages/eventGroup/eventGroupsPage';
 import EventGroupPage from 'ClientApp/pages/eventGroup/eventGroupPage';
 import EventTypesPage from 'ClientApp/pages/eventType/eventTypesPage';
 import EventTypePage from 'ClientApp/pages/eventType/eventTypePage';
+import EventPage from 'ClientApp/pages/event/eventPage';
+import RecurringEventPage from 'ClientApp/pages/event/recurringEventPage';
 
 const Routes = () => {
     return (
@@ -36,6 +38,8 @@ const Routes = () => {
                 <PrivateRoute path="/eventTypes" component={EventTypesPage} />
                 <PrivateRoute exact path="/eventType" component={EventTypePage} />
                 <PrivateRoute path="/eventType/:id" component={EventTypePage} />
+                <PrivateRoute path="/event" component={EventPage} />
+                <PrivateRoute path="/recurringEvent" component={RecurringEventPage} />
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
                 <PrivateRoute path="/calendar" component={CalendarPage} />

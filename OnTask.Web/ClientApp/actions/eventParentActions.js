@@ -8,11 +8,11 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventParentApi from 'ClientApp/api/eventParentApi';
-import { checkBlankEventParent } from 'ClientApp/helpers/generalHelpers';
+import { updateEventParentForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createParent(eventParent) {
     return function(dispatch) {
-        let createdEventParent = checkBlankEventParent(eventParent);
+        let createdEventParent = updateEventParentForApi(eventParent);
 
         return eventParentApi.create(createdEventParent.name, createdEventParent.description, createdEventParent.weight).then(
             eventParent => {
@@ -58,7 +58,7 @@ export function getAllParents() {
 
 export function updateParent(eventParent) {
     return function(dispatch) {
-        let updatedEventParent = checkBlankEventParent(eventParent);
+        let updatedEventParent = updateEventParentForApi(eventParent);
 
         return eventParentApi.update(updatedEventParent.id, updatedEventParent.name, updatedEventParent.description, updatedEventParent.weight).then(
             () => {

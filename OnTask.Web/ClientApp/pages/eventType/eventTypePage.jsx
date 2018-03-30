@@ -19,14 +19,14 @@ import * as eventTypeActions from 'ClientApp/actions/eventTypeActions';
 import WeightSelectField from 'ClientApp/components/common/weightSelectField';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
 import GroupSelectField from 'ClientApp/components/common/groupSelectField';
-import { checkNullEventType } from 'ClientApp/helpers/generalHelpers';
+import { updateEventTypeForDisplay } from 'ClientApp/helpers/generalHelpers';
 
 class EventTypePage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            eventType: checkNullEventType(props.eventType),
+            eventType: updateEventTypeForDisplay(props.eventType),
             errors: {},
             saving: false
         };
@@ -34,7 +34,7 @@ class EventTypePage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.eventType.id !== nextProps.eventType.id) {
-            this.setState({ eventType: checkNullEventType(nextProps.eventType) });
+            this.setState({ eventType: updateEventTypeForDisplay(nextProps.eventType) });
         }
     }
 

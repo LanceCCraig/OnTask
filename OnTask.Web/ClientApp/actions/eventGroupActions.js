@@ -8,11 +8,11 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventGroupApi from 'ClientApp/api/eventGroupApi';
-import { checkBlankEventGroup } from 'ClientApp/helpers/generalHelpers';
+import { updateEventGroupForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createGroup(eventGroup) {
     return function(dispatch) {
-        let createdEventGroup = checkBlankEventGroup(eventGroup);
+        let createdEventGroup = updateEventGroupForApi(eventGroup);
 
         return eventGroupApi.create(createdEventGroup.eventParentId, createdEventGroup.name, createdEventGroup.description, createdEventGroup.weight).then(
             eventGroup => {
@@ -73,7 +73,7 @@ export function getAllGroups(eventParentId) {
 
 export function updateGroup(eventGroup) {
     return function(dispatch) {
-        let updatedEventGroup = checkBlankEventGroup(eventGroup);
+        let updatedEventGroup = updateEventGroupForApi(eventGroup);
 
         return eventGroupApi.update(updatedEventGroup.id, updatedEventGroup.eventParentId, updatedEventGroup.name, updatedEventGroup.description, updatedEventGroup.weight).then(
             () => {

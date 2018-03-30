@@ -15,14 +15,14 @@ import RaisedButton from 'material-ui/RaisedButton';
  */
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import WeightSelectField from 'ClientApp/components/common/weightSelectField';
-import { checkNullEventParent } from 'ClientApp/helpers/generalHelpers';
+import { updateEventParentForDisplay } from 'ClientApp/helpers/generalHelpers';
 
 class EventParentPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            eventParent: checkNullEventParent(props.eventParent),
+            eventParent: updateEventParentForDisplay(props.eventParent),
             errors: {},
             saving: false
         }
@@ -30,7 +30,7 @@ class EventParentPage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.eventParent.id !== nextProps.eventParent.id) {
-            this.setState({ eventParent: checkNullEventParent(nextProps.eventParent) });
+            this.setState({ eventParent: updateEventParentForDisplay(nextProps.eventParent) });
         }
     }
 

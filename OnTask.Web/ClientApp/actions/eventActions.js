@@ -8,11 +8,11 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventApi from 'ClientApp/api/eventApi';
-import { checkBlankEvent } from 'ClientApp/helpers/generalHelpers';
+import { updateEventForApi, updateRecurringEventForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createEvent(event) {
     return function (dispatch) {
-        let createdEvent = checkBlankEvent(event);
+        let createdEvent = updateEventForApi(event);
 
         return eventApi.create(
             createdEvent.eventTypeId,
@@ -21,7 +21,10 @@ export function createEvent(event) {
             createdEvent.name,
             createdEvent.description,
             createdEvent.startDate,
+            createdEvent.startTime,
             createdEvent.endDate,
+            createdEvent.endTime,
+            createdEvent.isAllDay,
             createdEvent.weight).then(
             event => {
                 dispatch(success(event));
@@ -37,7 +40,7 @@ export function createEvent(event) {
 
 export function createRecurringEvent(recurringEvent) {
     return function (dispatch) {
-        let createdRecurringEvent = checkBlankRecurringEvent(recurringEvent);
+        let createdRecurringEvent = updateRecurringEventForApi(recurringEvent);
 
         return eventApi.createRecurring(
             createdRecurringEvent.eventTypeId,
@@ -48,8 +51,9 @@ export function createRecurringEvent(recurringEvent) {
             createdRecurringEvent.weight,
             createdRecurringEvent.startTime,
             createdRecurringEvent.endTime,
-            createdRecurringEvent.startDate,
-            createdRecurringEvent.endDate,
+            createdRecurringEvent.dateRangeStart,
+            createdRecurringEvent.dateRangeEnd,
+            createdRecurringEvent.isAllDay,
             createdRecurringEvent.daysOfWeek).then(
             events => {
                 dispatch(success(events));
@@ -104,7 +108,7 @@ export function getAllEvents(
 
 export function updateEvent(event) {
     return function (dispatch) {
-        let updatedEvent = checkBlankEvent(event);
+        let updatedEvent = updateEventForApi(event);
 
         return eventApi.update(
             updatedEvent.id,
@@ -114,7 +118,10 @@ export function updateEvent(event) {
             updatedEvent.name,
             updatedEvent.description,
             updatedEvent.startDate,
+            updatedEvent.startTime,
             updatedEvent.endDate,
+            updatedEvent.endTime,
+            updatedEvent.isAllDay,
             updatedEvent.weight).then(
             () => {
                 dispatch(success(event));

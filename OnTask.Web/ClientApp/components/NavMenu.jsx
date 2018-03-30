@@ -11,6 +11,7 @@ import AuthNavLink from 'ClientApp/components/authNavLink';
 import PrivateNavLink from 'ClientApp/components/privateNavLink';
 import authHelper from 'ClientApp/helpers/authHelper';
 import logo from 'ClientApp/static/logo_banner.png'
+import privateNavLink from 'ClientApp/components/privateNavLink';
 
 export class NavMenu extends React.Component {
     render() {
@@ -62,6 +63,20 @@ export class NavMenu extends React.Component {
                                 to={"/eventTypes"}
                                 glyphiconClassName="glyphicon glyphicon-th-list"
                                 text="Types"
+                            />
+                        </li>
+                        <li>
+                            <PrivateNavLink
+                                to={"/event"}
+                                glyphiconClassName="glyphicon glyphicon-th-list"
+                                text="Event"
+                            />
+                        </li>
+                        <li>
+                            <PrivateNavLink
+                                to={"/recurringEvent"}
+                                glyphiconClassName="glyphicon glyphicon-th-list"
+                                text="Recurring Event"
                             />
                         </li>
                         <li>

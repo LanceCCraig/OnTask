@@ -11,7 +11,18 @@ import Constants from 'ClientApp/constants';
 import { getAuthorizedHeaders, handleResponse, handleError } from 'ClientApp/helpers/apiHelpers';
 
 let EventApi = {
-    create(eventTypeId, eventGroupId, eventParentId, name, description, startDate, endDate, weight) {
+    create(
+        eventTypeId,
+        eventGroupId,
+        eventParentId,
+        name,
+        description,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        isAllDay,
+        weight) {
         let options = {
             method: 'POST',
             headers: getAuthorizedHeaders(),
@@ -22,7 +33,10 @@ let EventApi = {
                 name,
                 description,
                 startDate,
+                startTime,
                 endDate,
+                endTime,
+                isAllDay,
                 weight
             })
         };
@@ -31,7 +45,19 @@ let EventApi = {
             .then(handleResponse, handleError);
     },
 
-    createRecurring(eventTypeId, eventGroupId, eventParentId, name, description, weight, startTime, endTime, startDate, endDate, daysOfWeek) {
+    createRecurring(
+        eventTypeId,
+        eventGroupId,
+        eventParentId,
+        name,
+        description,
+        weight,
+        startTime,
+        endTime,
+        dateRangeStart,
+        dateRangeEnd,
+        isAllDay,
+        daysOfWeek) {
         let options = {
             method: 'POST',
             headers: getAuthorizedHeaders(),
@@ -44,8 +70,9 @@ let EventApi = {
                 weight,
                 startTime,
                 endTime,
-                startDate,
-                endDate,
+                dateRangeStart,
+                dateRangeEnd,
+                isAllDay,
                 daysOfWeek
             })
         };
@@ -107,7 +134,19 @@ let EventApi = {
             .then(handleResponse, handleError);
     },
 
-    update(id, eventTypeId, eventGroupId, eventParentId, name, description, startDate, endDate, weight) {
+    update(
+        id,
+        eventTypeId,
+        eventGroupId,
+        eventParentId,
+        name,
+        description,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        isAllDay,
+        weight) {
         let options = {
             method: 'PUT',
             headers: getAuthorizedHeaders(),
@@ -119,7 +158,10 @@ let EventApi = {
                 name,
                 description,
                 startDate,
+                startTime,
                 endDate,
+                endTime,
+                isAllDay,
                 weight
             })
         };

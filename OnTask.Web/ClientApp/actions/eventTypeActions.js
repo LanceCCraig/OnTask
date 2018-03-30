@@ -8,11 +8,11 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventTypeApi from 'ClientApp/api/eventTypeApi';
-import { checkBlankEventType } from 'ClientApp/helpers/generalHelpers';
+import { updateEventTypeForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createType(eventType) {
     return function(dispatch) {
-        let createdEventType = checkBlankEventType(eventType);
+        let createdEventType = updateEventTypeForApi(eventType);
 
         return eventTypeApi.create(createdEventType.eventGroupId, createdEventType.eventParentId, createdEventType.name, createdEventType.description, createdEventType.weight, createdEventType.isRecommended).then(
             eventType => {
@@ -73,7 +73,7 @@ export function getAllTypes(eventGroupId, eventParentId) {
 
 export function updateType(eventType) {
     return function(dispatch) {
-        let updatedEventType = checkBlankEventType(eventType);
+        let updatedEventType = updateEventTypeForApi(eventType);
 
         return eventTypeApi.update(updatedEventType.id, updatedEventType.eventGroupId, updatedEventType.eventParentId, updatedEventType.name, updatedEventType.description, updatedEventType.weight).then(
             () => {

@@ -18,14 +18,14 @@ import * as eventGroupActions from 'ClientApp/actions/eventGroupActions';
 import * as eventParentActions from 'ClientApp/actions/eventParentActions';
 import WeightSelectField from 'ClientApp/components/common/weightSelectField';
 import ParentSelectField from 'ClientApp/components/common/parentSelectField';
-import { checkNullEventGroup } from 'ClientApp/helpers/generalHelpers';
+import { updateEventGroupForDisplay } from 'ClientApp/helpers/generalHelpers';
 
 class EventGroupPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            eventGroup: checkNullEventGroup(props.eventGroup),
+            eventGroup: updateEventGroupForDisplay(props.eventGroup),
             errors: {},
             saving: false
         }
@@ -33,7 +33,7 @@ class EventGroupPage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.eventGroup.id !== nextProps.eventGroup.id) {
-            this.setState({ eventGroup: checkNullEventGroup(nextProps.eventGroup) });
+            this.setState({ eventGroup: updateEventGroupForDisplay(nextProps.eventGroup) });
         }
     }
 

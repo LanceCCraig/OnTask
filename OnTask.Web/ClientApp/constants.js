@@ -10,7 +10,20 @@ const Constants = {
 
     MODE_BY_TYPE: 'Type',
     MODE_BY_GROUP: 'Group',
-    MODE_BY_PARENT: 'Parent'
+    MODE_BY_PARENT: 'Parent',
+
+    MOMENT_DATE_FORMAT: 'YYYY-MM-DD',
+    MOMENT_TIME_FORMAT: 'HH:mm',
+
+    DAYS_OF_WEEK: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ]
 }
 
 export default Constants;
