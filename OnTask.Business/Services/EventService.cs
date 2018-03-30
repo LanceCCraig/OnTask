@@ -100,32 +100,6 @@ namespace OnTask.Business.Services
         }
 
         /// <summary>
-        /// Gets all <see cref="EventFullModel"/> classes.
-        /// </summary>
-        /// <param name="model">The model which provides data on which <see cref="EventFullModel"/> classes to get.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventFullModel"/> classes.</returns>
-        public IEnumerable<EventFullModel> GetAllFull(EventGetAllModel model)
-        {
-            try
-            {
-                return context
-                    .GetEvents(
-                        ApplicationUser.Id,
-                        model?.EventTypeId,
-                        model?.EventGroupId,
-                        model?.EventParentId,
-                        model?.DateRangeStart,
-                        model?.DateRangeEnd)
-                    .Select(x => mapper.Map<EventFullModel>(x))
-                    .ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="EventModel"/> class.
         /// </summary>
         /// <param name="id">The identifier for the <see cref="EventModel"/> class to get.</param>
@@ -184,15 +158,17 @@ namespace OnTask.Business.Services
 
                 var baseEventModel = mapper.Map<EventModel>(model);
                 var daysOfWeek = model.DaysOfWeek.GetDaysOfWeek();
-                var dateRange = GetDateRange(model.StartDate, model.EndDate);
+                var dateRange = GetDateRange(model.DateRangeStart, model.DateRangeEnd);
                 foreach (var date in dateRange)
                 {
                     var dateDaysOfWeek = date.GetDaysOfWeek();
                     if (daysOfWeek.HasFlag(dateDaysOfWeek))
                     {
                         var eventModel = mapper.Map<EventModel>(baseEventModel);
-                        eventModel.StartDate = date.CombineTimeWithDate(model.StartTime);
-                        eventModel.EndDate = model.EndTime.HasValue ? date.CombineTimeWithDate(model.EndTime.Value) : default(DateTime?);
+                        eventModel.StartDate = date;
+                        eventModel.StartTime = model.StartTime;
+                        eventModel.EndDate = date;
+                        eventModel.EndTime = model.EndTime;
                         var entity = (Event)new Event
                         {
                             UserId = ApplicationUser.Id,

@@ -34,8 +34,8 @@ namespace OnTask.Business.Validators.Event
                     .GreaterThanOrEqualTo(Constants.MinimumTimeSpan).WithMessage("The end time cannot be negative.")
                     .LessThan(Constants.MaximumTimeSpan).WithMessage("The end time must be before midnight.");
             });
-            RuleFor(x => x.StartDate).NotEqual(default(DateTime)).WithMessage("A start date is required.");
-            RuleFor(x => x.EndDate).NotEqual(default(DateTime)).WithMessage("An end date is required.");
+            RuleFor(x => x.DateRangeStart).NotEqual(default(DateTime)).WithMessage("A start date is required.");
+            RuleFor(x => x.DateRangeEnd).NotEqual(default(DateTime)).WithMessage("An end date is required.");
             RuleFor(x => x.DaysOfWeek)
                 .NotNull().WithMessage("At least one day of the week must be specified.")
                 .NotEmpty().WithMessage("At least one day of the week must be specified.")

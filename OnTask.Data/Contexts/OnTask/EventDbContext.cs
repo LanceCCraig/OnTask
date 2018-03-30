@@ -83,7 +83,7 @@ namespace OnTask.Data.Contexts
                 x.EventGroupId.IsParameterNullOrEqualForNonNullable(groupId) &&
                 x.EventParentId.IsParameterNullOrEqualForNonNullable(parentId) &&
                 (!dateRangeStart.HasValue || x.StartDate >= dateRangeStart.Value) &&
-                (!dateRangeEnd.HasValue || x.StartDate <= dateRangeStart.Value))
+                (!dateRangeEnd.HasValue || x.StartDate <= dateRangeEnd.Value))
             .ToList();
 
         /// <summary>

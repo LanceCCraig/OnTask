@@ -29,7 +29,7 @@ class EventTypePage extends React.Component {
             eventType: checkNullEventType(props.eventType),
             errors: {},
             saving: false
-        }
+        };
     }
 
     componentWillReceiveProps(nextProps) {

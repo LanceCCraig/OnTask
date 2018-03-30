@@ -36,7 +36,7 @@ namespace OnTask.Business.Models.Event
         /// <summary>
         /// Gets or sets the start time for the recurring <see cref="EventModel"/> classes.
         /// </summary>
-        public TimeSpan StartTime { get; set; }
+        public TimeSpan? StartTime { get; set; }
         /// <summary>
         /// Gets or sets the end time for the recurring <see cref="EventModel"/> classes.
         /// </summary>
@@ -44,11 +44,15 @@ namespace OnTask.Business.Models.Event
         /// <summary>
         /// Gets or sets the start date for the <see cref="RecurringEventModel"/> class.
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public DateTime DateRangeStart { get; set; }
         /// <summary>
         /// Gets or sets the end date for the <see cref="RecurringEventModel"/> class.
         /// </summary>
-        public DateTime EndDate { get; set; }
+        public DateTime DateRangeEnd { get; set; }
+        /// <summary>
+        /// Gets or sets the value that determines whether the created <see cref="EventModel"/> classes last all day.
+        /// </summary>
+        public bool IsAllDay { get; set; }
         /// <summary>
         /// Gets or sets the days of the week for the <see cref="RecurringEventModel"/> class.
         /// </summary>

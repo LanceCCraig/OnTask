@@ -66,9 +66,21 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public DateTime StartDate { get; set; }
         /// <summary>
+        /// Gets or sets the start time for the <see cref="EventModel"/> class.
+        /// </summary>
+        public TimeSpan? StartTime { get; set; }
+        /// <summary>
         /// Gets or sets the end date for the <see cref="EventModel"/> class.
         /// </summary>
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
+        /// <summary>
+        /// Gets or sets the end time for the <see cref="EventModel"/> class.
+        /// </summary>
+        public TimeSpan? EndTime { get; set; }
+        /// <summary>
+        /// Gets or sets the value that determines whether the <see cref="EventModel"/> class lasts the entire day.
+        /// </summary>
+        public bool IsAllDay { get; set; }
         /// <summary>
         /// Gets or sets the weight for the <see cref="EventModel"/> class.
         /// </summary>

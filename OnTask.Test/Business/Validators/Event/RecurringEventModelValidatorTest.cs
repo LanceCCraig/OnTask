@@ -75,19 +75,19 @@ namespace OnTask.Test.Business.Validators.Event
         }
 
         [TestMethod]
-        public void Validate_InvalidStartDate()
+        public void Validate_InvalidDateRangeStart()
         {
-            var startDate = default(DateTime);
+            var dateRangeStart = default(DateTime);
 
-            target.ShouldHaveValidationErrorFor(x => x.StartDate, startDate);
+            target.ShouldHaveValidationErrorFor(x => x.DateRangeStart, dateRangeStart);
         }
 
         [TestMethod]
-        public void Validate_InvalidEndDate()
+        public void Validate_InvalidDateRangeEnd()
         {
-            var endDate = default(DateTime);
+            var dateRangeEnd = default(DateTime);
 
-            target.ShouldHaveValidationErrorFor(x => x.EndDate, endDate);
+            target.ShouldHaveValidationErrorFor(x => x.DateRangeEnd, dateRangeEnd);
         }
 
         [TestMethod]
@@ -113,8 +113,8 @@ namespace OnTask.Test.Business.Validators.Event
                 Name = "foo",
                 StartTime = new TimeSpan(12, 30, 0),
                 EndTime = new TimeSpan(13, 50, 0),
-                StartDate = new DateTime(2018, 1, 8),
-                EndDate = new DateTime(2018, 4, 20),
+                DateRangeStart = new DateTime(2018, 1, 8),
+                DateRangeEnd = new DateTime(2018, 4, 20),
                 DaysOfWeek = new[]
                 {
                     "Tuesday",
@@ -131,8 +131,8 @@ namespace OnTask.Test.Business.Validators.Event
             target.ShouldNotHaveValidationErrorFor(x => x.Name, model);
             target.ShouldNotHaveValidationErrorFor(x => x.StartTime, model);
             target.ShouldNotHaveValidationErrorFor(x => x.EndTime, model);
-            target.ShouldNotHaveValidationErrorFor(x => x.StartDate, model);
-            target.ShouldNotHaveValidationErrorFor(x => x.EndDate, model);
+            target.ShouldNotHaveValidationErrorFor(x => x.DateRangeStart, model);
+            target.ShouldNotHaveValidationErrorFor(x => x.DateRangeEnd, model);
             target.ShouldNotHaveValidationErrorFor(x => x.DaysOfWeek, model);
         }
         #endregion

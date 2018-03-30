@@ -3,6 +3,7 @@ using OnTask.Business.Models.Event;
 using OnTask.Business.Services.Interfaces;
 using OnTask.Common.Injections;
 using OnTask.Data.Entities;
+using System;
 
 namespace OnTask.Business.Services
 {
@@ -19,9 +20,10 @@ namespace OnTask.Business.Services
         {
             AddEventMap();
             AddEventMapToItself();
-            AddEventToEventFullMap();
             AddEventTypeMap();
+            AddEventTypeMapToItself();
             AddEventGroupMap();
+            AddEventGroupMapToItself();
             AddEventParentMap();
             AddRecurringEventToEventMap();
         }
@@ -47,16 +49,6 @@ namespace OnTask.Business.Services
             return (EventModel)new EventModel().InjectFrom<SmartInjection>(model);
         });
 
-        private void AddEventToEventFullMap() => AddMap<Event, EventFullModel>(entity =>
-        {
-            return (EventFullModel)new EventFullModel
-            {
-                EventGroup = entity.EventGroup != null ? Map<EventGroupModel>(entity.EventGroup) : null,
-                EventParent = entity.EventParent != null ? Map<EventParentModel>(entity.EventParent) : null,
-                EventType = entity.EventType != null ? Map<EventTypeModel>(entity.EventType) : null,
-            }.InjectFrom<SmartInjection>(entity);
-        });
-
         private void AddEventTypeMap() => AddMap<EventType, EventTypeModel>(entity =>
         {
             return (EventTypeModel)new EventTypeModel
@@ -66,12 +58,22 @@ namespace OnTask.Business.Services
             }.InjectFrom<SmartInjection>(entity);
         });
 
+        private void AddEventTypeMapToItself() => AddMap<EventTypeModel, EventTypeModel>(model =>
+        {
+            return (EventTypeModel)new EventTypeModel().InjectFrom<SmartInjection>(model);
+        });
+
         private void AddEventGroupMap() => AddMap<EventGroup, EventGroupModel>(entity =>
         {
             return (EventGroupModel)new EventGroupModel
             {
                 EventParentName = entity.EventParent?.Name
             }.InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddEventGroupMapToItself() => AddMap<EventGroupModel, EventGroupModel>(model =>
+        {
+            return (EventGroupModel)new EventGroupModel().InjectFrom<SmartInjection>(model);
         });
 
         private void AddEventParentMap() => AddMap<EventParent, EventParentModel>(entity =>
