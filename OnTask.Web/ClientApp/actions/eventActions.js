@@ -8,7 +8,7 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventApi from 'ClientApp/api/eventApi';
-import { updateEventForApi, updateRecurringEventForApi } from 'ClientApp/helpers/generalHelpers';
+import { updateEventForApi, updateEventsForCalendar, updateRecurringEventForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createEvent(event) {
     return function (dispatch) {
@@ -96,7 +96,8 @@ export function getAllEvents(
             dateRangeStart,
             dateRangeEnd).then(
             events => {
-                dispatch(success(events));
+                let retrievedEvents = updateEventsForCalendar(events);
+                dispatch(success(retrievedEvents));
             },
             errors => {
                 // Do nothing.

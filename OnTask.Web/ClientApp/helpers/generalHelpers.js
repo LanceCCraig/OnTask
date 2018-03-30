@@ -66,10 +66,16 @@ export function updateEventForDisplay(event) {
     newEvent.description = checkNullReturnBlank(event.description);
     newEvent.startDate = event.startDate !== null ? moment(event.startDate) : null;
     newEvent.startTime = event.startTime !== null ? moment(event.startTime) : null;
+    newEvent.startDateTime = event.startDateTime !== null ? moment(event.startDateTime).toDate() : null;
     newEvent.endDate = event.endDate !== null ? moment(event.endDate) : null;
     newEvent.endTime = event.endTime !== null ? moment(event.endTime) : null;
+    newEvent.endDateTime = event.endDateTime !== null ? moment(event.endDateTime).toDate() : null;
     newEvent.weight = checkNullReturnBlank(event.weight);
     return newEvent;
+}
+
+export function updateEventsForCalendar(events) {
+    return [...events].map(updateEventForDisplay);
 }
 
 export function updateRecurringEventForApi(recurringEvent) {
