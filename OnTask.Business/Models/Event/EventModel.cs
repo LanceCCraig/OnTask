@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnTask.Common;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace OnTask.Business.Models.Event
@@ -70,6 +71,10 @@ namespace OnTask.Business.Models.Event
         /// </summary>
         public TimeSpan? StartTime { get; set; }
         /// <summary>
+        /// Gets or sets the combined <see cref="StartDate"/> and <see cref="StartTime"/> for the <see cref="EventModel"/> class.
+        /// </summary>
+        public DateTime StartDateTime => StartTime.HasValue ? StartDate.CombineTimeWithDate(StartTime.Value) : StartDate;
+        /// <summary>
         /// Gets or sets the end date for the <see cref="EventModel"/> class.
         /// </summary>
         public DateTime EndDate { get; set; }
@@ -77,6 +82,10 @@ namespace OnTask.Business.Models.Event
         /// Gets or sets the end time for the <see cref="EventModel"/> class.
         /// </summary>
         public TimeSpan? EndTime { get; set; }
+        /// <summary>
+        /// Gets or sets the combined <see cref="EndDate"/> and <see cref="EndTime"/> for the <see cref="EventModel"/> class.
+        /// </summary>
+        public DateTime EndDateTime => EndTime.HasValue ? EndDate.CombineTimeWithDate(EndTime.Value) : EndDate;
         /// <summary>
         /// Gets or sets the value that determines whether the <see cref="EventModel"/> class lasts the entire day.
         /// </summary>

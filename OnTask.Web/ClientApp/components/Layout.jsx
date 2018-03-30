@@ -18,7 +18,7 @@ export default class Layout extends React.Component {
                         <div className='col-sm-3'>
                             <NavMenu />
                         </div>
-                        <div className='col-sm-9'>
+                        <div className='col-sm-9' style={{ paddingLeft: 5, paddingRight: 5 }}>
                             { this.props.children }
                         </div>
                     </div>
