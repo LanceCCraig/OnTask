@@ -8,7 +8,7 @@ import toastr from 'toastr';
  */
 import * as types from 'ClientApp/actions/actionTypes';
 import eventApi from 'ClientApp/api/eventApi';
-import { updateEventForApi, updateEventsForCalendar, updateRecurringEventForApi } from 'ClientApp/helpers/generalHelpers';
+import { updateEventForApi, updateRecurringEventForApi } from 'ClientApp/helpers/generalHelpers';
 
 export function createEvent(event) {
     return function (dispatch) {

@@ -11,7 +11,7 @@ export const LOGOUT = 'LOGOUT';
 
 //Auth (Forgot Password)
 export const PASSWORD_REQUEST = 'PASSWORD_REQUEST';
-export const PASSWORD_SUCCESS = 'PASSWORD_REQUEST';
+export const PASSWORD_SUCCESS = 'PASSWORD_SUCCESS';
 export const PASSWORD_FAILURE = 'PASSWORD_FAILURE';
 
 // EventParent
