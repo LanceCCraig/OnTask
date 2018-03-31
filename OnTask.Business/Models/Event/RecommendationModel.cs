@@ -28,5 +28,17 @@ namespace OnTask.Business.Models.Event
         /// Gets or sets the recommended start date for the associated <see cref="EventModel"/> class.
         /// </summary>
         public DateTime RecommendedStartDate { get; set; }
+        /// <summary>
+        /// Gets or sets the recommended end date for the associated <see cref="EventModel"/> class.
+        /// </summary>
+        public DateTime RecommendedEndDate => RecommendedStartDate;
+        /// <summary>
+        /// Gets or sets the name for the associated <see cref="EventModel"/> class.
+        /// </summary>
+        public string Name => Event.Name;
+        /// <summary>
+        /// Gets or sets the value that determines whether the <see cref="RecommendationModel"/> class lasts all day.
+        /// </summary>
+        public bool IsAllDay => true;
     }
 }

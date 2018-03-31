@@ -17,6 +17,7 @@ import LogoutPage from 'ClientApp/pages/auth/logoutPage';
 import FetchDataPage from 'ClientApp/pages/fetchDataPage';
 import CounterPage from 'ClientApp/pages/counterPage';
 import CalendarPage from 'ClientApp/pages/calendarPage';
+import RecommendationsPage from 'ClientApp/pages/recommendationsPage';
 import EventParentsPage from 'ClientApp/pages/eventParent/eventParentsPage';
 import EventParentPage from 'ClientApp/pages/eventParent/eventParentPage';
 import EventGroupsPage from 'ClientApp/pages/eventGroup/eventGroupsPage';
@@ -31,6 +32,8 @@ const Routes = () => {
         <Layout>
             <div>
                 <PrivateRoute exact path='/' component={HomePage} />
+                <PrivateRoute path="/calendar" component={CalendarPage} />
+                <PrivateRoute path="/recommendations" component={RecommendationsPage} />
                 <PrivateRoute path="/eventParents" component={EventParentsPage} />
                 <PrivateRoute exact path="/eventParent" component={EventParentPage} />
                 <PrivateRoute path="/eventParent/:id" component={EventParentPage} />
@@ -45,7 +48,6 @@ const Routes = () => {
                 <PrivateRoute path="/recurringEvent" component={RecurringEventPage} />
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />
-                <PrivateRoute path="/calendar" component={CalendarPage} />
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/forgotPassword" component={ForgotPasswordPage} />
                 <Route path="/login" component={LoginPage} />

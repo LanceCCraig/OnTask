@@ -46,6 +46,13 @@ export class NavMenu extends React.Component {
                         </li>
                         <li>
                             <PrivateNavLink
+                                to={"/recommendations"}
+                                glyphiconClassName="glyphicon glyphicon-calendar"
+                                text="Recommendations"
+                            />
+                        </li>
+                        <li>
+                            <PrivateNavLink
                                 to={"/eventParents"}
                                 glyphiconClassName="glyphicon glyphicon-th-list"
                                 text="Parents"

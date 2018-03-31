@@ -14,8 +14,9 @@ import moment from 'moment';
  * Internal dependencies
  */
 import * as eventActions from 'ClientApp/actions/eventActions';
+import CalendarDialogContent from 'ClientApp/components/calendar/calendarDialogContent';
 import CalendarToolbar from 'ClientApp/components/calendar/calendarToolbar';
-import FlatButton from 'material-ui/FlatButton/FlatButton';
+import FlatButton from 'material-ui/FlatButton';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
@@ -52,32 +53,10 @@ class CalendarPage extends React.Component {
     }
 
     render() {
-        const allViews = Object.keys(BigCalendar.Views).map(key => BigCalendar.Views[key]);
-        const weights = [
-            {
-                name: 'Very Low',
-                value: 5
-            },
-            {
-                name: 'Low',
-                value: 4
-            },
-            {
-                name: 'Medium',
-                value: 3
-            },
-            {
-                name: 'High',
-                value: 2
-            },
-            {
-                name: 'Very High',
-                value: 1
-            },
-        ];
+        const views = ['month', 'week', 'day'];
 
         const { events } = this.props;
-        const { selectedEvent } = this.state;
+        const { isEventDialogOpen, selectedEvent } = this.state;
         const actions = [
             <FlatButton
                 secondary
@@ -101,7 +80,7 @@ class CalendarPage extends React.Component {
                     components={{
                         toolbar: CalendarToolbar
                     }}
-                    views={allViews}
+                    views={views}
                     step={30}
                     popup={true}
                     selectable={true}
@@ -117,47 +96,19 @@ class CalendarPage extends React.Component {
                 <Dialog
                     actions={actions}
                     modal={false}
-                    open={this.state.isEventDialogOpen}
+                    open={isEventDialogOpen}
                     onRequestClose={this.handleEventDialogClose}>
-                    <div className="modal-header">
-                        <h4 className="modal-title">{selectedEvent.name}</h4>
-                    </div>
-                    <div className="modal-body">
-                        <dl className="dl-horizontal">
-                            <dt>Description</dt>
-                            <dd>{selectedEvent.description !== null && selectedEvent.description !== '' ? selectedEvent.description : 'N/A'}</dd>
-                            <dt>Parent</dt>
-                            <dd>{selectedEvent.eventParentName}</dd>
-                            <dt>Group</dt>
-                            <dd>{selectedEvent.eventGroupName}</dd>
-                            <dt>Type</dt>
-                            <dd>{selectedEvent.eventTypeName}</dd>
-                            <dt>Lasts all day</dt>
-                            <dd>{selectedEvent.isAllDay ? 'Yes' : 'No'}</dd>
-                            {selectedEvent.isAllDay &&
-                                <dt>Date</dt>
-                            }
-                            {selectedEvent.isAllDay &&
-                                <dd>{moment(selectedEvent.startDateTime).format('MMM DD, YYYY')}</dd>
-                            }
-                            {!selectedEvent.isAllDay &&
-                                <dt>Start</dt>
-                            }
-                            {!selectedEvent.isAllDay &&
-                                <dd>{moment(selectedEvent.startDateTime).format('MMM DD, YYYY LT')}</dd>
-                            }
-                            {!selectedEvent.isAllDay &&
-                                <dt>End</dt>
-                            }
-                            {!selectedEvent.isAllDay &&
-                                <dd>{moment(selectedEvent.endDateTime).format('MMM DD, YYYY LT')}</dd>
-                            }
-                            <dt>Importance</dt>
-                            <dd>{selectedEvent.weight !== undefined &&
-                                selectedEvent.weight !== '' &&
-                                selectedEvent.weight !== null ? weights.find(weight => weight.value === selectedEvent.weight).name : 'N/A'}</dd>
-                        </dl>
-                    </div>
+                    <CalendarDialogContent
+                        name={selectedEvent.name}
+                        description={selectedEvent.description}
+                        eventParentName={selectedEvent.eventParentName}
+                        eventGroupName={selectedEvent.eventGroupName}
+                        eventTypeName={selectedEvent.eventTypeName}
+                        isAllDay={selectedEvent.isAllDay}
+                        startDateTime={selectedEvent.startDateTime}
+                        endDateTime={selectedEvent.endDateTime}
+                        weight={selectedEvent.weight}
+                    />
                 </Dialog>
             </div>
         );

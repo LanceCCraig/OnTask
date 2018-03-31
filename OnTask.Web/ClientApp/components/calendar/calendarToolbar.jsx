@@ -74,8 +74,8 @@ const CalendarToolbar = (toolbar) => {
                 <DropDownMenu
                     value={toolbar.view}
                     onChange={handleViewChange}>
-                    {availableViews.map(view =>
-                        <MenuItem key={view.value} value={view.value} primaryText={view.name} />
+                    {toolbar.views.map(view =>
+                        <MenuItem key={view} value={view} primaryText={availableViews.find(availableView => availableView.value === view).name} />
                     )}
                 </DropDownMenu>
             </ToolbarGroup>

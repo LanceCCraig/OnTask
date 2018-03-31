@@ -11,13 +11,14 @@ import Constants from 'ClientApp/constants';
 import { getAuthorizedHeaders, handleResponse, handleError } from 'ClientApp/helpers/apiHelpers';
 
 let RecommendationApi = {
-    getAll(end) {
+    getAll(end, mode) {
         let options = {
             method: 'GET',
             headers: getAuthorizedHeaders()
         };
         let parameters = {
-            end
+            end,
+            mode
         };
 
         return fetch(`${Constants.RECOMMENDATION_API_URL}?${queryString.stringify(parameters)}`, options)

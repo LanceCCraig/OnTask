@@ -23,7 +23,42 @@ const Constants = {
         'Thursday',
         'Friday',
         'Saturday'
+    ],
+
+    DEFAULT_RECALCULATION_MODE: 'MinimalClustering',
+    RECALCULATION_MODES: [
+        {
+            name: 'Minimize Events Per Day',
+            value: 'MinimalClustering'
+        },
+        {
+            name: 'Prioritize Importance',
+            value: 'PriorityRespective'
+        }
+    ],
+
+    WEIGHTS: [
+        {
+            name: 'Very Low',
+            value: 5
+        },
+        {
+            name: 'Low',
+            value: 4
+        },
+        {
+            name: 'Medium',
+            value: 3
+        },
+        {
+            name: 'High',
+            value: 2
+        },
+        {
+            name: 'Very High',
+            value: 1
+        }
     ]
-}
+};
 
 export default Constants;

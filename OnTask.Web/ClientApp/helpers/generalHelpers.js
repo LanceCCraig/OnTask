@@ -104,6 +104,19 @@ export function updateRecurringEventForApi(recurringEvent) {
     return newRecurringEvent;
 }
 
+export function updateRecommendationsForCalendar(recommendations) {
+    return [...recommendations].map(updateRecommendationForCalendar);
+}
+
+function updateRecommendationForCalendar(recommendation) {
+    let newRecommendation = Object.assign({}, recommendation);
+    newRecommendation.event.startDateTime = newRecommendation.event.startDateTime !== null ? moment(newRecommendation.event.startDateTime).toDate() : null;
+    newRecommendation.event.endDateTime = newRecommendation.event.endDateTime !== null ? moment(newRecommendation.event.endDateTime).toDate() : null;
+    newRecommendation.recommendedStartDate = newRecommendation.recommendedStartDate !== null ? moment(newRecommendation.recommendedStartDate).toDate() : null;
+    newRecommendation.recommendedEndDate = newRecommendation.recommendedEndDate !== null ? moment(newRecommendation.recommendedEndDate).toDate() : null;
+    return newRecommendation;
+}
+
 function checkBlankReturnNull(item) {
     return item === '' ? null : item;
 }

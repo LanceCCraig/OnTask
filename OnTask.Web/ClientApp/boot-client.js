@@ -7,21 +7,24 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import moment from 'moment';
 import 'bootstrap';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'toastr/build/toastr.min.css';
-import 'react-tippy/dist/tippy.css'
+import 'react-tippy/dist/tippy.css';
 
 /**
  * Internal dependencies
  */
 import 'ClientApp/css/site.css';
+import Constants from 'ClientApp/constants';
 import configureStore from 'ClientApp/configureStore';
 import Routes from 'ClientApp/routes';
 import { getAllParents } from 'ClientApp/actions/eventParentActions';
 import { getAllGroups } from 'ClientApp/actions/eventGroupActions';
 import { getAllTypes } from 'ClientApp/actions/eventTypeActions';
 import { getAllEvents } from 'ClientApp/actions/eventActions';
+import { getRecommendations } from 'ClientApp/actions/recommendationActions';
 import authHelper from 'ClientApp/helpers/authHelper';
 
 // Create browser history to use in the Redux store
@@ -36,6 +39,7 @@ if (authHelper.hasToken()) {
     store.dispatch(getAllGroups());
     store.dispatch(getAllTypes());
     store.dispatch(getAllEvents());
+    store.dispatch(getRecommendations(moment(new Date()).add(1, 'M').format(Constants.MOMENT_DATE_FORMAT)));
 }
 
 function renderApp() {

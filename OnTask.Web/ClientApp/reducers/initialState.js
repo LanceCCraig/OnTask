@@ -14,5 +14,6 @@ export default {
     eventParents: [],
     eventGroups: [],
     eventTypes: [],
-    events: []
+    events: [],
+    recommendations: []
 };
