@@ -34,6 +34,10 @@
     .calendar-container {
         height: 600px;
     }
+    .modal-body {
+        height: 380px;
+        overflow-y: auto;
+    }
 }
 
 @media (min-width: 768px) {
@@ -80,6 +84,10 @@
     }
     .calendar-container {
         height: 800px;
+    }
+    .modal-body {
+        height: 226px;
+        overflow-y: auto;
     }
 }
 

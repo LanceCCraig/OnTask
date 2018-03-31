@@ -83,7 +83,14 @@ export function updateEventForDisplay(event) {
 }
 
 export function updateEventsForCalendar(events) {
-    return [...events].map(updateEventForDisplay);
+    return [...events].map(updateEventForCalendar);
+}
+
+export function updateEventForCalendar(event) {
+    let newEvent = Object.assign({}, event);
+    newEvent.startDateTime = event.startDateTime !== null ? moment(event.startDateTime).toDate() : null;
+    newEvent.endDateTime = event.endDateTime !== null ? moment(event.endDateTime).toDate() : null;
+    return newEvent;
 }
 
 export function updateRecurringEventForApi(recurringEvent) {
