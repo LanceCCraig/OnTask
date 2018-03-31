@@ -59,5 +59,9 @@ namespace OnTask.Common
         /// Gets the RuleSet name for an update operation.
         /// </summary>
         public const string RuleSetNameForUpdate = "Update";
+        /// <summary>
+        /// Gets the lowest possible weight value.
+        /// </summary>
+        public const int LowestWeight = 5;
     }
 }

@@ -46,5 +46,20 @@ namespace OnTask.Common
             /// </summary>
             Saturday = 64
         }
+
+        /// <summary>
+        /// Indicates the type of recommendation calculation to use.
+        /// </summary>
+        public enum RecommendationMode
+        {
+            /// <summary>
+            /// Specifies that the calculation should prioritize the smallest possible clusters.
+            /// </summary>
+            MinimalClustering,
+            /// <summary>
+            /// Specifies that the calculation should prioritize the event priority.
+            /// </summary>
+            PriorityRespective
+        }
     }
 }

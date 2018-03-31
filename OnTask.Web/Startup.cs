@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using OnTask.Business.Builders;
+using OnTask.Business.Builders.Interfaces;
 using OnTask.Business.Models.Account;
 using OnTask.Business.Models.Account.Jwt;
 using OnTask.Business.Models.Event;
@@ -199,6 +201,8 @@ namespace OnTask.Web
             });
 
         private void ConfigureBusinessServices(IServiceCollection services) => services
+            // Builders
+            .AddTransient<IRecommendationsBuilder, RecommendationsBuilder>()
             // Models
             .Configure<JwtSettings>(Configuration.GetSection("Jwt"))
             // Services

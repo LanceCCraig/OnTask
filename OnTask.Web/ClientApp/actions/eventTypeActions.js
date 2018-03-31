@@ -14,7 +14,13 @@ export function createType(eventType) {
     return function(dispatch) {
         let createdEventType = updateEventTypeForApi(eventType);
 
-        return eventTypeApi.create(createdEventType.eventGroupId, createdEventType.eventParentId, createdEventType.name, createdEventType.description, createdEventType.weight, createdEventType.isRecommended).then(
+        return eventTypeApi.create(
+            createdEventType.eventGroupId,
+            createdEventType.eventParentId,
+            createdEventType.name,
+            createdEventType.description,
+            createdEventType.weight,
+            createdEventType.isRecommended).then(
             eventType => {
                 dispatch(success(eventType));
                 toastr.success('Type created.');
@@ -75,7 +81,14 @@ export function updateType(eventType) {
     return function(dispatch) {
         let updatedEventType = updateEventTypeForApi(eventType);
 
-        return eventTypeApi.update(updatedEventType.id, updatedEventType.eventGroupId, updatedEventType.eventParentId, updatedEventType.name, updatedEventType.description, updatedEventType.weight).then(
+        return eventTypeApi.update(
+            updatedEventType.id,
+            updatedEventType.eventGroupId,
+            updatedEventType.eventParentId,
+            updatedEventType.name,
+            updatedEventType.description,
+            updatedEventType.weight,
+            updatedEventType.isRecommended).then(
             () => {
                 dispatch(success(eventType));
                 toastr.success('Type updated.');

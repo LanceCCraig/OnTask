@@ -1,10 +1,10 @@
-﻿using OnTask.Business.Models.Event;
+﻿using OnTask.Business.Builders.Interfaces;
+using OnTask.Business.Models.Event;
 using OnTask.Business.Services.Interfaces;
 using OnTask.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using static OnTask.Common.Extensions;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Business.Services
 {
@@ -14,17 +14,17 @@ namespace OnTask.Business.Services
     public class RecommendationService : BaseService, IRecommendationService
     {
         #region Fields
-        private IEventService eventService;
+        private IRecommendationsBuilder builder;
         #endregion
 
         #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="RecommendationService"/> class.
         /// </summary>
-        /// <param name="eventService">The service that interacts with <see cref="EventModel"/> classes.</param>
-        public RecommendationService(IEventService eventService)
+        /// <param name="builder">The builder for the <see cref="RecommendationModel"/> classes.</param>
+        public RecommendationService(IRecommendationsBuilder builder)
         {
-            this.eventService = eventService;
+            this.builder = builder;
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace OnTask.Business.Services
         public override void AddApplicationUser(User applicationUser)
         {
             base.AddApplicationUser(applicationUser);
-            eventService.AddApplicationUser(applicationUser);
+            builder.AddApplicationUser(applicationUser);
         }
         #endregion
 
@@ -45,62 +45,29 @@ namespace OnTask.Business.Services
         /// Gets all of the recommended starting point for relevant <see cref="EventModel"/> classes.
         /// </summary>
         /// <param name="end">The ending <see cref="DateTime"/> for the time period to recommend.</param>
+        /// <param name="mode">Specifies the calculation mode to use.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="RecommendationModel"/> classes.</returns>
-        public IEnumerable<RecommendationModel> GetRecommendations(DateTime end)
+        public IEnumerable<RecommendationModel> GetRecommendations(DateTime end, RecommendationMode mode)
         {
             try
             {
-                var start = DateTime.Now;
-                var timePeriod = GetDateRange(start, end).ToList();
-                var eventsToBeRecommended = eventService
-                    .GetAll(new EventGetAllModel
-                    {
-                        DateRangeStart = start,
-                        DateRangeEnd = end
-                    })
-                    .Where(x => x.IsEventTypeRecommended)
-                    .OrderBy(x => CalculatePriority(x, start))
-                    .ToList();
-
-                var timePeriodIndex = 0;
-                var maxTimePeriodIndex = timePeriod.Count - 1;
-                var recommendations = new List<RecommendationModel>();
-                foreach (var eventToBeRecommended in eventsToBeRecommended)
+                builder
+                    .Create(DateTime.Now, end)
+                    .ConstructIterative()
+                    .ReorderOverruns()
+                    .SpreadBackwards();
+                if (mode == RecommendationMode.MinimalClustering)
                 {
-                    recommendations.Add(new RecommendationModel
-                    {
-                        Event = eventToBeRecommended,
-                        RecommendedStartDate = timePeriod[timePeriodIndex]
-                    });
-                    timePeriodIndex++;
-                    if (timePeriodIndex == maxTimePeriodIndex)
-                    {
-                        timePeriodIndex = 0;
-                    }
+                    builder.SpreadForwards();
                 }
-                return recommendations;
+                return builder
+                    .FillEmpty()
+                    .Build();
             }
             catch (Exception)
             {
                 throw;
             }
-        }
-        #endregion
-
-        #region Private Helpers
-        private static int CalculatePriority(EventModel model, DateTime start)
-        {
-            var parentWeight = model.EventParentWeight ?? 1;
-            var groupWeight = model.EventGroupWeight ?? 1;
-            var typeWeight = model.EventTypeWeight ?? 1;
-            var eventWeight = model.Weight ?? 1;
-            var minutesUntil = model.StartDate.Subtract(start).Minutes;
-            return
-                parentWeight *
-                groupWeight *
-                typeWeight *
-                eventWeight *
-                minutesUntil;
         }
         #endregion
     }

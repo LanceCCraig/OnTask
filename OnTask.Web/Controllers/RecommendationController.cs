@@ -5,6 +5,7 @@ using OnTask.Business.Models.Event;
 using OnTask.Business.Services.Interfaces;
 using OnTask.Data.Entities;
 using System;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Web.Controllers
 {
@@ -45,12 +46,21 @@ namespace OnTask.Web.Controllers
         /// Gets all <see cref="RecommendationModel"/> classes.
         /// </summary>
         /// <param name="end">The ending time period to retrieve <see cref="RecommendationModel"/> classes.</param>
+        /// <param name="mode">Specifies the calculation mode to use.</param>
         /// <returns>An <see cref="IActionResult"/> response containing the <see cref="RecommendationModel"/> classes.</returns>
         /// <response code="200">The request has succeeded and the models are returned.</response>
         /// <response code="401">The caller is not authenticated</response>
         [HttpGet]
         [ProducesResponseType(200)]
-        public IActionResult GetAll(DateTime end) => Ok(service.GetRecommendations(end));
+        public IActionResult GetAll(DateTime end, string mode)
+        {
+            var modeValue = RecommendationMode.MinimalClustering;
+            if (Enum.TryParse(mode, out RecommendationMode result))
+            {
+                modeValue = result;
+            }
+            return Ok(service.GetRecommendations(end, modeValue));
+        }
         #endregion
     }
 }
