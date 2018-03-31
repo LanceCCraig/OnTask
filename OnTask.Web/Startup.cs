@@ -172,7 +172,8 @@ namespace OnTask.Web
 
         private static void ConfigureMvc(IServiceCollection services) => services
             .AddMvc()
-            .AddJsonOptions(options => {
+            .AddJsonOptions(options =>
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             })
             .AddFluentValidation();

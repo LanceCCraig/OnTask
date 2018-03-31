@@ -38,7 +38,8 @@ const Routes = () => {
                 <PrivateRoute path="/eventTypes" component={EventTypesPage} />
                 <PrivateRoute exact path="/eventType" component={EventTypePage} />
                 <PrivateRoute path="/eventType/:id" component={EventTypePage} />
-                <PrivateRoute path="/event" component={EventPage} />
+                <PrivateRoute exact path="/event" component={EventPage} />
+                <PrivateRoute path="/event/:id" component={EventPage} />
                 <PrivateRoute path="/recurringEvent" component={RecurringEventPage} />
                 <Route path="/counter" component={CounterPage} />
                 <Route path="/fetchdata/:startDateIndex?" component={FetchDataPage} />

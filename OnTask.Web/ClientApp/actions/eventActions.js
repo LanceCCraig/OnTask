@@ -96,8 +96,7 @@ export function getAllEvents(
             dateRangeStart,
             dateRangeEnd).then(
             events => {
-                let retrievedEvents = updateEventsForCalendar(events);
-                dispatch(success(retrievedEvents));
+                dispatch(success(events));
             },
             errors => {
                 // Do nothing.

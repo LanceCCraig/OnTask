@@ -64,7 +64,6 @@ class EventParentsPage extends React.Component {
             <FlatButton
                 primary={true}
                 label="Yes"
-                keyboardFocused={true}
                 onClick={this.handleDelete}
             />
         ];

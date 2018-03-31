@@ -64,11 +64,19 @@ export function updateEventForApi(event) {
 export function updateEventForDisplay(event) {
     let newEvent = Object.assign({}, event);
     newEvent.description = checkNullReturnBlank(event.description);
-    newEvent.startDate = event.startDate !== null ? moment(event.startDate) : null;
-    newEvent.startTime = event.startTime !== null ? moment(event.startTime) : null;
+    newEvent.startDate = event.startDate !== null ? moment(event.startDate).toDate() : null;
+    if (typeof event.startTime !== 'object') {
+        newEvent.startTime = event.startTime !== null ? moment('1900-01-01T' + event.startTime).toDate() : null;
+    } else {
+        newEvent.startTime = event.startTime;
+    }
     newEvent.startDateTime = event.startDateTime !== null ? moment(event.startDateTime).toDate() : null;
-    newEvent.endDate = event.endDate !== null ? moment(event.endDate) : null;
-    newEvent.endTime = event.endTime !== null ? moment(event.endTime) : null;
+    newEvent.endDate = event.endDate !== null ? moment(event.endDate).toDate() : null;
+    if (typeof event.endTime !== 'object') {
+        newEvent.endTime = event.endTime !== null ? moment('1900-01-01T' + event.endTime).toDate() : null;
+    } else {
+        newEvent.endTime = event.endTime;
+    }
     newEvent.endDateTime = event.endDateTime !== null ? moment(event.endDateTime).toDate() : null;
     newEvent.weight = checkNullReturnBlank(event.weight);
     return newEvent;

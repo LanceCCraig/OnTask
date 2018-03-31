@@ -65,7 +65,10 @@ const CalendarToolbar = (toolbar) => {
                 </IconButton>
             </ToolbarGroup>
             <ToolbarGroup>
-                <ToolbarTitle text={toolbar.label} />
+                <ToolbarTitle
+                    style={{ color: 'black' }}
+                    text={toolbar.label}
+                />
             </ToolbarGroup>
             <ToolbarGroup lastChild={true}>
                 <DropDownMenu

@@ -67,16 +67,17 @@ export class NavMenu extends React.Component {
                         </li>
                         <li>
                             <PrivateNavLink
+                                exact
                                 to={"/event"}
-                                glyphiconClassName="glyphicon glyphicon-th-list"
-                                text="Event"
+                                glyphiconClassName="glyphicon glyphicon-plus"
+                                text="Add Event"
                             />
                         </li>
                         <li>
                             <PrivateNavLink
                                 to={"/recurringEvent"}
-                                glyphiconClassName="glyphicon glyphicon-th-list"
-                                text="Recurring Event"
+                                glyphiconClassName="glyphicon glyphicon-plus"
+                                text="Add Recurring Event"
                             />
                         </li>
                         <li>

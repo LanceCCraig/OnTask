@@ -187,6 +187,7 @@ class EventPage extends React.Component {
             maxWidth: 256,
             minHeight: 20
         };
+        
         return (
             <div style={{ textAlign: "center" }}>
                 <h1>Event</h1>
@@ -310,8 +311,8 @@ EventPage.propTypes = {
     routerActions: PropTypes.object.isRequired
 };
 
-function getEventbyId(events, id) {
-    const event = events.filter(event => event.id === id);
+function getEventById(events, id) {
+    const event = events.filter(event => event.id == id);
     return event.length ? event[0] : null;
 }
 
@@ -324,10 +325,10 @@ function mapStateToProps(state, ownProps) {
         eventParentId: '',
         name: '',
         description: '',
-        startDate: '',
-        startTime: '',
-        endDate: '',
-        endTime: '',
+        startDate: null,
+        startTime: null,
+        endDate: null,
+        endTime: null,
         isAllDay: false,
         weight: ''
     };
