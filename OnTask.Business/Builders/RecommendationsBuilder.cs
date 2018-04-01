@@ -318,13 +318,14 @@ namespace OnTask.Business.Builders
             var groupWeight = model.EventGroupWeight ?? Constants.LowestWeight;
             var typeWeight = model.EventTypeWeight ?? Constants.LowestWeight;
             var eventWeight = model.Weight ?? Constants.LowestWeight;
-            var minutesUntil = model.StartDate.Subtract(start).Minutes;
-            return
-                parentWeight *
-                groupWeight *
-                typeWeight *
-                eventWeight *
-                minutesUntil;
+            var totalWeight =
+                parentWeight +
+                groupWeight +
+                typeWeight +
+                eventWeight;
+
+            var daysUntil = model.StartDate.Subtract(start).Days;
+            return totalWeight * daysUntil;
         }
 
         private IRecommendationsBuilder ExecuteAction(string actionName, Action action)
