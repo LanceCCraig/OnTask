@@ -5,6 +5,7 @@
     [UserId]        NVARCHAR(450)   NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
+    [Weight]        INT             NULL,
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventGroup] PRIMARY KEY CLUSTERED ([Id] ASC), 

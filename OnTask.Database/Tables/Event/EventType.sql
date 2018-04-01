@@ -6,6 +6,8 @@
     [UserId]        NVARCHAR(450)	NOT NULL,
     [Name]          NVARCHAR(500)   NOT NULL,
     [Description]   NVARCHAR(MAX)   NULL,
+    [Weight]        INT             NULL,
+    [IsRecommended] BIT             NOT NULL CONSTRAINT [DF_EventType_IsRecommended] DEFAULT (1),
     [CreatedOn]     DATETIME        NOT NULL,
     [UpdatedOn]     DATETIME        NULL,
     CONSTRAINT [PK_EventType] PRIMARY KEY CLUSTERED ([Id] ASC),
