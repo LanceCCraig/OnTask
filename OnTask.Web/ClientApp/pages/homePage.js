@@ -27,6 +27,22 @@ class HomePage extends React.Component {
         this.props.routerActions.push('/event');
     }
 
+    redirectToAddRecurringEventPage = () => {
+        this.props.routerActions.push('/recurringEvent');
+    }
+
+    redirectToParentsPage = () => {
+        this.props.routerActions.push('/eventParents');
+    }
+
+    redirectToGroupsPage = () => {
+        this.props.routerActions.push('/eventGroups');
+    }
+
+    redirectToTypesPage = () => {
+        this.props.routerActions.push('/eventTypes');
+    }
+
     render() {
         const EventsSummary = () => (
             <Card>
@@ -63,7 +79,7 @@ class HomePage extends React.Component {
                     <CardActions>
                         <FlatButton
                             label="Parents"
-                            href="eventParents"
+                            onClick={this.redirectToParentsPage}
                             primary={true}
                         />
                     </CardActions>
@@ -83,7 +99,7 @@ class HomePage extends React.Component {
                     <CardActions>
                         <FlatButton
                             label="Groups"
-                            href="eventGroups"
+                            onClick={this.redirectToGroupsPage}
                             primary={true}
                         />
                     </CardActions>
@@ -103,7 +119,7 @@ class HomePage extends React.Component {
                     <CardActions>
                         <FlatButton
                             label="Types"
-                            href="eventTypes"
+                            onClick={this.redirectToTypesPage}
                             primary={true}
                         />
                     </CardActions>
@@ -126,7 +142,7 @@ class HomePage extends React.Component {
                 /><br /><br />
                 <RaisedButton
                     label="New Recurring Task"
-                    onClick={this.redirectToAddEventPage}
+                    onClick={this.redirectToAddRecurringEventPage}
                     labelStyle={{ color: 'white' }}
                     backgroundColor="#2DB1FF"
                     rippleStyle={{ backgroundColor: "#005c93" }}
