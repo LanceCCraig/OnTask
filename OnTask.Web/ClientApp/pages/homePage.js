@@ -128,7 +128,7 @@ class HomePage extends React.Component {
         );
 
         return <div className='main-page'>
-            <img src={logo} width="250" height="100" alt="OnTask" className='home-logo' />
+            <img src={logo} width="250" height="100" alt="OnTask" className='home-logo hidden-xs' />
             <div style={{ height: '1000px', margin: '5px' }} >
                 <h3>Welcome to OnTask!</h3><br />
                 <p>OnTask is a web-app designed to help you manage your tasks. These tasks are created by you and are displayed in a calendar just for you! You can set up recurring events or single events, and they'll display on your Calendar! If you've never used our app before, check out the cards below for a general overview! Otherwise, click the "New Task" button below to get started!</p><br />
@@ -137,16 +137,14 @@ class HomePage extends React.Component {
                     onClick={this.redirectToAddEventPage}
                     labelStyle={{ color: 'white' }}
                     backgroundColor="#2DB1FF"
-                    rippleStyle={{ backgroundColor: "#005c93" }}
-                    margin="100px"
+                    rippleStyle={{ backgroundColor: "#005c93", margin: 100 }}
                 /><br /><br />
                 <RaisedButton
                     label="New Recurring Task"
                     onClick={this.redirectToAddRecurringEventPage}
                     labelStyle={{ color: 'white' }}
                     backgroundColor="#2DB1FF"
-                    rippleStyle={{ backgroundColor: "#005c93" }}
-                    margin="100px"
+                    rippleStyle={{ backgroundColor: "#005c93", margin: 100 }}
                 /><br /><br />
                 <EventsSummary /><br />
                 <ParentCard /><br />
