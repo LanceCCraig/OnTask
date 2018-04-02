@@ -6,12 +6,18 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <UserSecretsId>074bfbe9-6a27-42da-979d-3eea99f62843</UserSecretsId>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp2.0\OnTask.Web.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.0\OnTask.Web.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,11 +63,14 @@
     <Exec Command="node node_modules/webpack/bin/webpack.js" />
   </Target>
 
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="npm install" />
+    <Exec Command="npm run production" />
+  </Target>
+
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec Command="npm install" />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>

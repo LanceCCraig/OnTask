@@ -12,7 +12,7 @@ import { createServerRenderer } from 'aspnet-prerendering';
 /**
  * Internal dependencies
  */
-import { Routes } from 'ClientApp/routes';
+import Routes from 'ClientApp/routes';
 import configureStore from 'ClientApp/configureStore';
 
 export default createServerRenderer(params => {

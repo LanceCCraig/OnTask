@@ -11,6 +11,10 @@ namespace OnTask.Common
     public static class Constants
     {
         /// <summary>
+        /// Gets the time zone ID for EST.
+        /// </summary>
+        public const string EasternStandardTimeZoneId = "Eastern Standard Time";
+        /// <summary>
         /// Gets the <see cref="DaysOfWeek"/> values that are enumerated through for time calculation logic.
         /// </summary>
         public static DaysOfWeek[] EnumeratedDaysOfWeek = new[]

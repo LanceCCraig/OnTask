@@ -71,10 +71,15 @@ module.exports = (env) => {
                         }
                     ] :
                         ExtractTextPlugin.extract({ use: 'css-loader?minimize' })
-                },
+                }
             ]
         },
-        plugins: []
+        plugins: [
+            new ExtractTextPlugin("styles.css"),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
+            })
+        ]
     });
 
     // Configuration for client-side bundle suitable for running in browsers

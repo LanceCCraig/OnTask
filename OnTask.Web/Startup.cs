@@ -39,6 +39,10 @@ namespace OnTask.Web
     /// </summary>
     public class Startup
     {
+        #region Fields
+        private bool isDevelopment;
+        #endregion
+
         #region Properties
         /// <summary>
         /// Gets the configuration properties.
@@ -51,8 +55,10 @@ namespace OnTask.Web
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration properties.</param>
-        public Startup(IConfiguration configuration)
+        /// <param name="env">The class which provides information about the hosting environment.</param>
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            isDevelopment = !env.IsProduction();
             Configuration = configuration;
         }
         #endregion
@@ -71,6 +77,12 @@ namespace OnTask.Web
             {
                 app
                     .UseDeveloperExceptionPage()
+                    .UseSwagger()
+                    .UseSwaggerUI(options =>
+                    {
+                        options.DocExpansion("none");
+                        options.SwaggerEndpoint("/swagger/v1/swagger.json", "OnTask API v1");
+                    })
                     .UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                     {
                         HotModuleReplacement = true,
@@ -86,13 +98,7 @@ namespace OnTask.Web
                 .UseAuthentication()
                 //.UseRewriter(new RewriteOptions()
                 //    .AddRedirectToHttps())
-                .UseStaticFiles()
-                .UseSwagger()
-                .UseSwaggerUI(options =>
-                {
-                    options.DocExpansion("none");
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OnTask API v1");
-                });
+                .UseStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -116,6 +122,7 @@ namespace OnTask.Web
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             ConfigureIdentity(services);
             ConfigureGeneral(services);
+            ConfigureSwagger(services);
             ConfigureMvc(services);
             ConfigureAuthentication(services);
 
@@ -134,23 +141,6 @@ namespace OnTask.Web
 
         private static void ConfigureGeneral(IServiceCollection services) => services
             .AddOptions()
-            .AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
-                    In = "header",
-                    Name = "Authorization",
-                    Type = "apiKey"
-                });
-                options.SwaggerDoc("v1", new Info
-                {
-                    Description = "The Web API for the OnTask application",
-                    Title = "OnTask API",
-                    Version = "v1"
-                });
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "OnTask.Web.xml"));
-            })
             .Configure<IdentityOptions>(options =>
             {
                 // Lockout
@@ -171,6 +161,30 @@ namespace OnTask.Web
                 //{
                 //    options.Filters.Add(new RequireHttpsAttribute());
                 //});
+
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            if (isDevelopment)
+            {
+                services.AddSwaggerGen(options =>
+                {
+                    options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
+                        In = "header",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    });
+                    options.SwaggerDoc("v1", new Info
+                    {
+                        Description = "The Web API for the OnTask application",
+                        Title = "OnTask API",
+                        Version = "v1"
+                    });
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "OnTask.Web.xml"));
+                });
+            }
+        }
 
         private static void ConfigureMvc(IServiceCollection services) => services
             .AddMvc()
