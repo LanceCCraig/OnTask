@@ -63,7 +63,7 @@ module.exports = (env) => {
             new webpack.optimize.UglifyJsPlugin()
         ])
     });
-
+    
     const serverBundleConfig = merge(sharedConfig, {
         target: 'node',
         resolve: { mainFields: ['main'] },

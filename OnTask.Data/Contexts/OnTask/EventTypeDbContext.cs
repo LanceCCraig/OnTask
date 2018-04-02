@@ -43,6 +43,8 @@ namespace OnTask.Data.Contexts
         /// <returns>The <see cref="EventType"/> class or <c>null</c> if not found.</returns>
         public EventType GetEventTypeById(int id) => EventTypes
             .AsNoTracking()
+            .Include(x => x.EventGroup)
+            .Include(x => x.EventParent)
             .FirstOrDefault(x => x.Id == id);
 
         /// <summary>

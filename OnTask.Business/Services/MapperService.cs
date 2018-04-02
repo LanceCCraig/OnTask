@@ -3,6 +3,7 @@ using OnTask.Business.Models.Event;
 using OnTask.Business.Services.Interfaces;
 using OnTask.Common.Injections;
 using OnTask.Data.Entities;
+using System;
 
 namespace OnTask.Business.Services
 {
@@ -18,9 +19,13 @@ namespace OnTask.Business.Services
         public MapperService()
         {
             AddEventMap();
+            AddEventMapToItself();
             AddEventTypeMap();
+            AddEventTypeMapToItself();
             AddEventGroupMap();
+            AddEventGroupMapToItself();
             AddEventParentMap();
+            AddRecurringEventToEventMap();
         }
         #endregion
 
@@ -30,9 +35,18 @@ namespace OnTask.Business.Services
             return (EventModel)new EventModel
             {
                 EventGroupName = entity.EventGroup?.Name,
+                EventGroupWeight = entity.EventGroup?.Weight,
                 EventParentName = entity.EventParent?.Name,
-                EventTypeName = entity.EventType?.Name
+                EventParentWeight = entity.EventParent?.Weight,
+                EventTypeName = entity.EventType?.Name,
+                EventTypeWeight = entity.EventType?.Weight,
+                IsEventTypeRecommended = entity.EventType?.IsRecommended ?? true,
             }.InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddEventMapToItself() => AddMap<EventModel, EventModel>(model =>
+        {
+            return (EventModel)new EventModel().InjectFrom<SmartInjection>(model);
         });
 
         private void AddEventTypeMap() => AddMap<EventType, EventTypeModel>(entity =>
@@ -44,6 +58,11 @@ namespace OnTask.Business.Services
             }.InjectFrom<SmartInjection>(entity);
         });
 
+        private void AddEventTypeMapToItself() => AddMap<EventTypeModel, EventTypeModel>(model =>
+        {
+            return (EventTypeModel)new EventTypeModel().InjectFrom<SmartInjection>(model);
+        });
+
         private void AddEventGroupMap() => AddMap<EventGroup, EventGroupModel>(entity =>
         {
             return (EventGroupModel)new EventGroupModel
@@ -52,9 +71,19 @@ namespace OnTask.Business.Services
             }.InjectFrom<SmartInjection>(entity);
         });
 
+        private void AddEventGroupMapToItself() => AddMap<EventGroupModel, EventGroupModel>(model =>
+        {
+            return (EventGroupModel)new EventGroupModel().InjectFrom<SmartInjection>(model);
+        });
+
         private void AddEventParentMap() => AddMap<EventParent, EventParentModel>(entity =>
         {
             return (EventParentModel)new EventParentModel().InjectFrom<SmartInjection>(entity);
+        });
+
+        private void AddRecurringEventToEventMap() => AddMap<RecurringEventModel, EventModel>(recurringEventModel =>
+        {
+            return (EventModel)new EventModel().InjectFrom<SmartInjection>(recurringEventModel);
         });
         #endregion
     }

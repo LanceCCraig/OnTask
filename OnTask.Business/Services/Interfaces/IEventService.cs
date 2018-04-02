@@ -36,6 +36,12 @@ namespace OnTask.Business.Services.Interfaces
         /// <param name="model">The <see cref="EventModel"/> class to insert.</param>
         void Insert(EventModel model);
         /// <summary>
+        /// Inserts recurring <see cref="EventModel"/> classes.
+        /// </summary>
+        /// <param name="model">The <see cref="RecurringEventModel"/> class that specifies the <see cref="EventModel"/> classes to insert.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventModel"/> classes that were inserted.</returns>
+        IEnumerable<EventModel> InsertRecurring(RecurringEventModel model);
+        /// <summary>
         /// Updates an <see cref="EventModel"/> class.
         /// </summary>
         /// <param name="model">The <see cref="EventModel"/> class to update.</param>

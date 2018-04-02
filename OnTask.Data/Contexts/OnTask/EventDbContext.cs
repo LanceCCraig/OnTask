@@ -44,6 +44,9 @@ namespace OnTask.Data.Contexts
         /// <returns>The <see cref="Event"/> class or <c>null</c> if not found.</returns>
         public Event GetEventById(int id) => Events
             .AsNoTracking()
+            .Include(x => x.EventGroup)
+            .Include(x => x.EventParent)
+            .Include(x => x.EventType)
             .FirstOrDefault(x => x.Id == id);
         
         /// <summary>
@@ -80,7 +83,7 @@ namespace OnTask.Data.Contexts
                 x.EventGroupId.IsParameterNullOrEqualForNonNullable(groupId) &&
                 x.EventParentId.IsParameterNullOrEqualForNonNullable(parentId) &&
                 (!dateRangeStart.HasValue || x.StartDate >= dateRangeStart.Value) &&
-                (!dateRangeEnd.HasValue || x.StartDate <= dateRangeStart.Value))
+                (!dateRangeEnd.HasValue || x.StartDate <= dateRangeEnd.Value))
             .ToList();
 
         /// <summary>

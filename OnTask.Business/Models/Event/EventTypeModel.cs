@@ -36,5 +36,13 @@ namespace OnTask.Business.Models.Event
         /// Gets or sets the description for the <see cref="EventTypeModel"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventTypeModel"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
+        /// <summary>
+        /// Gets or sets the value that determines if a schedule is recommended for the <see cref="EventTypeModel"/> class.
+        /// </summary>
+        public bool IsRecommended { get; set; }
     }
 }

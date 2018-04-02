@@ -13,7 +13,13 @@ module.exports = (env) => {
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
         stats: { modules: false },
-        resolve: { extensions: ['.js', '.jsx'] },
+        resolve: {
+            alias: {
+                ClientApp: path.resolve(__dirname, './ClientApp'),
+                node_modules: path.resolve(__dirname, '/node_modules')
+            },
+            extensions: ['.js', '.jsx']
+        },
         output: {
             path: path.join(__dirname, bundleOutputDir),
             filename: '[name].js',
@@ -113,6 +119,6 @@ module.exports = (env) => {
         target: 'node',
         devtool: 'inline-source-map'
     });
-
+    
     return [clientBundleConfig, serverBundleConfig];
 };

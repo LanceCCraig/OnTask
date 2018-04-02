@@ -1,12 +1,19 @@
+/**
+ * External depedencies
+ */
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { replace } from 'react-router-redux';
 import { createMemoryHistory } from 'history';
-import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
-import { Routes } from './Routes';
-import configureStore from './ConfigureStore';
+import { createServerRenderer } from 'aspnet-prerendering';
+
+/**
+ * Internal dependencies
+ */
+import { Routes } from 'ClientApp/routes';
+import configureStore from 'ClientApp/configureStore';
 
 export default createServerRenderer(params => {
     return new Promise((resolve, reject) => {

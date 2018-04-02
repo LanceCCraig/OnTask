@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnTask.Data.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace OnTask.Web.Controllers
 {
@@ -22,7 +24,8 @@ namespace OnTask.Web.Controllers
             IHttpContextAccessor httpContextAccessor,
             UserManager<User> userManager)
         {
-            ApplicationUser = userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
+            var email = httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Sub).Value;
+            ApplicationUser = userManager.FindByEmailAsync(email).Result;
         }
         #endregion
 

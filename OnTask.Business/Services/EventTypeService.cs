@@ -133,7 +133,7 @@ namespace OnTask.Business.Services
                     CreatedOn = DateTime.Now
                 }.InjectFrom<SmartInjection>(model);
                 context.InsertEventType(entity);
-                model.Id = entity.Id;
+                model.InjectFrom<SmartInjection>(GetById(entity.Id));
             }
             catch (Exception)
             {
@@ -155,7 +155,8 @@ namespace OnTask.Business.Services
                 {
                     entity.InjectFrom<SmartInjection>(model);
                     entity.UpdatedOn = DateTime.Now;
-                    context.SaveChanges(); 
+                    context.SaveChanges();
+                    model.InjectFrom<SmartInjection>(GetById(entity.Id));
                 }
             }
             catch (Exception)

@@ -16,13 +16,27 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 10;
 }
 
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {
-        padding-top: 50px;
+        padding-top: 25px;
+    }
+    .main-nav {
+        height: 50px;
+    }
+    .navbar-brand {
+        margin-top: -10px;
+        margin-left: -10px;
+    }
+    .calendar-container {
+        height: 550px;
+    }
+    .modal-body {
+        height: 380px;
+        overflow-y: auto;
     }
 }
 
@@ -63,4 +77,26 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .navbar-brand {
+        height: 55px;
+        margin-top: -15px;
+        margin-left: -15px;
+    }
+    .calendar-container {
+        height: 800px;
+    }
+    .modal-body {
+        height: 226px;
+        overflow-y: auto;
+    }
+}
+
+body {
+    margin-top: 25px;
+    /* background-color: #2DB1FF; /*blue logo bg*/
+    /* background-color: #FF8F3A; /*orange logo bg */
+}
+
+.home-logo {
+    border: 3px solid white;
 }

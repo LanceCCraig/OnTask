@@ -39,6 +39,14 @@ namespace OnTask.Data.Entities
         /// Gets or sets the description for the <see cref="EventType"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventType"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
+        /// <summary>
+        /// Gets or sets the value that determines if a schedule is recommended for the <see cref="EventType"/> class.
+        /// </summary>
+        public bool IsRecommended { get; set; }
         #endregion
 
         #region External Properties

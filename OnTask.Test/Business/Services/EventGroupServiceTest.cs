@@ -242,10 +242,15 @@ namespace OnTask.Test.Business.Services
         public void Insert_ModelIsProvided_InsertsEntity()
         {
             int id = 1;
+            var entity = new EventGroup { Id = id, UserId = User.Id };
             var model = new EventGroupModel();
+            var insertedModel = new EventGroupModel { Id = id };
             var contextMock = new Mock<IOnTaskDbContext>();
             contextMock.Setup(x => x.InsertEventGroup(It.IsAny<EventGroup>())).Callback<EventGroup>(x => x.Id = id).Verifiable();
-            var target = InitializeTarget(contextMock.Object);
+            contextMock.Setup(x => x.GetEventGroupById(id)).Returns(entity).Verifiable();
+            var mapperMock = new Mock<IMapperService>();
+            mapperMock.Setup(x => x.Map<EventGroupModel>(entity, It.IsAny<string>())).Returns(insertedModel).Verifiable();
+            var target = InitializeTarget(contextMock.Object, mapperMock.Object);
 
             target.Insert(model);
 
@@ -314,7 +319,10 @@ namespace OnTask.Test.Business.Services
             var contextMock = new Mock<IOnTaskDbContext>();
             contextMock.Setup(x => x.GetEventGroupByIdTracked(It.Is<int>(y => y == model.Id))).Returns(entity).Verifiable();
             contextMock.Setup(x => x.SaveChanges()).Verifiable();
-            var target = InitializeTarget(contextMock.Object);
+            contextMock.Setup(x => x.GetEventGroupById(model.Id.Value)).Returns(entity).Verifiable();
+            var mapperMock = new Mock<IMapperService>();
+            mapperMock.Setup(x => x.Map<EventGroupModel>(entity, It.IsAny<string>())).Returns(model).Verifiable();
+            var target = InitializeTarget(contextMock.Object, mapperMock.Object);
 
             target.Update(model);
 

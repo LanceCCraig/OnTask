@@ -39,8 +39,13 @@ namespace OnTask.Business.Validators.Event
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("A name is required.")
                 .NotEmpty().WithMessage("A name is required.");
-            RuleFor(x => x.StartDate)
-                .NotEqual(default(DateTime)).WithMessage("A start date is required.");
+            RuleFor(x => x.StartDate).NotEqual(default(DateTime)).WithMessage("A start date is required.");
+            RuleFor(x => x.EndDate).NotEqual(default(DateTime)).WithMessage("An end date is required.");
+            When(x => !x.IsAllDay, () =>
+            {
+                RuleFor(x => x.StartTime).NotNull().WithMessage("A start time is required.");
+                RuleFor(x => x.EndTime).NotNull().WithMessage("An end time is required.");
+            });
         } 
         #endregion
     }

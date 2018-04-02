@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnTask.Business.Models.Account;
-using OnTask.Data.Entities;
+using OnTask.Business.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace OnTask.Web.Controllers
@@ -16,26 +16,22 @@ namespace OnTask.Web.Controllers
     public class AccountController : Controller
     {
         #region Fields
+        private readonly IAccountService accountService;
         private readonly ILogger<AccountController> logger;
-        private readonly SignInManager<User> signInManager;
-        private readonly UserManager<User> userManager;
         #endregion
 
         #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
+        /// <param name="accountService">The service for interacting with account data.</param>
         /// <param name="logger">The class that provides logging for the controller.</param>
-        /// <param name="signInManager">The class that provides authentication functionality.</param>
-        /// <param name="userManager">The class that provides functionality with application <see cref="User"/> classes.</param>
         public AccountController(
-            ILogger<AccountController> logger,
-            SignInManager<User> signInManager,
-            UserManager<User> userManager)
+            IAccountService accountService,
+            ILogger<AccountController> logger)
         {
+            this.accountService = accountService;
             this.logger = logger;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
         }
         #endregion
 
@@ -73,13 +69,7 @@ namespace OnTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user != null &&
-                    await userManager.IsEmailConfirmedAsync(user))
-                {
-                    var resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
-                    // TODO: Send email confirmation.
-                }
+                await accountService.ForgotPassword(model);
                 return Ok();
             }
             return BadRequest(ModelState);
@@ -101,14 +91,11 @@ namespace OnTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(
-                    model.Email,
-                    model.Password,
-                    model.RememberMe,
-                    false);
+                var result = await accountService.Login(model);
                 if (result.Succeeded)
                 {
-                    return Ok();
+                    var jwt = await accountService.GenerateJwt(model.Email);
+                    return Ok(jwt);
                 }
                 // TODO: Add 2FA & Lockout cases.
                 else
@@ -129,7 +116,7 @@ namespace OnTask.Web.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await accountService.Logout();
             return Ok();
         }
 
@@ -149,22 +136,10 @@ namespace OnTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-                var result = await userManager.CreateAsync(
-                    user,
-                    model.Password);
+                var result = await accountService.Register(model);
                 if (result.Succeeded)
                 {
-                    var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    // TODO: Send email confirmation.
-
-                    await signInManager.SignInAsync(
-                        user,
-                        false);
+                    await accountService.SendEmailConfirmation(model.Email);
                     return Ok();
                 }
                 AddIdentityResultErrors(result);
@@ -188,18 +163,11 @@ namespace OnTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user != null)
+                var result = await accountService.ResetPassword(model);
+                if (!result.Succeeded)
                 {
-                    var result = await userManager.ResetPasswordAsync(
-                        user,
-                        model.Token,
-                        model.Password);
-                    if (!result.Succeeded)
-                    {
-                        AddIdentityResultErrors(result);
-                        return BadRequest(ModelState);
-                    }
+                    AddIdentityResultErrors(result);
+                    return BadRequest(ModelState);
                 }
                 return Ok();
             }

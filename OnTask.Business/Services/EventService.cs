@@ -8,6 +8,7 @@ using OnTask.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static OnTask.Common.Extensions;
 
 namespace OnTask.Business.Services
 {
@@ -84,11 +85,11 @@ namespace OnTask.Business.Services
                 return context
                     .GetEvents(
                         ApplicationUser.Id,
-                        model.EventTypeId,
-                        model.EventGroupId,
-                        model.EventParentId,
-                        model.DateRangeStart,
-                        model.DateRangeEnd)
+                        model?.EventTypeId,
+                        model?.EventGroupId,
+                        model?.EventParentId,
+                        model?.DateRangeStart,
+                        model?.DateRangeEnd)
                     .Select(x => mapper.Map<EventModel>(x))
                     .ToList();
             }
@@ -136,7 +137,51 @@ namespace OnTask.Business.Services
                     CreatedOn = DateTime.Now
                 }.InjectFrom<SmartInjection>(model);
                 context.InsertEvent(entity);
-                model.Id = entity.Id;
+                model.InjectFrom<SmartInjection>(GetById(entity.Id));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Inserts recurring <see cref="EventModel"/> classes.
+        /// </summary>
+        /// <param name="model">The <see cref="RecurringEventModel"/> class that specifies the <see cref="EventModel"/> classes to insert.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="EventModel"/> classes that were inserted.</returns>
+        public IEnumerable<EventModel> InsertRecurring(RecurringEventModel model)
+        {
+            try
+            {
+                var insertedModels = new List<EventModel>();
+
+                var baseEventModel = mapper.Map<EventModel>(model);
+                var daysOfWeek = model.DaysOfWeek.GetDaysOfWeek();
+                var dateRange = GetDateRange(model.DateRangeStart, model.DateRangeEnd);
+                foreach (var date in dateRange)
+                {
+                    var dateDaysOfWeek = date.GetDaysOfWeek();
+                    if (daysOfWeek.HasFlag(dateDaysOfWeek))
+                    {
+                        var eventModel = mapper.Map<EventModel>(baseEventModel);
+                        eventModel.StartDate = date;
+                        eventModel.StartTime = model.StartTime;
+                        eventModel.EndDate = date;
+                        eventModel.EndTime = model.EndTime;
+                        var entity = (Event)new Event
+                        {
+                            UserId = ApplicationUser.Id,
+                            CreatedOn = DateTime.Now
+                        }.InjectFrom<SmartInjection>(eventModel);
+                        context.InsertEvent(entity);
+                        eventModel.InjectFrom<SmartInjection>(GetById(entity.Id));
+                        insertedModels.Add(eventModel);
+                    }
+                }
+                context.SaveChanges();
+
+                return insertedModels;
             }
             catch (Exception)
             {
@@ -158,7 +203,8 @@ namespace OnTask.Business.Services
                 {
                     entity.InjectFrom<SmartInjection>(model);
                     entity.UpdatedOn = DateTime.Now;
-                    context.SaveChanges(); 
+                    context.SaveChanges();
+                    model.InjectFrom<SmartInjection>(GetById(entity.Id));
                 }
             }
             catch (Exception)

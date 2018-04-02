@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using static OnTask.Common.Enumerations;
 
 namespace OnTask.Common
 {
@@ -8,6 +10,27 @@ namespace OnTask.Common
     [ExcludeFromCodeCoverage]
     public static class Constants
     {
+        /// <summary>
+        /// Gets the <see cref="DaysOfWeek"/> values that are enumerated through for time calculation logic.
+        /// </summary>
+        public static DaysOfWeek[] EnumeratedDaysOfWeek = new[]
+        {
+            DaysOfWeek.Sunday,
+            DaysOfWeek.Monday,
+            DaysOfWeek.Tuesday,
+            DaysOfWeek.Wednesday,
+            DaysOfWeek.Thursday,
+            DaysOfWeek.Friday,
+            DaysOfWeek.Saturday
+        };
+        /// <summary>
+        /// Gets the minimum <see cref="TimeSpan"/> for representing clock time.
+        /// </summary>
+        public static TimeSpan MinimumTimeSpan = new TimeSpan(0, 0, 0);
+        /// <summary>
+        /// Gets the maximum <see cref="TimeSpan"/> for representing clock time.
+        /// </summary>
+        public static TimeSpan MaximumTimeSpan = new TimeSpan(24, 0, 0);
         /// <summary>
         /// Gets the minimum length of a password.
         /// </summary>
@@ -36,5 +59,9 @@ namespace OnTask.Common
         /// Gets the RuleSet name for an update operation.
         /// </summary>
         public const string RuleSetNameForUpdate = "Update";
+        /// <summary>
+        /// Gets the lowest possible weight value.
+        /// </summary>
+        public const int LowestWeight = 5;
     }
 }

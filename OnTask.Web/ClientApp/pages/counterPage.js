@@ -1,15 +1,16 @@
-﻿import React from 'react';
+﻿/**
+ * External dependencies
+ */
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import * as CounterStore from '../store/Counter';
-import * as WeatherForecasts from '../store/WeatherForecasts';
 
-class Counter extends React.Component {
-    // constructor(){
-    //   super();
-    // }
+/**
+ * Internal dependencies
+ */
+import * as counterStore from 'ClientApp/store/Counter';
+
+class CounterPage extends React.Component {
     onClickHandler = (event) => {
         event.preventDefault();
         this.props.increment();
@@ -29,5 +30,5 @@ class Counter extends React.Component {
 // Wire up the React component to the Redux store
 export default connect(
     (state) => state.counter, // Selects which state properties are merged into the component's props
-    CounterStore.actionCreators                 // Selects which action creators are merged into the component's props
-)(Counter);
+    counterStore.actionCreators                 // Selects which action creators are merged into the component's props
+)(CounterPage);

@@ -20,5 +20,9 @@ namespace OnTask.Business.Models.Event
         /// Gets or sets the description for the <see cref="EventParentModel"/> class.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the weight for the <see cref="EventModel"/> class.
+        /// </summary>
+        public int? Weight { get; set; }
     }
 }

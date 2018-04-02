@@ -74,6 +74,26 @@ namespace OnTask.Test.Business.Validators.Event
         }
 
         [TestMethod]
+        public void Validate_InvalidEndDate()
+        {
+            var endDate = default(DateTime);
+
+            target.ShouldHaveValidationErrorFor(x => x.EndDate, endDate, Constants.RuleSetNameForInsert);
+            target.ShouldHaveValidationErrorFor(x => x.EndDate, endDate, Constants.RuleSetNameForUpdate);
+        }
+
+        [TestMethod]
+        public void Validate_InvalidStartTimeAndEndTime()
+        {
+            var model = new EventModel();
+
+            target.ShouldHaveValidationErrorFor(x => x.StartTime, model, Constants.RuleSetNameForInsert);
+            target.ShouldHaveValidationErrorFor(x => x.StartTime, model, Constants.RuleSetNameForUpdate);
+            target.ShouldHaveValidationErrorFor(x => x.EndTime, model, Constants.RuleSetNameForInsert);
+            target.ShouldHaveValidationErrorFor(x => x.EndTime, model, Constants.RuleSetNameForUpdate);
+        }
+
+        [TestMethod]
         [DataTestMethod]
         [DataRow(null, 1, 1, 1, "foo", "2018-01-01", Constants.RuleSetNameForInsert, DisplayName = "Insert")]
         [DataRow(1, 1, 1, 1, "foo", "2018-01-01", Constants.RuleSetNameForUpdate, DisplayName = "Update")]

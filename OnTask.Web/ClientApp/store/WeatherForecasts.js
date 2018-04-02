@@ -1,6 +1,4 @@
 ﻿import { fetch, addTask } from 'domain-task';
-import { Action, Reducer, ActionCreator } from 'redux';
-import { AppThunkAction } from './';
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
