@@ -1,6 +1,7 @@
 ﻿using OnTask.Business.Builders.Interfaces;
 using OnTask.Business.Models.Event;
 using OnTask.Business.Services.Interfaces;
+using OnTask.Common;
 using OnTask.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,12 @@ namespace OnTask.Business.Services
         {
             try
             {
+                // Handle everything in EST (to make thing easier for now).
+                var estTimeZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.EasternStandardTimeZoneId);
+                var start = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estTimeZone);
+
                 builder
-                    .Create(DateTime.Now, end)
+                    .Create(start, end)
                     .ConstructIterative()
                     .ReorderOverruns()
                     .SpreadBackwards();
